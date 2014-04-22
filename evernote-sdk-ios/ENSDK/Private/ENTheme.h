@@ -13,5 +13,6 @@
 
 +(UIColor*)defaultTintColor;
 +(UIColor*)defaultBackgroundColor;
+BOOL IsIPad();
 
 @end

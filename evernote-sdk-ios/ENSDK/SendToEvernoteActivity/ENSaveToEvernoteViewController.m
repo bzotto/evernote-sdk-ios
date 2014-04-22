@@ -16,7 +16,7 @@
 #define kTagsViewHeight         38.0
 #define kNotebookViewHeight     50.0
 #define kDividerColor           [UIColor colorWithRed:210.0/255.0 green:210.0/255.0 blue:210.0/255.0 alpha:1]
-#define kTextLeftPadd           20
+#define kTextLeftPadding        20
 
 @interface ENSaveToEvernoteActivity (Private)
 - (ENNote *)preparedNote;
@@ -49,7 +49,7 @@ CGFloat OnePxHeight() {
     titleField.translatesAutoresizingMaskIntoConstraints = NO;
     [titleField setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:18.0]];
     [titleField setTextColor:[UIColor colorWithRed:0.51 green:0.51 blue:0.51 alpha:1]];
-    UIView *paddingView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadd, 0)];
+    UIView *paddingView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadding, 0)];
     titleField.leftView = paddingView1;
     titleField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:titleField];
@@ -62,7 +62,7 @@ CGFloat OnePxHeight() {
     
     UITextField *tagsField = [[UITextField alloc] initWithFrame:CGRectZero];
     tagsField.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadd, 0)];
+    UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadding, 0)];
     tagsField.leftView = paddingView2;
     tagsField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:tagsField];
@@ -77,7 +77,7 @@ CGFloat OnePxHeight() {
     [notebookField setText:NSLocalizedString(@"Notebook", @"Notebook")];
     [notebookField setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:15.0]];
     notebookField.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *paddingView3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadd, 0)];
+    UIView *paddingView3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadding, 0)];
     notebookField.leftView = paddingView3;
     notebookField.leftViewMode = UITextFieldViewModeAlways;
     
@@ -141,6 +141,10 @@ CGFloat OnePxHeight() {
     }];
 }
 
+- (UIStatusBarStyle) preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)updateCurrentNotebookDisplay
 {
     NSString * displayName = self.currentNotebook.name;
@@ -151,7 +155,7 @@ CGFloat OnePxHeight() {
 
 - (void)showNotebookChooser
 {
-    ENNotebookChooserViewController * chooser = [[ENNotebookChooserViewController alloc] initWithStyle:UITableViewStylePlain];
+    ENNotebookChooserViewController * chooser = [[ENNotebookChooserViewController alloc] init];
     chooser.delegate = self;
     chooser.notebookList = self.notebookList;
     chooser.currentNotebook = self.currentNotebook;
