@@ -13,7 +13,6 @@
 @property (nonatomic, readonly) NSString * ownerName;
 @property (nonatomic, readonly) BOOL allowsWriting;
 @property (nonatomic, readonly) BOOL isLinked;
-@property (nonatomic, readonly) BOOL isShared;
 @property (nonatomic, readonly) BOOL isBusinessNotebook;
 @property (nonatomic, readonly) BOOL isDefaultNotebook;
 @end

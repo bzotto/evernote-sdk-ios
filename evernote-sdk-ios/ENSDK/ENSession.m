@@ -852,7 +852,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (EDAMAuthenticationResult *)validBusinessAuthenticationResult
 {
-    NSAssert(![NSThread isMainThread], @"Cannot authenticate to linked notebook on main thread");
+    NSAssert(![NSThread isMainThread], @"Cannot authenticate to business on main thread");
     EDAMAuthenticationResult * auth = [self.authCache authenticationResultForBusiness];
     if (!auth) {
         auth = [self.userStore authenticateToBusiness];

@@ -52,7 +52,7 @@
     [self.detailTextLabel setText:notebook.ownerName];
     if ([notebook isBusinessNotebook]) {
         [self setAccessoryView:[self businessImageAccessoryView]];
-    } else if ([notebook isShared]) {
+    } else if ([notebook isLinked]) {
         [self setAccessoryView:[self sharedImageAccessoryView]];
     } else {
         [self setAccessoryView:nil];

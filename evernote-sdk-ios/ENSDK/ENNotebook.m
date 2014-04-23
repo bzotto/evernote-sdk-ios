@@ -78,8 +78,6 @@
 - (NSString *)ownerName {
     if (self.isBusinessNotebook) {
         return [ENSession sharedSession].businessDisplayName;
-    } else if ([self isShared]) {
-        return self.sharedNotebook.username;
     } else if ([self isLinked]) {
         return self.linkedNotebook.username;
     }
@@ -104,11 +102,6 @@
 - (BOOL)isLinked
 {
     return self.linkedNotebook != nil;
-}
-
-- (BOOL)isShared
-{
-    return self.sharedNotebook != nil;
 }
 
 - (BOOL)isBusinessNotebook
