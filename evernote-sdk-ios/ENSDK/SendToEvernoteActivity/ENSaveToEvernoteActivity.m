@@ -33,7 +33,7 @@
 
 - (UIImage *)activityImage
 {
-    return [UIImage imageNamed:@"en-activity-icon.png"];
+    return [UIImage imageNamed:@"ENActivityIcon"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
