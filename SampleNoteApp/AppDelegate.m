@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "ENSDK.h"
+#import <ENSDK/ENSDK.h>
 
 @implementation AppDelegate
 

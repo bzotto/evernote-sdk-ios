@@ -129,6 +129,7 @@
 		866F1C7F190744640072F4C8 /* Check_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 866F1C7C190744640072F4C8 /* Check_Icon.png */; };
 		866F1C80190744640072F4C8 /* Check_Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 866F1C7D190744640072F4C8 /* Check_Icon@2x.png */; };
 		866F1C81190744640072F4C8 /* Check_Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 866F1C7D190744640072F4C8 /* Check_Icon@2x.png */; };
+		8679941C190867F9002A1C0A /* ENSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8679941B190867F9002A1C0A /* ENSDK.framework */; };
 		86B198511901CB36008F606A /* UITableNext.png in Resources */ = {isa = PBXBuildFile; fileRef = 86B1984F1901CB36008F606A /* UITableNext.png */; };
 		86B198521901CB36008F606A /* UITableNext@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 86B198501901CB36008F606A /* UITableNext@2x.png */; };
 		86B198531901D92F008F606A /* UITableNext.png in Resources */ = {isa = PBXBuildFile; fileRef = 86B1984F1901CB36008F606A /* UITableNext.png */; };
@@ -285,7 +286,6 @@
 		BE2E24F618EDD4A400BD7E6E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E24F518EDD4A400BD7E6E /* AppDelegate.m */; };
 		BE2E24FF18EDD4A400BD7E6E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E24FE18EDD4A400BD7E6E /* ViewController.m */; };
 		BE2E250118EDD4A400BD7E6E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE2E250018EDD4A400BD7E6E /* Images.xcassets */; };
-		BE2E25AD18EDDA6D00BD7E6E /* libevernote-sdk-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB3D1AD1524ED96001C4534 /* libevernote-sdk-ios.a */; };
 		BE2E25AE18EDDA7500BD7E6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF0CF84152E2601003D6115 /* Security.framework */; };
 		BE2E25AF18EDDA7C00BD7E6E /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A9BE476B1781FAFA00471BF7 /* libxml2.dylib */; };
 		BE2E25B118EDE1C100BD7E6E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2E25B018EDE1C100BD7E6E /* MobileCoreServices.framework */; };
@@ -314,7 +314,6 @@
 		BE2E25D418F3745700BD7E6E /* ENBusinessNoteStoreClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25D218F3745700BD7E6E /* ENBusinessNoteStoreClient.m */; };
 		BE2E25D918F4D6C300BD7E6E /* ENMLConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E25D718F4D6C200BD7E6E /* ENMLConstants.h */; };
 		BE2E25DA18F4D6C300BD7E6E /* ENMLConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25D818F4D6C200BD7E6E /* ENMLConstants.m */; };
-		BE2E25DB18F4D6C300BD7E6E /* ENMLConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25D818F4D6C200BD7E6E /* ENMLConstants.m */; };
 		BE2E25DD18F4DCE600BD7E6E /* ENSDKPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25DC18F4DCE600BD7E6E /* ENSDKPrivate.m */; };
 		BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */; };
 		BECDD2F118F5C8F3003736EE /* ENPreferencesStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */; };
@@ -366,6 +365,7 @@
 		866F1C7719071B400072F4C8 /* Multiple_people_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Multiple_people_icon@2x.png"; sourceTree = "<group>"; };
 		866F1C7C190744640072F4C8 /* Check_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Check_Icon.png; sourceTree = "<group>"; };
 		866F1C7D190744640072F4C8 /* Check_Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Check_Icon@2x.png"; sourceTree = "<group>"; };
+		8679941B190867F9002A1C0A /* ENSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ENSDK.framework; path = Products/ENSDK.framework; sourceTree = "<group>"; };
 		86B1984F1901CB36008F606A /* UITableNext.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UITableNext.png; sourceTree = "<group>"; };
 		86B198501901CB36008F606A /* UITableNext@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITableNext@2x.png"; sourceTree = "<group>"; };
 		86B198551901DB0A008F606A /* ENNotebookPickerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNotebookPickerButton.h; sourceTree = "<group>"; };
@@ -570,10 +570,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8679941C190867F9002A1C0A /* ENSDK.framework in Frameworks */,
 				BE2E25B118EDE1C100BD7E6E /* MobileCoreServices.framework in Frameworks */,
 				BE2E25AF18EDDA7C00BD7E6E /* libxml2.dylib in Frameworks */,
 				BE2E25AE18EDDA7500BD7E6E /* Security.framework in Frameworks */,
-				BE2E25AD18EDDA6D00BD7E6E /* libevernote-sdk-ios.a in Frameworks */,
 				BE2E24E918EDD4A300BD7E6E /* CoreGraphics.framework in Frameworks */,
 				BE2E24EA18EDD4A300BD7E6E /* UIKit.framework in Frameworks */,
 				BE2E24E718EDD4A300BD7E6E /* Foundation.framework in Frameworks */,
@@ -610,6 +610,7 @@
 		0BB3D1AF1524ED96001C4534 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8679941B190867F9002A1C0A /* ENSDK.framework */,
 				BE2E25B018EDE1C100BD7E6E /* MobileCoreServices.framework */,
 				A9BE476B1781FAFA00471BF7 /* libxml2.dylib */,
 				0BF0CF84152E2601003D6115 /* Security.framework */,
@@ -1462,7 +1463,6 @@
 				BE2E24FF18EDD4A400BD7E6E /* ViewController.m in Sources */,
 				BE2E24F618EDD4A400BD7E6E /* AppDelegate.m in Sources */,
 				BE2E24F218EDD4A400BD7E6E /* main.m in Sources */,
-				BE2E25DB18F4D6C300BD7E6E /* ENMLConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1729,6 +1729,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Products",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleNoteApp/SampleNoteApp-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1759,6 +1763,10 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Products",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleNoteApp/SampleNoteApp-Prefix.pch";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

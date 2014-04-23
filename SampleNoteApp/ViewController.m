@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "ENSDK.h"
+#import <ENSDK/ENSDK.h>
 
 @interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
