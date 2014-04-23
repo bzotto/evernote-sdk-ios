@@ -17,8 +17,4 @@
 - (NSData *)data;
 - (NSString *)mimeType;
 - (NSString *)filename;
-
-// This is only useful if you're writing ENML manually. If that doesn't mean anything to you, then
-// it's not useful. :)
-- (NSData *)dataHash;
 @end

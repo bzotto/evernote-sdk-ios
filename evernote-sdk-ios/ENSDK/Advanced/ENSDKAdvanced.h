@@ -41,3 +41,7 @@
 + (instancetype)noteContentWithENML:(NSString *)enml;
 - (id)initWithENML:(NSString *)enml;
 @end
+
+@interface ENResource (Advanced)
+- (NSData *)dataHash;
+@end
