@@ -10,6 +10,7 @@
 #import "ENSDKPrivate.h"
 #import "Thrift.h"
 #import "ENAuthCache.h"
+#import "EDAMNoteStoreClient+Utilities.h"
 
 @interface ENNoteStoreClient ()
 @property (nonatomic, strong) EDAMNoteStoreClient * client;
@@ -42,6 +43,48 @@
 
 #pragma mark - End override points
 
+- (void)setUploadProgressHandler:(ENNoteStoreClientProgressHandler)uploadProgressHandler
+{
+    _uploadProgressHandler = uploadProgressHandler;
+    [self updateProgressHandlers];
+}
+
+- (void)setDownloadProgressHandler:(ENNoteStoreClientProgressHandler)downloadProgressHandler
+{
+    _downloadProgressHandler = downloadProgressHandler;
+    [self updateProgressHandlers];
+}
+
+- (void)updateProgressHandlers
+{
+    // Uses the _client ivar here since we're called from within the -client getter.
+    if (_client) {
+        if (self.uploadProgressHandler) {
+            ENNoteStoreClientProgressHandler uploadHandler = self.uploadProgressHandler;
+            [_client setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                if (totalBytesExpectedToWrite > 0) {
+                    CGFloat t = totalBytesWritten / totalBytesExpectedToWrite;
+                    uploadHandler(t);
+                }
+            }];
+        } else {
+            [_client setUploadProgressBlock:nil];
+        }
+        
+        if (self.downloadProgressHandler) {
+            ENNoteStoreClientProgressHandler downloadHandler = self.downloadProgressHandler;
+            [_client setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+                if (totalBytesExpectedToRead > 0) {
+                    CGFloat t = totalBytesRead / totalBytesExpectedToRead;
+                    downloadHandler(t);
+                }
+            }];
+        } else {
+            [_client setDownloadProgressBlock:nil];
+        }
+    }
+}
+
 - (EDAMNoteStoreClient *)client
 {
     if (!_client) {
@@ -50,6 +93,9 @@
         THTTPClient * transport = [[THTTPClient alloc] initWithURL:url];
         TBinaryProtocol * protocol = [[TBinaryProtocol alloc] initWithTransport:transport];
         _client = [[EDAMNoteStoreClient alloc] initWithProtocol:protocol];
+        
+        // Bind progress handlers if they are pending attachment.
+        [self updateProgressHandlers];
     }
     return _client;
 }

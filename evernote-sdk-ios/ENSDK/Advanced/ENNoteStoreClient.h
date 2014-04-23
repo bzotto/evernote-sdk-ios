@@ -11,9 +11,13 @@
 #import "ENStoreClient.h"
 #import "ENLinkedNotebookRef.h"
 
-@interface ENNoteStoreClient : ENStoreClient
+typedef void (^ENNoteStoreClientProgressHandler)(CGFloat progress);
 
 // ! DO NOT INSTANTIATE THIS OBJECT DIRECTLY. GET ONE FROM AN AUTHENTICATED ENSESSION !
+
+@interface ENNoteStoreClient : ENStoreClient
+@property (nonatomic, strong) ENNoteStoreClientProgressHandler uploadProgressHandler;
+@property (nonatomic, strong) ENNoteStoreClientProgressHandler downloadProgressHandler;
 
 ///---------------------------------------------------------------------------------------
 /// @name NoteStore sync methods

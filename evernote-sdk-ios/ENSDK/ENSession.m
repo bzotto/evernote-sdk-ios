@@ -53,6 +53,7 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 @property (nonatomic, strong) ENNotebook * notebook;
 @property (nonatomic, assign) ENSessionUploadPolicy policy;
 @property (nonatomic, strong) ENSessionUploadNoteCompletionHandler completion;
+@property (nonatomic, strong) ENSessionUploadNoteProgressHandler progress;
 @property (nonatomic, strong) ENNoteStoreClient * noteStore;
 @property (nonatomic, strong) ENNoteRef * noteRef;
 @end
@@ -611,15 +612,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     context.notebook = note.notebook;
     context.policy = policy;
     context.completion = completion;
-    
-    if (progress) {
-//        [context.destinationNoteStore setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-//            if (totalBytesExpectedToWrite > 0) {
-//                CGFloat t = totalBytesWritten / totalBytesExpectedToWrite;
-//                progress(t);
-//            }
-//        }];
-    }
+    context.progress = progress;
     
     if (noteToReplace) {
         [self uploadNote_updateWithContext:context];
@@ -639,8 +632,13 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         ENSDKLogInfo(@"Cannot replace a note and change its notebook; location will be preserved.");
         context.note.notebookGuid = nil;
     }
-    ENNoteStoreClient * noteStore = [self noteStoreForNoteRef:context.refToReplace];
-    [noteStore updateNote:context.note success:^(EDAMNote * resultNote) {
+    context.noteStore = [self noteStoreForNoteRef:context.refToReplace];
+    
+    if (context.progress) {
+        context.noteStore.uploadProgressHandler = context.progress;
+    }
+    
+    [context.noteStore updateNote:context.note success:^(EDAMNote * resultNote) {
         [self uploadNote_completeWithContext:context error:nil];
     } failure:^(NSError *error) {
         if ([error.userInfo[@"parameter"] isEqualToString:@"Note.guid"]) {
@@ -735,6 +733,9 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (void)uploadNote_createWithContext:(ENSessionUploadNoteContext *)context
 {
+    if (context.progress) {
+        context.noteStore.uploadProgressHandler = context.progress;
+    }
     [context.noteStore createNote:context.note success:^(EDAMNote * resultNote) {
         context.noteRef.guid = resultNote.guid;
         [self uploadNote_completeWithContext:context error:nil];
@@ -748,7 +749,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 - (void)uploadNote_completeWithContext:(ENSessionUploadNoteContext *)context
                                  error:(NSError *)error
 {
-//    [context.destinationNoteStore setUploadProgressBlock:nil];
+    context.noteStore.uploadProgressHandler = nil;
     if (context.completion) {
         context.completion(error ? nil : context.noteRef, error);
     }
