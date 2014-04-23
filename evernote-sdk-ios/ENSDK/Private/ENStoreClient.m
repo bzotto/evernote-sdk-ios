@@ -11,6 +11,8 @@
 #import "EDAMErrors.h"
 #import "ENSDKPrivate.h"
 
+NSString * ENStoreClientDidFailWithAuthenticationErrorNotification = @"ENStoreClientDidFailWithAuthenticationErrorNotification";
+
 @interface ENStoreClient ()
 @property (nonatomic, strong) dispatch_queue_t queue;
 @end
@@ -169,7 +171,7 @@
             // Evernote Thrift exception classes have an errorCode property
             int edamErrorCode = [(id)exception errorCode];
             sanitizedErrorCode = [[self class] sanitizedErrorCodeFromEDAMErrorCode:edamErrorCode];
-            userInfo[@"EDAMErrorCode"] = @(edamErrorCode); // Put this in the user info in case the caller cares.
+            userInfo[@"EDAMErrorCode"] = @(edamErrorCode); // Put this in the user info in case the caller cares.            
         } else if ([exception isKindOfClass:[TException class]]) {
             // treat any Thrift errors as a transport error
             // we could create separate error codes for the various TException subclasses
@@ -207,10 +209,24 @@
 
 - (void)handleException:(NSException *)exception withFailureBlock:(void(^)(NSError *error))failure
 {
+    NSError * error = [self errorFromException:exception];
     if (failure) {
-        NSError * error = [self errorFromException:exception];
         dispatch_async(dispatch_get_main_queue(), ^{
             failure(error);
+        });
+    }
+    
+    // If this is a hard auth error, then send a notification about it. This is intended to trigger for
+    // tokens that have either expired or that have been revoked. This does NOT include permissions
+    // denials (ie, the auth token is valid, but not for the operation you're trying to do with it). Those
+    // are generally program errors.
+    int edamErrorCode = [error.userInfo[@"EDAMErrorCode"] intValue];
+    if (edamErrorCode > 0 &&
+        (edamErrorCode == EDAMErrorCode_AUTH_EXPIRED ||
+         edamErrorCode == EDAMErrorCode_INVALID_AUTH)) {
+        ENSDKLogError(@"ENStoreClient got authentication EDAM error %u", edamErrorCode);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:ENStoreClientDidFailWithAuthenticationErrorNotification object:self];
         });
     }
 }

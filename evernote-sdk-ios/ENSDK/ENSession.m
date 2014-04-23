@@ -19,6 +19,8 @@
 
 // Strings visible publicly.
 NSString * const ENSessionHostSandbox = @"sandbox.evernote.com";
+NSString * const ENSessionDidAuthenticateNotification = @"ENSessionDidAuthenticateNotification";
+NSString * const ENSessionDidUnauthenticateNotification = @"ENSessionDidUnauthenticateNotification";
 
 // Constants valid only in this file.
 static NSString * ENSessionBootstrapServerBaseURLStringCN  = @"app.yinxiang.com";
@@ -75,6 +77,8 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 @property (nonatomic, strong) ENAuthCache * authCache;
 @property (nonatomic, strong) NSArray * notebooksCache;
 @property (nonatomic, strong) NSDate * notebooksCacheDate;
+
+@property (nonatomic, strong) ENUserStoreClient * userStorePendingRevocation;
 @end
 
 @implementation ENSession
@@ -151,11 +155,22 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     return self;
 }
 
+// NB: This object is a singleton, -dealloc will never be called. Here for clarity only.
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)startup
 {
     self.logger = [[ENSessionDefaultLogger alloc] init];
     self.preferences = [[ENPreferencesStore alloc] initWithStoreFilename:ENSessionPreferencesFilename];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(storeClientFailedAuthentication:)
+                                                 name:ENStoreClientDidFailWithAuthenticationErrorNotification
+                                               object:nil];
+    
     // Determine the host to use for this session.
     if (SessionHostOverride.length > 0) {
         // Use the override given by the developer. This is optional, and
@@ -203,6 +218,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     // and pull up business credentials. Refresh the business credentials if necessary, and the user
     // object always.
     self.user = [self.preferences decodedObjectForKey:ENSessionPreferencesUser];
+    
     [self performPostAuthentication];
 }
 
@@ -249,6 +265,9 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (void)performPostAuthentication
 {
+    // We only get here after newly setting up a authenticated state, so send a notification.
+    [self notifyAuthenticationChanged];
+    
     // During an initial authentication, a failure in getUser or authenticateToBusiness is considered fatal.
     // But when refreshing a session, eg on app restart, we don't want to sign out users just for network
     // errors, or transient problems.
@@ -310,8 +329,24 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     return [[self.preferences objectForKey:ENSessionPreferencesAppNotebookIsLinked] boolValue];
 }
 
+// N.B. This method (currently) isn't protected against executing when API calls are currently inflight.
+// Unauthenticating while operations are pending may result in undefined behavior.
 - (void)unauthenticate
 {
+    ENSDKLogInfo(@"ENSession is unauthenticating.");
+
+    // Revoke the primary auth token, so the app session will not appear any longer on the user's
+    // security page. This is purely opportunistic, of course, hence ignoring the result.
+    // Note also that this is asynchronous, but the rest of this method gets rid of all the session state,
+    // so keep the user store around long enough to see it through, but keep it separate from the
+    // normal session state.
+    self.userStorePendingRevocation = self.userStore;
+    [self.userStorePendingRevocation revokeLongSessionWithAuthenticationToken:self.primaryAuthenticationToken success:^{
+        self.userStorePendingRevocation = nil;
+    } failure:^(NSError *error) {
+        self.userStorePendingRevocation = nil;
+    }];
+    
     self.isAuthenticated = NO;
     self.user = nil;
     self.primaryAuthenticationToken = nil;
@@ -326,6 +361,8 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     [self saveCredentialStore:credentialStore];
     
     [self.preferences removeAllItems];
+    
+    [self notifyAuthenticationChanged];
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url
@@ -870,6 +907,15 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     return _authCache;
 }
 
+- (void)notifyAuthenticationChanged
+{
+    if (self.isAuthenticated) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ENSessionDidAuthenticateNotification object:self];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ENSessionDidUnauthenticateNotification object:self];
+    }
+}
+
 #pragma mark - Store clients
 
 - (ENUserStoreClient *)userStore
@@ -1031,6 +1077,16 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     [self completeAuthenticationWithError:error];
 }
 
+#pragma mark - Notification handlers
+
+- (void)storeClientFailedAuthentication:(NSNotification *)notification
+{
+    if (notification.object == [self primaryNoteStore]) {
+        ENSDKLogError(@"Primary note store operation failed authentication. Unauthenticating.");
+        [self unauthenticate];
+    }
+}
+
 @end
 
 #pragma mark - Default logger
@@ -1046,7 +1102,6 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     NSLog(@"ENSDK ERROR: %@", str);
 }
 @end
-
 
 #pragma mark - Private context definitions
                                                 

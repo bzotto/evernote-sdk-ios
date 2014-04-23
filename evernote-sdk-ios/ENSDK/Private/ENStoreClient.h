@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 @class ENStoreClient;
 
+extern NSString * ENStoreClientDidFailWithAuthenticationErrorNotification;
+
 @interface ENStoreClient : NSObject
 - (void)invokeAsyncBoolBlock:(BOOL(^)())block
                      success:(void(^)(BOOL val))success

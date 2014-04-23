@@ -13,6 +13,9 @@
 
 FOUNDATION_EXPORT NSString * const ENSessionHostSandbox;
 
+FOUNDATION_EXPORT NSString * const ENSessionDidAuthenticateNotification;
+FOUNDATION_EXPORT NSString * const ENSessionDidUnauthenticateNotification;
+
 typedef void (^ENSessionAuthenticateCompletionHandler)(NSError * authenticateError);
 typedef void (^ENSessionListNotebooksCompletionHandler)(NSArray * notebooks, NSError * listNotebooksError);
 typedef void (^ENSessionUploadNoteProgressHandler)(CGFloat progress);
