@@ -16,6 +16,7 @@
 @property (nonatomic, strong) ENNoteContent * content;
 @property (nonatomic, strong) ENNotebook * notebook;
 @property (nonatomic, copy) NSArray * tagNames;
+@property (nonatomic, assign) BOOL isReminder;
 - (NSArray *)resources;
 - (void)addResource:(ENResource *)resource;
 @end

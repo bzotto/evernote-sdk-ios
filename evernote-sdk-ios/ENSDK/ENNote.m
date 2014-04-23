@@ -122,6 +122,11 @@
     // By convention for all iOS based apps.
     attributes.source = @"mobile.ios";
 
+    // If reminder is flagged on, set reminderOrder to the current UNIX timestamp by convention.
+    if (self.isReminder) {
+        attributes.reminderOrder = [[NSDate date] timeIntervalSince1970] * 1000.0;
+    }
+    
     note.attributes = attributes;
     
     // Move tags over if present.
