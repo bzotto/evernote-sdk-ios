@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import <ENSDK/ENSDK.h>
 
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ViewController () <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
 
@@ -54,7 +54,7 @@
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([[ENSession sharedSession] isAuthenticated]) {
-        return 3; // Unauthenticate, user info, try activity
+        return 4; // Unauthenticate, user info, try activity, photo note
     } else {
         return 1; // Authenticate
     }
@@ -75,6 +75,8 @@
     } else if (indexPath.row == 2) {
         cell.textLabel.text = @"Save Activity";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else if (indexPath.row == 3) {
+        cell.textLabel.text = @"Create photo note";
     }
     return cell;
 }
@@ -105,7 +107,49 @@
     } else if (indexPath.row == 2) {
         UIViewController * vc = [self viewControllerFromStoryboardWithIdentifier:@"SaveActivity"];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if (indexPath.row == 3) {
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+            UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            picker.delegate = self;
+            [self presentViewController:picker animated:YES completion:nil];
+        }
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - UIImagePickerController
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    ENResource * resource = [[ENResource alloc] initWithImage:image];
+    ENNote * note = [[ENNote alloc] init];
+    note.title = @"Photo note";
+    [note addResource:resource];
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+        NSString * message = nil;
+        if (noteRef) {
+            message = @"Photo note created.";
+        } else {
+            message = @"Failed to create photo note.";
+        }
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil
+                                                         message:message
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil];
+        [alert show];
+    }];
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 @end

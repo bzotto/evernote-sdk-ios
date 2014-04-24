@@ -304,6 +304,14 @@
 		BECDD3BB190916D1003736EE /* xhtml-symbol.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243718EBA5D500BD7E6E /* xhtml-symbol.ent */; };
 		BECDD3BC190916D1003736EE /* xhtml1-strict.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243818EBA5D500BD7E6E /* xhtml1-strict.dtd */; };
 		BECDD3BD190916D1003736EE /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243918EBA5D500BD7E6E /* xhtml1-transitional.dtd */; };
+		BECDD3BE19091B56003736EE /* enml2.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243118EBA5D500BD7E6E /* enml2.dtd */; };
+		BECDD3BF19091B56003736EE /* evernote-export.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243218EBA5D500BD7E6E /* evernote-export.dtd */; };
+		BECDD3C019091B56003736EE /* recoIndex.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243418EBA5D500BD7E6E /* recoIndex.dtd */; };
+		BECDD3C119091B56003736EE /* xhtml-lat1.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243518EBA5D500BD7E6E /* xhtml-lat1.ent */; };
+		BECDD3C219091B56003736EE /* xhtml-special.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243618EBA5D500BD7E6E /* xhtml-special.ent */; };
+		BECDD3C319091B56003736EE /* xhtml-symbol.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243718EBA5D500BD7E6E /* xhtml-symbol.ent */; };
+		BECDD3C419091B56003736EE /* xhtml1-strict.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243818EBA5D500BD7E6E /* xhtml1-strict.dtd */; };
+		BECDD3C519091B56003736EE /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243918EBA5D500BD7E6E /* xhtml1-transitional.dtd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1208,6 +1216,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BECDD3BE19091B56003736EE /* enml2.dtd in Resources */,
+				BECDD3BF19091B56003736EE /* evernote-export.dtd in Resources */,
+				BECDD3C019091B56003736EE /* recoIndex.dtd in Resources */,
+				BECDD3C119091B56003736EE /* xhtml-lat1.ent in Resources */,
+				BECDD3C219091B56003736EE /* xhtml-special.ent in Resources */,
+				BECDD3C319091B56003736EE /* xhtml-symbol.ent in Resources */,
+				BECDD3C419091B56003736EE /* xhtml1-strict.dtd in Resources */,
+				BECDD3C519091B56003736EE /* xhtml1-transitional.dtd in Resources */,
 				BECDD3851908FFC1003736EE /* Main_iPad.storyboard in Resources */,
 				BECDD38A1908FFC2003736EE /* Images.xcassets in Resources */,
 				BECDD3821908FFC1003736EE /* Main_iPhone.storyboard in Resources */,

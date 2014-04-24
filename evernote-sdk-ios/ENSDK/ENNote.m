@@ -100,7 +100,7 @@
     note.content = [self enmlContent];
     if (!note.content) {
         ENNoteContent * emptyContent = [ENNoteContent noteContentWithString:@""];
-        note.content = [emptyContent enmlWithResources:nil];
+        note.content = [emptyContent enmlWithResources:self.resources];
     }
     
     note.title = self.title;
