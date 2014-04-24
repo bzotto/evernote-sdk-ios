@@ -675,6 +675,8 @@
 				BE2E23CD18EBA5D400BD7E6E /* ENNoteStoreClient.m */,
 				BE2E23CF18EBA5D400BD7E6E /* ENUserStoreClient.h */,
 				BE2E23D018EBA5D400BD7E6E /* ENUserStoreClient.m */,
+				BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */,
+				BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */,
 				BE2E23BE18EBA5D400BD7E6E /* EDAM */,
 				BE2E23D118EBA5D400BD7E6E /* Utilities */,
 			);
@@ -778,8 +780,6 @@
 				BE2E245518EBA5D500BD7E6E /* NSString+ENScrubbing.h */,
 				BE2E245618EBA5D500BD7E6E /* NSString+ENScrubbing.m */,
 				BE2E245718EBA5D500BD7E6E /* Resources */,
-				BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */,
-				BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */,
 				BECDD2F618F77C0E003736EE /* ENPlaintextNoteContent.h */,
 				BECDD2F718F77C0E003736EE /* ENPlaintextNoteContent.m */,
 				BECDD2FA18F78072003736EE /* ENHTMLNoteContent.h */,

@@ -10,6 +10,7 @@
 #import "EDAM/EDAM.h"
 #import "ENNoteStoreClient.h"
 #import "ENUserStoreClient.h"
+#import "ENPreferencesStore.h"
 @class ENNoteStoreClient;
 
 @interface ENSession (Advanced)
@@ -25,6 +26,12 @@
 // relevant linked notebook. You can find the linked notebook record by calling -listLinkedNotebooks on the
 // primary note store.
 @property (nonatomic, readonly) BOOL appNotebookIsLinked;
+
+// This give access to the preferences store that the session keeps independently from NSUserDefaults, and is
+// destroyed when the session unauthenticates. This should generally not be used in your application, but
+// it is used by the sample UIActivity to track recently-used notebook destinations, which are of course
+// session-specific. If you use it, please namespace your keys appropriately to avoid collisions.
+@property (nonatomic, readonly) ENPreferencesStore * preferences;
 
 // Retrive an appropriate note store client to perform API operations with:
 // - The primary note store client is valid for all personal notebooks, and can also be used to authenticate with

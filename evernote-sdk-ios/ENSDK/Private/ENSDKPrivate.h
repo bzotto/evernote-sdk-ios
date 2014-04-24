@@ -67,6 +67,10 @@ FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameChina;
 - (EDAMAuthenticationResult *)authenticateToBusiness;
 @end
 
+@interface ENPreferencesStore (Private)
+- (id)initWithStoreFilename:(NSString *)filename;
+@end
+
 // Logging utility macros.
 #define ENSDKLogInfo(...) \
     do { \
