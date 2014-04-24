@@ -1,8 +1,8 @@
 //
 //  AppDelegate.m
-//  SampleNoteApp
+//  EvernoteSDKSample
 //
-//  Created by Ben Zotto on 4/3/14.
+//  Created by Ben Zotto on 4/24/14.
 //  Copyright (c) 2014 n/a. All rights reserved.
 //
 
@@ -17,12 +17,13 @@
     [ENSession setSharedSessionConsumerKey:@"your key"
                             consumerSecret:@"your secret"
                               optionalHost:ENSessionHostSandbox];
-    
+
     return YES;
 }
-							
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     return [[ENSession sharedSession] handleOpenURL:url];
 }
+
 @end
