@@ -238,7 +238,6 @@
 		BE2E24DF18EBA5D500BD7E6E /* ENSaveToEvernoteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E245B18EBA5D500BD7E6E /* ENSaveToEvernoteActivity.m */; };
 		BE2E25B218EF4B8600BD7E6E /* enml2.dtd in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE2E243118EBA5D500BD7E6E /* enml2.dtd */; };
 		BE2E25B318EF4B8600BD7E6E /* evernote-export.dtd in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE2E243218EBA5D500BD7E6E /* evernote-export.dtd */; };
-		BE2E25B418EF4B8600BD7E6E /* promotions.dtd in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE2E243318EBA5D500BD7E6E /* promotions.dtd */; };
 		BE2E25B518EF4B8600BD7E6E /* recoIndex.dtd in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE2E243418EBA5D500BD7E6E /* recoIndex.dtd */; };
 		BE2E25B618EF4B8600BD7E6E /* xhtml-lat1.ent in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE2E243518EBA5D500BD7E6E /* xhtml-lat1.ent */; };
 		BE2E25B718EF4B8600BD7E6E /* xhtml-special.ent in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE2E243618EBA5D500BD7E6E /* xhtml-special.ent */; };
@@ -297,15 +296,14 @@
 		BECDD3A61909009B003736EE /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A9BE476B1781FAFA00471BF7 /* libxml2.dylib */; };
 		BECDD3A9190908A9003736EE /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD3A8190908A9003736EE /* UserInfoViewController.m */; };
 		BECDD3AC19090FBA003736EE /* SaveActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD3AB19090FBA003736EE /* SaveActivityViewController.m */; };
-		BECDD3AD19091374003736EE /* enml2.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243118EBA5D500BD7E6E /* enml2.dtd */; };
-		BECDD3AE19091374003736EE /* evernote-export.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243218EBA5D500BD7E6E /* evernote-export.dtd */; };
-		BECDD3AF19091374003736EE /* promotions.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243318EBA5D500BD7E6E /* promotions.dtd */; };
-		BECDD3B019091374003736EE /* recoIndex.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243418EBA5D500BD7E6E /* recoIndex.dtd */; };
-		BECDD3B119091374003736EE /* xhtml-lat1.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243518EBA5D500BD7E6E /* xhtml-lat1.ent */; };
-		BECDD3B219091374003736EE /* xhtml-special.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243618EBA5D500BD7E6E /* xhtml-special.ent */; };
-		BECDD3B319091374003736EE /* xhtml-symbol.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243718EBA5D500BD7E6E /* xhtml-symbol.ent */; };
-		BECDD3B419091374003736EE /* xhtml1-strict.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243818EBA5D500BD7E6E /* xhtml1-strict.dtd */; };
-		BECDD3B519091374003736EE /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243918EBA5D500BD7E6E /* xhtml1-transitional.dtd */; };
+		BECDD3B6190916D1003736EE /* enml2.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243118EBA5D500BD7E6E /* enml2.dtd */; };
+		BECDD3B7190916D1003736EE /* evernote-export.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243218EBA5D500BD7E6E /* evernote-export.dtd */; };
+		BECDD3B8190916D1003736EE /* recoIndex.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243418EBA5D500BD7E6E /* recoIndex.dtd */; };
+		BECDD3B9190916D1003736EE /* xhtml-lat1.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243518EBA5D500BD7E6E /* xhtml-lat1.ent */; };
+		BECDD3BA190916D1003736EE /* xhtml-special.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243618EBA5D500BD7E6E /* xhtml-special.ent */; };
+		BECDD3BB190916D1003736EE /* xhtml-symbol.ent in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243718EBA5D500BD7E6E /* xhtml-symbol.ent */; };
+		BECDD3BC190916D1003736EE /* xhtml1-strict.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243818EBA5D500BD7E6E /* xhtml1-strict.dtd */; };
+		BECDD3BD190916D1003736EE /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = BE2E243918EBA5D500BD7E6E /* xhtml1-transitional.dtd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -317,7 +315,6 @@
 			files = (
 				BE2E25B218EF4B8600BD7E6E /* enml2.dtd in CopyFiles */,
 				BE2E25B318EF4B8600BD7E6E /* evernote-export.dtd in CopyFiles */,
-				BE2E25B418EF4B8600BD7E6E /* promotions.dtd in CopyFiles */,
 				BE2E25B518EF4B8600BD7E6E /* recoIndex.dtd in CopyFiles */,
 				BE2E25B618EF4B8600BD7E6E /* xhtml-lat1.ent in CopyFiles */,
 				BE2E25B718EF4B8600BD7E6E /* xhtml-special.ent in CopyFiles */,
@@ -455,7 +452,6 @@
 		BE2E242F18EBA5D500BD7E6E /* TTransportException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTransportException.m; sourceTree = "<group>"; };
 		BE2E243118EBA5D500BD7E6E /* enml2.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = enml2.dtd; sourceTree = "<group>"; };
 		BE2E243218EBA5D500BD7E6E /* evernote-export.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "evernote-export.dtd"; sourceTree = "<group>"; };
-		BE2E243318EBA5D500BD7E6E /* promotions.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = promotions.dtd; sourceTree = "<group>"; };
 		BE2E243418EBA5D500BD7E6E /* recoIndex.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = recoIndex.dtd; sourceTree = "<group>"; };
 		BE2E243518EBA5D500BD7E6E /* xhtml-lat1.ent */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "xhtml-lat1.ent"; sourceTree = "<group>"; };
 		BE2E243618EBA5D500BD7E6E /* xhtml-special.ent */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "xhtml-special.ent"; sourceTree = "<group>"; };
@@ -911,7 +907,6 @@
 			children = (
 				BE2E243118EBA5D500BD7E6E /* enml2.dtd */,
 				BE2E243218EBA5D500BD7E6E /* evernote-export.dtd */,
-				BE2E243318EBA5D500BD7E6E /* promotions.dtd */,
 				BE2E243418EBA5D500BD7E6E /* recoIndex.dtd */,
 				BE2E243518EBA5D500BD7E6E /* xhtml-lat1.ent */,
 				BE2E243618EBA5D500BD7E6E /* xhtml-special.ent */,
@@ -1196,6 +1191,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BECDD3B6190916D1003736EE /* enml2.dtd in Resources */,
+				BECDD3B7190916D1003736EE /* evernote-export.dtd in Resources */,
+				BECDD3B8190916D1003736EE /* recoIndex.dtd in Resources */,
+				BECDD3B9190916D1003736EE /* xhtml-lat1.ent in Resources */,
+				BECDD3BA190916D1003736EE /* xhtml-special.ent in Resources */,
+				BECDD3BB190916D1003736EE /* xhtml-symbol.ent in Resources */,
+				BECDD3BC190916D1003736EE /* xhtml1-strict.dtd in Resources */,
+				BECDD3BD190916D1003736EE /* xhtml1-transitional.dtd in Resources */,
 				865C383D18F8BA2400ECB2BA /* InfoPlist.strings in Resources */,
 				8679941E190886C4002A1C0A /* Images.xcassets in Resources */,
 			);
@@ -1205,15 +1208,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BECDD3AD19091374003736EE /* enml2.dtd in Resources */,
-				BECDD3AE19091374003736EE /* evernote-export.dtd in Resources */,
-				BECDD3AF19091374003736EE /* promotions.dtd in Resources */,
-				BECDD3B019091374003736EE /* recoIndex.dtd in Resources */,
-				BECDD3B119091374003736EE /* xhtml-lat1.ent in Resources */,
-				BECDD3B219091374003736EE /* xhtml-special.ent in Resources */,
-				BECDD3B319091374003736EE /* xhtml-symbol.ent in Resources */,
-				BECDD3B419091374003736EE /* xhtml1-strict.dtd in Resources */,
-				BECDD3B519091374003736EE /* xhtml1-transitional.dtd in Resources */,
 				BECDD3851908FFC1003736EE /* Main_iPad.storyboard in Resources */,
 				BECDD38A1908FFC2003736EE /* Images.xcassets in Resources */,
 				BECDD3821908FFC1003736EE /* Main_iPhone.storyboard in Resources */,
