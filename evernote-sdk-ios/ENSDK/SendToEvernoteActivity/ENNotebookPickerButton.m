@@ -21,7 +21,7 @@
         // Initialization code
         self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         
-        UIImage *dislosureImage = [[UIImage imageNamed:@"ENNextIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage *dislosureImage = [[UIImage imageNamed:@"ENSDKResources.bundle/ENNextIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.discloureIndicator = [[UIImageView alloc] initWithImage:dislosureImage];
         [self.discloureIndicator setTintColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1]];
         
@@ -48,7 +48,7 @@
     if (_isBusinessNotebook == isBusinessNotebook) return;
     _isBusinessNotebook = isBusinessNotebook;
     if (_isBusinessNotebook) {
-        [self setImage:[[UIImage imageNamed:@"ENBusinessIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        [self setImage:[[UIImage imageNamed:@"ENSDKResources.bundle/ENBusinessIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     } else {
         [self setImage:nil forState:UIControlStateNormal];
     }

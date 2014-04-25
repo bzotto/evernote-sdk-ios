@@ -33,7 +33,7 @@
 
 - (UIImage *)activityImage
 {
-    return [UIImage imageNamed:@"ENActivityIcon"];
+    return [UIImage imageNamed:@"ENSDKResources.bundle/ENActivityIcon"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems

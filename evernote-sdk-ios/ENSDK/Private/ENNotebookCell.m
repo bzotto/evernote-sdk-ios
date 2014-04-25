@@ -25,7 +25,7 @@
         [self setSeparatorInset:UIEdgeInsetsMake(0.0, kCellInsetLeft, 0.0, 0.0)];
         self.checkButton = [[UIButton alloc] init];
         [self.contentView addSubview:self.checkButton];
-        [self.checkButton setImage:[[UIImage imageNamed:@"ENCheckIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        [self.checkButton setImage:[[UIImage imageNamed:@"ENSDKResources.bundle/ENCheckIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [self.checkButton sizeToFit];
         [self.checkButton setTintColor:[ENTheme defaultTintColor]];
         [self.checkButton setCenter:CGPointMake(0.6 * kCellInsetLeft, CGRectGetMidY(self.bounds) + 1.0)];
@@ -36,13 +36,13 @@
 }
 
 - (UIImageView *)businessImageAccessoryView {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ENBusinessIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ENSDKResources.bundle/ENBusinessIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     [imageView setTintColor:kIconTintColor];
     return imageView;
 }
 
 - (UIImageView *)sharedImageAccessoryView {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ENMultiplePeopleIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ENSDKResources.bundle/ENMultiplePeopleIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     [imageView setTintColor:kIconTintColor];
     return imageView;
 }

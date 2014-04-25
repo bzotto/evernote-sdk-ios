@@ -46,12 +46,12 @@
 
 #pragma mark - UITableView
 
-- (int)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
 
-- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([[ENSession sharedSession] isAuthenticated]) {
         return 4; // Unauthenticate, user info, try activity, photo note

@@ -6,20 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		860DF4A518FDE22D002B4793 /* ENSDKUniversal */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 860DF4A618FDE22E002B4793 /* Build configuration list for PBXAggregateTarget "ENSDKUniversal" */;
-			buildPhases = (
-				860DF4A918FDE255002B4793 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = ENSDKUniversal;
-			productName = ENSDKUniversal;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		0BB3D1B11524ED96001C4534 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB3D1B01524ED96001C4534 /* Foundation.framework */; };
 		0BF0CF85152E2601003D6115 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF0CF84152E2601003D6115 /* Security.framework */; };
@@ -100,7 +86,6 @@
 		866F1C721905F01F0072F4C8 /* ENNotebookCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 866F1C701905F01F0072F4C8 /* ENNotebookCell.h */; };
 		866F1C741905F01F0072F4C8 /* ENNotebookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 866F1C711905F01F0072F4C8 /* ENNotebookCell.m */; };
 		866F1C751905F01F0072F4C8 /* ENNotebookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 866F1C711905F01F0072F4C8 /* ENNotebookCell.m */; };
-		8679941E190886C4002A1C0A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8679941D190886C4002A1C0A /* Images.xcassets */; };
 		86B198571901DB0A008F606A /* ENNotebookPickerButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 86B198551901DB0A008F606A /* ENNotebookPickerButton.h */; };
 		86B198591901DB0A008F606A /* ENNotebookPickerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 86B198561901DB0A008F606A /* ENNotebookPickerButton.m */; };
 		86B1985A1901DB0A008F606A /* ENNotebookPickerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 86B198561901DB0A008F606A /* ENNotebookPickerButton.m */; };
@@ -110,6 +95,8 @@
 		86CB761B18FF4554002F267E /* ENTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 86CB761918FF4554002F267E /* ENTheme.h */; };
 		86CB761D18FF4554002F267E /* ENTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CB761A18FF4554002F267E /* ENTheme.m */; };
 		86CB761E18FF4554002F267E /* ENTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CB761A18FF4554002F267E /* ENTheme.m */; };
+		86F2D7FB1909ECD300C0AA7F /* libevernote-sdk-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB3D1AD1524ED96001C4534 /* libevernote-sdk-ios.a */; };
+		86F2D7FD1909EDAA00C0AA7F /* ENSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */; };
 		BE2E245F18EBA5D500BD7E6E /* EDAM.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23BF18EBA5D400BD7E6E /* EDAM.h */; };
 		BE2E246018EBA5D500BD7E6E /* EDAMErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23C018EBA5D400BD7E6E /* EDAMErrors.h */; };
 		BE2E246118EBA5D500BD7E6E /* EDAMErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E23C118EBA5D400BD7E6E /* EDAMErrors.m */; };
@@ -292,7 +279,6 @@
 		BECDD38A1908FFC2003736EE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BECDD3891908FFC2003736EE /* Images.xcassets */; };
 		BECDD3A31908FFE8003736EE /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2E25B018EDE1C100BD7E6E /* MobileCoreServices.framework */; };
 		BECDD3A41908FFF9003736EE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF0CF84152E2601003D6115 /* Security.framework */; };
-		BECDD3A51909000D003736EE /* ENSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8679941B190867F9002A1C0A /* ENSDK.framework */; };
 		BECDD3A61909009B003736EE /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A9BE476B1781FAFA00471BF7 /* libxml2.dylib */; };
 		BECDD3A9190908A9003736EE /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD3A8190908A9003736EE /* UserInfoViewController.m */; };
 		BECDD3AC19090FBA003736EE /* SaveActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD3AB19090FBA003736EE /* SaveActivityViewController.m */; };
@@ -349,14 +335,13 @@
 		865C383C18F8BA2400ECB2BA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		866F1C701905F01F0072F4C8 /* ENNotebookCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNotebookCell.h; sourceTree = "<group>"; };
 		866F1C711905F01F0072F4C8 /* ENNotebookCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENNotebookCell.m; sourceTree = "<group>"; };
-		8679941B190867F9002A1C0A /* ENSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ENSDK.framework; path = Products/ENSDK.framework; sourceTree = "<group>"; };
-		8679941D190886C4002A1C0A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		86B198551901DB0A008F606A /* ENNotebookPickerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNotebookPickerButton.h; sourceTree = "<group>"; };
 		86B198561901DB0A008F606A /* ENNotebookPickerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENNotebookPickerButton.m; sourceTree = "<group>"; };
 		86CB761218FF33D4002F267E /* ENSaveToEvernoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENSaveToEvernoteViewController.h; sourceTree = "<group>"; };
 		86CB761318FF33D4002F267E /* ENSaveToEvernoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENSaveToEvernoteViewController.m; sourceTree = "<group>"; };
 		86CB761918FF4554002F267E /* ENTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENTheme.h; sourceTree = "<group>"; };
 		86CB761A18FF4554002F267E /* ENTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENTheme.m; sourceTree = "<group>"; };
+		86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ENSDKResources.bundle; sourceTree = SOURCE_ROOT; };
 		A9BE476B1781FAFA00471BF7 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		BE2E23BF18EBA5D400BD7E6E /* EDAM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDAM.h; sourceTree = "<group>"; };
 		BE2E23C018EBA5D400BD7E6E /* EDAMErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDAMErrors.h; sourceTree = "<group>"; };
@@ -552,8 +537,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86F2D7FB1909ECD300C0AA7F /* libevernote-sdk-ios.a in Frameworks */,
 				BECDD3A61909009B003736EE /* libxml2.dylib in Frameworks */,
-				BECDD3A51909000D003736EE /* ENSDK.framework in Frameworks */,
 				BECDD3721908FFC1003736EE /* CoreGraphics.framework in Frameworks */,
 				BECDD3A41908FFF9003736EE /* Security.framework in Frameworks */,
 				BECDD3A31908FFE8003736EE /* MobileCoreServices.framework in Frameworks */,
@@ -592,7 +577,6 @@
 		0BB3D1AF1524ED96001C4534 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8679941B190867F9002A1C0A /* ENSDK.framework */,
 				BE2E25B018EDE1C100BD7E6E /* MobileCoreServices.framework */,
 				A9BE476B1781FAFA00471BF7 /* libxml2.dylib */,
 				0BF0CF84152E2601003D6115 /* Security.framework */,
@@ -672,7 +656,7 @@
 				BE2E23BD18EBA5D400BD7E6E /* Advanced */,
 				BE2E23F818EBA5D500BD7E6E /* Private */,
 				BE2E245918EBA5D500BD7E6E /* SendToEvernoteActivity */,
-				8679941D190886C4002A1C0A /* Images.xcassets */,
+				86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */,
 			);
 			path = ENSDK;
 			sourceTree = "<group>";
@@ -1188,7 +1172,6 @@
 			targets = (
 				0BB3D1AC1524ED96001C4534 /* evernote-sdk-ios */,
 				865C383018F8BA2400ECB2BA /* ENSDK */,
-				860DF4A518FDE22D002B4793 /* ENSDKUniversal */,
 				BECDD36F1908FFC1003736EE /* EvernoteSDKSample */,
 			);
 		};
@@ -1208,7 +1191,6 @@
 				BECDD3BC190916D1003736EE /* xhtml1-strict.dtd in Resources */,
 				BECDD3BD190916D1003736EE /* xhtml1-transitional.dtd in Resources */,
 				865C383D18F8BA2400ECB2BA /* InfoPlist.strings in Resources */,
-				8679941E190886C4002A1C0A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1218,6 +1200,7 @@
 			files = (
 				BECDD3BE19091B56003736EE /* enml2.dtd in Resources */,
 				BECDD3BF19091B56003736EE /* evernote-export.dtd in Resources */,
+				86F2D7FD1909EDAA00C0AA7F /* ENSDKResources.bundle in Resources */,
 				BECDD3C019091B56003736EE /* recoIndex.dtd in Resources */,
 				BECDD3C119091B56003736EE /* xhtml-lat1.ent in Resources */,
 				BECDD3C219091B56003736EE /* xhtml-special.ent in Resources */,
@@ -1247,19 +1230,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "KEYWORDS=\"TODO:|FIXME:|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" -ipath \"${SRCROOT}/pods\" -prune -o \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"\n";
-		};
-		860DF4A918FDE255002B4793 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Sets the target folders and the final framework product.\nFMK_NAME=ENSDK\nFMK_VERSION=A\n\n# Install dir will be the final output to the framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/Products/${FMK_NAME}.framework\n\n# Working dir will be deleted after the framework creation.\nWRK_DIR=build\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos/${FMK_NAME}.framework\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator/${FMK_NAME}.framework\n\n# Building both architectures.\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator\n\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]\nthen\nrm -rf \"${INSTALL_DIR}\"\nfi\n\n# Creates and renews the final product folder.\nmkdir -p \"${INSTALL_DIR}\"\nmkdir -p \"${INSTALL_DIR}/Versions\"\nmkdir -p \"${INSTALL_DIR}/Versions/${FMK_VERSION}\"\nmkdir -p \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources\"\nmkdir -p \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers\"\n\n# Creates the internal links.\n# It MUST uses relative path, otherwise will not work when the folder is copied/moved.\nln -s \"${FMK_VERSION}\" \"${INSTALL_DIR}/Versions/Current\"\nln -s \"Versions/Current/Headers\" \"${INSTALL_DIR}/Headers\"\nln -s \"Versions/Current/Resources\" \"${INSTALL_DIR}/Resources\"\nln -s \"Versions/Current/${FMK_NAME}\" \"${INSTALL_DIR}/${FMK_NAME}\"\n\n# Copies the headers and resources files to the final product folder.\ncp -R \"${DEVICE_DIR}/Headers/\" \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers/\"\ncp -R \"${DEVICE_DIR}/\" \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/\"\n\n# Removes the binary and header from the resources folder.\nrm -r \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/Headers\" \"${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/${FMK_NAME}\"\n\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\nlipo -create \"${DEVICE_DIR}/${FMK_NAME}\" \"${SIMULATOR_DIR}/${FMK_NAME}\" -output \"${INSTALL_DIR}/Versions/${FMK_VERSION}/${FMK_NAME}\"\n\nrm -r \"${WRK_DIR}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1573,20 +1543,6 @@
 			};
 			name = Release;
 		};
-		860DF4A718FDE22E002B4793 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		860DF4A818FDE22E002B4793 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		865C383F18F8BA2400ECB2BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1701,6 +1657,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "EvernoteSDKSample/EvernoteSDKSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -1730,6 +1687,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "EvernoteSDKSample/EvernoteSDKSample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -1757,15 +1715,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		860DF4A618FDE22E002B4793 /* Build configuration list for PBXAggregateTarget "ENSDKUniversal" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				860DF4A718FDE22E002B4793 /* Debug */,
-				860DF4A818FDE22E002B4793 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		865C384118F8BA2400ECB2BA /* Build configuration list for PBXNativeTarget "ENSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1782,6 +1731,7 @@
 				BECDD39E1908FFC2003736EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
