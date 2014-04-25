@@ -266,8 +266,6 @@
 		BECDD3791908FFC1003736EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BECDD3771908FFC1003736EE /* InfoPlist.strings */; };
 		BECDD37B1908FFC1003736EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD37A1908FFC1003736EE /* main.m */; };
 		BECDD37F1908FFC1003736EE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD37E1908FFC1003736EE /* AppDelegate.m */; };
-		BECDD3821908FFC1003736EE /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BECDD3801908FFC1003736EE /* Main_iPhone.storyboard */; };
-		BECDD3851908FFC1003736EE /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BECDD3831908FFC1003736EE /* Main_iPad.storyboard */; };
 		BECDD3881908FFC2003736EE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD3871908FFC2003736EE /* ViewController.m */; };
 		BECDD38A1908FFC2003736EE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BECDD3891908FFC2003736EE /* Images.xcassets */; };
 		BECDD3A31908FFE8003736EE /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2E25B018EDE1C100BD7E6E /* MobileCoreServices.framework */; };
@@ -468,8 +466,6 @@
 		BECDD37C1908FFC1003736EE /* EvernoteSDKSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EvernoteSDKSample-Prefix.pch"; sourceTree = "<group>"; };
 		BECDD37D1908FFC1003736EE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BECDD37E1908FFC1003736EE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BECDD3811908FFC1003736EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		BECDD3841908FFC1003736EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		BECDD3861908FFC1003736EE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		BECDD3871908FFC2003736EE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		BECDD3891908FFC2003736EE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -886,8 +882,6 @@
 			children = (
 				BECDD37D1908FFC1003736EE /* AppDelegate.h */,
 				BECDD37E1908FFC1003736EE /* AppDelegate.m */,
-				BECDD3801908FFC1003736EE /* Main_iPhone.storyboard */,
-				BECDD3831908FFC1003736EE /* Main_iPad.storyboard */,
 				BECDD3861908FFC1003736EE /* ViewController.h */,
 				BECDD3871908FFC2003736EE /* ViewController.m */,
 				BECDD3A7190908A9003736EE /* UserInfoViewController.h */,
@@ -1143,9 +1137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86F2D7FD1909EDAA00C0AA7F /* ENSDKResources.bundle in Resources */,
-				BECDD3851908FFC1003736EE /* Main_iPad.storyboard in Resources */,
 				BECDD38A1908FFC2003736EE /* Images.xcassets in Resources */,
-				BECDD3821908FFC1003736EE /* Main_iPhone.storyboard in Resources */,
 				BECDD3791908FFC1003736EE /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1349,22 +1341,6 @@
 				BECDD3781908FFC1003736EE /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		BECDD3801908FFC1003736EE /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BECDD3811908FFC1003736EE /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		BECDD3831908FFC1003736EE /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BECDD3841908FFC1003736EE /* Base */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

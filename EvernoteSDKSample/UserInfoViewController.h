@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UserInfoViewController : UIViewController
-@property (nonatomic, strong) IBOutlet UITextView * textView;
+@property (nonatomic, strong) UITextView * textView;
 @end

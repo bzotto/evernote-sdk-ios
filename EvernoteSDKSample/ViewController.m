@@ -8,12 +8,22 @@
 
 #import "ViewController.h"
 #import <ENSDK/ENSDK.h>
+#import "UserInfoViewController.h"
+#import "SaveActivityViewController.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
 
 @implementation ViewController
+
+- (void)loadView {
+    [super loadView];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
+    [self.tableView setDelegate:self];
+    [self.tableView setDataSource:self];
+    [self.view addSubview:self.tableView];
+}
 
 - (void)viewDidLoad
 {
@@ -31,17 +41,6 @@
     } else {
         [self.navigationItem setTitle:nil];
     }
-}
-
-- (UIViewController *)viewControllerFromStoryboardWithIdentifier:(NSString *)identifier
-{
-    UIStoryboard *storyboard = nil;
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
-    } else {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
-    }
-    return [storyboard instantiateViewControllerWithIdentifier:identifier];
 }
 
 #pragma mark - UITableView
@@ -102,10 +101,10 @@
             }];
         }
     } else if (indexPath.row == 1) {
-        UIViewController * vc = [self viewControllerFromStoryboardWithIdentifier:@"UserInfo"];
+        UIViewController * vc = [[UserInfoViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (indexPath.row == 2) {
-        UIViewController * vc = [self viewControllerFromStoryboardWithIdentifier:@"SaveActivity"];
+        UIViewController * vc = [[SaveActivityViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (indexPath.row == 3) {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {

@@ -15,6 +15,13 @@
 
 @implementation SaveActivityViewController
 
+- (void)loadView {
+    [super loadView];
+    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+    [self.textView setText:@"This text will become the body of the note."];
+    [self.view addSubview:self.textView];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

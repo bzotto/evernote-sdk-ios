@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <ENSDK/ENSDK.h>
+#import "ViewController.h"
 
 @implementation AppDelegate
 
@@ -17,6 +18,14 @@
     [ENSession setSharedSessionConsumerKey:@"your key"
                             consumerSecret:@"your secret"
                               optionalHost:ENSessionHostSandbox];
+    
+    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:
+                   [[UIScreen mainScreen] bounds]];
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
+    self.window.rootViewController = navController;
+    [self.window makeKeyAndVisible];
 
     return YES;
 }

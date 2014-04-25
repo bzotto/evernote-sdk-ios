@@ -15,6 +15,12 @@
 
 @implementation UserInfoViewController
 
+- (void)loadView {
+    [super loadView];
+    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:self.textView];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
