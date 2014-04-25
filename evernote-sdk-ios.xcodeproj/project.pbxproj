@@ -97,6 +97,7 @@
 		86CB761E18FF4554002F267E /* ENTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CB761A18FF4554002F267E /* ENTheme.m */; };
 		86F2D7FB1909ECD300C0AA7F /* libevernote-sdk-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB3D1AD1524ED96001C4534 /* libevernote-sdk-ios.a */; };
 		86F2D7FD1909EDAA00C0AA7F /* ENSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */; };
+		86F2D802190A348F00C0AA7F /* ENSDKResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD3C7190A2DE7003736EE /* ENSDKResourceLoader.m */; };
 		BE2E245F18EBA5D500BD7E6E /* EDAM.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23BF18EBA5D400BD7E6E /* EDAM.h */; };
 		BE2E246018EBA5D500BD7E6E /* EDAMErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23C018EBA5D400BD7E6E /* EDAMErrors.h */; };
 		BE2E246118EBA5D500BD7E6E /* EDAMErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E23C118EBA5D400BD7E6E /* EDAMErrors.m */; };
@@ -1272,6 +1273,7 @@
 				860DF48C18FDDE61002B4793 /* ENGCOAuth.m in Sources */,
 				860DF48D18FDDE61002B4793 /* NSData+ENBase64.m in Sources */,
 				860DF48A18FDDE33002B4793 /* SSKeychain.m in Sources */,
+				86F2D802190A348F00C0AA7F /* ENSDKResourceLoader.m in Sources */,
 				86CB761E18FF4554002F267E /* ENTheme.m in Sources */,
 				860DF48518FDDDC4002B4793 /* KSForwardingWriter.m in Sources */,
 				866F1C751905F01F0072F4C8 /* ENNotebookCell.m in Sources */,
