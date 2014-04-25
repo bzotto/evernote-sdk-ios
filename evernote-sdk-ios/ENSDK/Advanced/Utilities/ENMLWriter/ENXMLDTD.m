@@ -29,6 +29,7 @@
 
 #import "ENXMLDTD.h"
 #import "ENXMLUtils.h"
+#import "ENSDKResourceLoader.h"
 #import <libxml/parserInternals.h>
 #import <libxml/tree.h>
 
@@ -45,9 +46,7 @@ static xmlParserInputPtr	enxmlExternalEntityLoader	(const char * URL,
     if (path != nil) {
       NSString *filename = [path lastPathComponent];
       if (filename != nil) {
-        // Can't use mainBundle for unit test purposes...
-        NSString *bundledFile = [[NSBundle bundleForClass:[ENXMLDTD class]] pathForResource:filename
-                                                                                        ofType:nil];
+        NSString *bundledFile = [ENSDKResourceLoader pathToResourceNamed:filename extension:nil];
         if (bundledFile != nil) {
           ret = xmlNewInputFromFile(context, [bundledFile fileSystemRepresentation]);
         }
@@ -79,8 +78,8 @@ static xmlParserInputPtr	enxmlExternalEntityLoader	(const char * URL,
 }
 
 + (ENXMLDTD *) dtdWithBundleResource:(NSString *)resource ofType:(NSString *)type {
-  // Can't use mainBundle for unit test purposes...
-  NSString *dtdFilePath = [[NSBundle bundleForClass:[self class]] pathForResource:resource ofType:type];
+  
+  NSString *dtdFilePath = [ENSDKResourceLoader pathToResourceNamed:resource extension:type];
   
   ENXMLDTD *dtd = [[ENXMLDTD alloc] initWithContentsOfFile:dtdFilePath];
   return dtd;
