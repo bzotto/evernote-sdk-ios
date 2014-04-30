@@ -11,8 +11,18 @@
 #import "UserInfoViewController.h"
 #import "SaveActivityViewController.h"
 
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+NS_ENUM(NSInteger, SampleFunctions) {
+    kSampleFunctionsUnauthenticate,
+    kSampleFunctionsUserInfo,
+    kSampleFunctionsSaveActivity,
+    kSampleFunctionsCreatePhotoNote,
+    kSampleFunctionsClipWebPage,
+    
+    kSampleFunctionsMaxValue
+};
 
+@interface ViewController () <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIWebViewDelegate>
+@property (nonatomic, strong) UIWebView * webView;
 @end
 
 @implementation ViewController
@@ -43,6 +53,16 @@
     }
 }
 
+- (void)showSimpleAlertWithMessage:(NSString *)message
+{
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil
+                                                     message:message
+                                                    delegate:nil
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:@"OK", nil];
+    [alert show];
+}
+
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -53,7 +73,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([[ENSession sharedSession] isAuthenticated]) {
-        return 4; // Unauthenticate, user info, try activity, photo note
+        return kSampleFunctionsMaxValue;
     } else {
         return 1; // Authenticate
     }
@@ -62,59 +82,123 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    if (indexPath.row == 0) {
-        if ([[ENSession sharedSession] isAuthenticated]) {
-            cell.textLabel.text = @"Unauthenticate";
-        } else {
-            cell.textLabel.text = @"Authenticate";
-        }
-    } else if (indexPath.row == 1) {
-        cell.textLabel.text = @"User info";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else if (indexPath.row == 2) {
-        cell.textLabel.text = @"Save Activity";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else if (indexPath.row == 3) {
-        cell.textLabel.text = @"Create photo note";
+    switch (indexPath.row) {
+        case kSampleFunctionsUnauthenticate:
+            if ([[ENSession sharedSession] isAuthenticated]) {
+                cell.textLabel.text = @"Unauthenticate";
+            } else {
+                cell.textLabel.text = @"Authenticate";
+            }
+            break;
+            
+        case kSampleFunctionsUserInfo:
+            cell.textLabel.text = @"User info";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+            
+        case kSampleFunctionsSaveActivity:
+            cell.textLabel.text = @"Save Activity";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+            
+        case kSampleFunctionsCreatePhotoNote:
+            cell.textLabel.text = @"Create photo note";
+            break;
+            
+        case kSampleFunctionsClipWebPage:
+            cell.textLabel.text = @"Clip web page";
+            break;
+            
+        default:
+            ;
     }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        if ([[ENSession sharedSession] isAuthenticated]) {
-            [[ENSession sharedSession] unauthenticate];
-            [self update];
-        } else {
-            [[ENSession sharedSession] authenticateWithViewController:self completion:^(NSError *authenticateError) {
-                   if (!authenticateError) {
-                       [self update];
-                   } else if (authenticateError.code != ENErrorCodeCancelled) {
-                       UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                        message:@"Could not authenticate"
-                                                                       delegate:nil
-                                                              cancelButtonTitle:nil
-                                                              otherButtonTitles:@"OK", nil];
-                       [alert show];
-                   }
-            }];
+    switch (indexPath.row) {
+        case kSampleFunctionsUnauthenticate:
+            if ([[ENSession sharedSession] isAuthenticated]) {
+                [[ENSession sharedSession] unauthenticate];
+                [self update];
+            } else {
+                [[ENSession sharedSession] authenticateWithViewController:self completion:^(NSError *authenticateError) {
+                    if (!authenticateError) {
+                        [self update];
+                    } else if (authenticateError.code != ENErrorCodeCancelled) {
+                        [self showSimpleAlertWithMessage:@"Could not authenticate."];
+                    }
+                }];
+            }
+            break;
+            
+        case kSampleFunctionsUserInfo:
+        {
+            UIViewController * vc = [[UserInfoViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
         }
-    } else if (indexPath.row == 1) {
-        UIViewController * vc = [[UserInfoViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    } else if (indexPath.row == 2) {
-        UIViewController * vc = [[SaveActivityViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    } else if (indexPath.row == 3) {
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-            UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            picker.delegate = self;
-            [self presentViewController:picker animated:YES completion:nil];
+        case kSampleFunctionsSaveActivity:
+        {
+            UIViewController * vc = [[SaveActivityViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
         }
+        case kSampleFunctionsCreatePhotoNote:
+        {
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+                UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+                picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                picker.delegate = self;
+                [self presentViewController:picker animated:YES completion:nil];
+            }
+            break;
+        }
+        case kSampleFunctionsClipWebPage:
+        {
+            self.webView = [[UIWebView alloc] initWithFrame:self.view.window.bounds];
+            self.webView.delegate = self;
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://dev.evernote.com"]]];
+            break;
+        }
+        default:
+            ;
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    NSLog(@"Web view fail: %@", error);
+    [self showSimpleAlertWithMessage:@"Failed to load web page to clip."];
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    ;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [ENNote populateNoteFromWebView:self.webView completion:^(ENNote * note) {
+        if (!note) {
+            return;
+        }
+        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+        [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+            NSString * message = nil;
+            if (noteRef) {
+                message = @"Web note created.";
+            } else {
+                message = @"Failed to create web note.";
+            }
+            [self showSimpleAlertWithMessage:message];
+        }];
+    }];
 }
 
 #pragma mark - UIImagePickerController
@@ -136,12 +220,7 @@
         } else {
             message = @"Failed to create photo note.";
         }
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil
-                                                         message:message
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil];
-        [alert show];
+        [self showSimpleAlertWithMessage:message];
     }];
     
     [picker dismissViewControllerAnimated:YES completion:nil];

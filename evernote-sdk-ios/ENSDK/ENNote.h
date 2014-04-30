@@ -10,6 +10,7 @@
 #import "Availability.h"
 @class ENResource;
 @class ENNotebook;
+@class UIWebView;
 
 @interface ENNote : NSObject
 @property (nonatomic, copy) NSString * title;
@@ -19,4 +20,6 @@
 @property (nonatomic, assign) BOOL isReminder;
 - (NSArray *)resources;
 - (void)addResource:(ENResource *)resource;
+
++ (void)populateNoteFromWebView:(UIWebView *)url completion:(void (^)(ENNote *))completion;
 @end

@@ -8,6 +8,7 @@
 
 #import "ENSDKPrivate.h"
 #import "NSString+ENScrubbing.h"
+#import "ENWebClipNoteBuilder.h"
 
 #pragma mark - ENNote
 
@@ -70,6 +71,40 @@
             [_resources addObject:resource];
         }
     }
+}
+
++ (void)populateNoteFromWebView:(UIWebView *)webView completion:(void (^)(ENNote *))completion
+{
+    if (!completion) {
+        ENSDKLogError(@"+populateNoteFromWebView requires a valid completion block");
+        return;
+    }
+    if (!webView) {
+        ENSDKLogError(@"+populateNoteFromWebView requires a valid webview");
+        completion(nil);
+        return;
+    }
+    
+    ENWebClipNoteBuilder * builder = [[ENWebClipNoteBuilder alloc] initWithWebView:webView];
+    [builder buildNote:^(EDAMNote * note) {
+        if (note) {
+            //XXX: This is NOT the most efficient way to do this. The clip note builder should be amended
+            // to spit out the ENNote directly rather than indirecting through an EDAMNote.
+            ENNote * result = [[ENNote alloc] init];
+            result.content = [ENNoteContent noteContentWithENML:note.content];
+            result.title = note.title;
+            for (EDAMResource * resource in note.resources) {
+                ENResource * resultResource = [[ENResource alloc] initWithData:resource.data.body
+                                                                      mimeType:resource.mime
+                                                                      filename:resource.attributes.fileName];
+                [result addResource:resultResource];
+            }
+            
+            completion(result);
+        } else {
+            completion(nil);
+        }
+    }];
 }
 
 #pragma mark - Protected methods
