@@ -10,10 +10,8 @@
 #import "NSData+EvernoteSDK.h"
 
 @interface ENResource ()
+@property (nonatomic, copy) NSString * sourceUrl;
 @property (nonatomic, strong) NSString * guid;
-@property (nonatomic, strong) NSData * data;
-@property (nonatomic, copy) NSString * mimeType;
-@property (nonatomic, copy) NSString * filename;
 @property (nonatomic, strong) NSData * dataHash;
 @end
 
@@ -52,19 +50,15 @@
     }
 }
 
-- (NSData *)data
+- (void)setData:(NSData *)data
 {
-    return _data;
-}
+    if (data && data.length >= INT32_MAX) {
+        ENSDKLogError(@"Data length for resource is greater than int32.");
+        data = nil;
+    }
 
-- (NSString *)mimeType
-{
-    return _mimeType;
-}
-
-- (NSString *)filename
-{
-    return _filename;
+    self.dataHash = nil;
+    _data = data;
 }
 
 - (NSData *)dataHash
@@ -78,17 +72,25 @@
 
 - (EDAMResource *)EDAMResource
 {
+    if (!self.data) {
+        return nil;
+    }
+    
     EDAMResource * resource = [[EDAMResource alloc] init];
     resource.guid = self.guid;
     if (!resource.guid && self.data) {
         resource.data = [[EDAMData alloc] initWithBodyHash:self.dataHash size:(int32_t)self.data.length body:self.data];
     }
     resource.mime = self.mimeType;
+    EDAMResourceAttributes * attributes = [[EDAMResourceAttributes alloc] init];
     if (self.filename) {
-        EDAMResourceAttributes * attributes = [[EDAMResourceAttributes alloc] init];
         attributes.fileName = self.filename;
-        resource.attributes = attributes;
     }
+    if (self.sourceUrl) {
+        attributes.sourceURL = self.sourceUrl;
+    }
+    resource.attributes = attributes;
+
     return resource;
 }
 @end

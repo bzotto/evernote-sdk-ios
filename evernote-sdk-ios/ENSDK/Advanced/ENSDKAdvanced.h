@@ -44,11 +44,16 @@
 - (ENNoteStoreClient *)noteStoreForLinkedNotebook:(EDAMLinkedNotebook *)linkedNotebook;
 @end
 
+@interface ENNote (Advanced)
+@property (nonatomic, copy) NSString * sourceUrl;
+@end
+
 @interface ENNoteContent (Advanced)
 + (instancetype)noteContentWithENML:(NSString *)enml;
 - (id)initWithENML:(NSString *)enml;
 @end
 
 @interface ENResource (Advanced)
+@property (nonatomic, copy) NSString * sourceUrl;
 - (NSData *)dataHash;
 @end

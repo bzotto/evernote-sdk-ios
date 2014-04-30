@@ -10,11 +10,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ENResource : NSObject
+@property (nonatomic, strong) NSData * data;
+@property (nonatomic, copy) NSString * mimeType;
+@property (nonatomic, copy) NSString * filename;
 - (id)initWithData:(NSData *)data mimeType:(NSString *)mimeType filename:(NSString *)filename;
 - (id)initWithData:(NSData *)data mimeType:(NSString *)mimeType;
 - (id)initWithImage:(UIImage *)image;
-
-- (NSData *)data;
-- (NSString *)mimeType;
-- (NSString *)filename;
 @end

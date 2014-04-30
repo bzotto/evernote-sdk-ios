@@ -7,6 +7,7 @@
 //
 
 #import "ENWebClipNoteBuilder.h"
+#import "ENSDKPrivate.h"
 
 #import "ENMLConstants.h"
 #import "ENWebContentTransformer.h"
@@ -18,7 +19,7 @@
 @property (strong, nonatomic) UIWebView *webView;
 @property (strong, nonatomic) NSURL *url;
 
-@property (copy, nonatomic) void (^completion)(EDAMNote *);
+@property (copy, nonatomic) void (^completion)(ENNote *);
 
 @end
 
@@ -42,7 +43,7 @@
     return self;
 }
 
-- (void)buildNote:(void (^)(EDAMNote *))completion {
+- (void)buildNote:(void (^)(ENNote *))completion {
   self.completion = completion;
   UIWebView *webView = self.webView;
   NSURL *url = self.url;
@@ -109,17 +110,17 @@
                                }
                              }
                              
-                             [self completeWithEDAMNote:nil];
+                             [self completeWithNote:nil];
                            }];
     return;
   }
   
-  [self completeWithEDAMNote:nil];
+  [self completeWithNote:nil];
 }
 
 #pragma mark -
 #pragma mark 
-- (void) completeWithEDAMNote:(EDAMNote *)note {
+- (void) completeWithNote:(ENNote *)note {
   if (note == nil) {
     self.completion(nil);
   }
@@ -187,9 +188,9 @@
     transformer.baseURL = url;
     transformer.mimeType = mimeType;
     
-    EDAMNote *note = [transformer transformedValue:contents];
+    ENNote *note = [transformer transformedValue:contents];
     dispatch_async(dispatch_get_main_queue(), ^{
-      [self completeWithEDAMNote:note];
+      [self completeWithNote:note];
     });
   });
 }

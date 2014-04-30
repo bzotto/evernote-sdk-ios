@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class EDAMNote;
+@class ENNote;
 
 @interface ENWebClipNoteBuilder : NSObject
 - (id)initWithUrl:(NSURL *)url;
 - (id)initWithWebView:(UIWebView *)webView;
-- (void)buildNote:(void(^)(EDAMNote *))completion;
+- (void)buildNote:(void(^)(ENNote *))completion;
 @end

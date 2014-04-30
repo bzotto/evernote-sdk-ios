@@ -7,8 +7,7 @@
 //
 
 #import "ENWebContentTransformer.h"
-
-#import "EDAMTypes.h"
+#import "ENSDKPrivate.h"
 #import "ENMLConstants.h"
 
 #import "ENMIMEUtils.h"
@@ -27,7 +26,7 @@
 @property (strong, nonatomic) NSURL *archiveBaseURL;
 
 @property (strong, nonatomic) ENWebArchive *webArchive;
-@property (strong, nonatomic) EDAMNote *note;
+@property (strong, nonatomic) ENNote *note;
 
 @property (strong, nonatomic) NSArray *ignorableTags;
 @property (strong, nonatomic) NSArray *ignorableAttributes;
@@ -46,7 +45,7 @@
 }
 
 + (Class)transformedValueClass {
-  return [EDAMNote class];
+  return [ENNote class];
 }
 
 - (id) init {
@@ -61,7 +60,7 @@
 }
 
 - (id)transformedValue:(id)value {
-  EDAMNote *note = [[EDAMNote alloc] init];
+  ENNote *note = [[ENNote alloc] init];
   self.note = note;
 
   ENMLWriter *enmlWriter = [[ENMLWriter alloc] init];
@@ -90,25 +89,21 @@
     [parser parseContents:html];
   }
   else if ([value isKindOfClass:[NSData class]] == YES) {
-    EDAMResourceAttributes *attributes = [[EDAMResourceAttributes alloc] init];
-    attributes.attachment = YES;
-    attributes.sourceURL = [self.baseURL absoluteString];
-    attributes.fileName = [self filenameFromURL:self.baseURL];
-    
-    EDAMResource *resource = [[EDAMResource alloc] init];
-    resource.attributes = attributes;
-    resource.data = [self edamDataFromData:value];
+    ENResource *resource = [[ENResource alloc] init];
+    resource.sourceUrl = [self.baseURL absoluteString];
+    resource.filename = [self filenameFromURL:self.baseURL];
+    resource.data = value;
     
     NSString *mimeType = self.mimeType;
     if (mimeType == nil) {
-      mimeType = [self mimeTypeFromFilename:attributes.fileName];
+      mimeType = [self mimeTypeFromFilename:resource.filename];
     }
-    resource.mime = mimeType;
+    resource.mimeType = mimeType;
 
-    [self addResourceToNote:resource];
+    [self.note addResource:resource];
 
-    [enmlWriter writeResourceWithDataHash:resource.data.bodyHash
-                                     mime:resource.mime
+    [enmlWriter writeResourceWithDataHash:resource.dataHash
+                                     mime:resource.mimeType
                                attributes:nil];
   }
   else {
@@ -116,16 +111,12 @@
   }
 
   [enmlWriter endDocument];
-  note.content = enmlWriter.contents;
-
-  EDAMNoteAttributes *noteAttrs = [[EDAMNoteAttributes alloc] init];
-  noteAttrs.sourceURL = [self.baseURL absoluteString];
-  noteAttrs.source = @"web.clip";
-  note.attributes = noteAttrs;
+  note.content = [[ENNoteContent alloc] initWithENML:enmlWriter.contents];
+  note.sourceUrl = [self.baseURL absoluteString];
   
   NSString *title = self.title;
   if (title == nil) {
-    title = noteAttrs.sourceURL;
+    title = note.sourceUrl;
   }
   if (title == nil) {
     title = NSLocalizedString(@"Untitled", @"Untitled");
@@ -223,42 +214,25 @@
   return mimeType;
 }
 
-- (EDAMData *) edamDataFromData:(NSData *)data {
-  EDAMData *edamData = [[EDAMData alloc] init];
-  edamData.body = data;
-  edamData.bodyHash = [data enmd5];
-  return edamData;
-}
-
-- (EDAMResource *) edamResourceFromWebResource:(ENWebResource *)webResource {
+- (ENResource *) resourceFromWebResource:(ENWebResource *)webResource {
   NSData *rsrcData = webResource.data;
   if (rsrcData == nil || [rsrcData length] == 0) {
     return nil;
   }
   
-  EDAMResourceAttributes *attributes = [[EDAMResourceAttributes alloc] init];
-
+  ENResource *resource = [[ENResource alloc] init];
   NSURL *resourceUrl = webResource.URL;
-  attributes.sourceURL = [resourceUrl absoluteString];
-  attributes.fileName = [self filenameFromURL:resourceUrl];
-  
-  EDAMResource *resource = [[EDAMResource alloc] init];
-  resource.attributes = attributes;
-  resource.data = [self edamDataFromData:rsrcData];
+  resource.sourceUrl = [resourceUrl absoluteString];
+  resource.filename = [self filenameFromURL:resourceUrl];
+  resource.data = rsrcData;
   
   NSString *mimeType = webResource.MIMEType;
   if (mimeType == nil || [mimeType length] == 0) {
-    mimeType = [self mimeTypeFromFilename:attributes.fileName];
+    mimeType = [self mimeTypeFromFilename:resource.filename];
   }
-  resource.mime = mimeType;
+  resource.mimeType = mimeType;
 
   return resource;
-}
-
-- (void) addResourceToNote:(EDAMResource *)resource {
-  NSMutableArray *resources = [NSMutableArray arrayWithArray:self.note.resources];
-  [resources addObject:resource];
-  self.note.resources = resources;
 }
 
 #pragma mark -
@@ -309,13 +283,13 @@
 
     for (ENWebResource *aResource in self.webArchive.subresources) {
       if ([[[aResource URL] absoluteString] isEqualToString:[sanitizedURL absoluteString]] == YES) {
-        EDAMResource *resource = [self edamResourceFromWebResource:aResource];
+        ENResource *resource = [self resourceFromWebResource:aResource];
         if (resource != nil) {
-          [self addResourceToNote:resource];
+          [self.note addResource:resource];
           
           [newAttributes removeObjectForKey:@"src"];
-          [self.enmlWriter writeResourceWithDataHash:resource.data.bodyHash
-                                                mime:resource.mime
+          [self.enmlWriter writeResourceWithDataHash:resource.dataHash
+                                                mime:resource.mimeType
                                           attributes:newAttributes];
 
           self.ignoreElementCount = 1;

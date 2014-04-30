@@ -16,6 +16,7 @@
 {
     NSMutableArray * _resources;
 }
+@property (nonatomic, copy) NSString * sourceUrl;
 @property (nonatomic, copy) NSString * cachedENMLContent;
 @end
 
@@ -86,25 +87,7 @@
     }
     
     ENWebClipNoteBuilder * builder = [[ENWebClipNoteBuilder alloc] initWithWebView:webView];
-    [builder buildNote:^(EDAMNote * note) {
-        if (note) {
-            //XXX: This is NOT the most efficient way to do this. The clip note builder should be amended
-            // to spit out the ENNote directly rather than indirecting through an EDAMNote.
-            ENNote * result = [[ENNote alloc] init];
-            result.content = [ENNoteContent noteContentWithENML:note.content];
-            result.title = note.title;
-            for (EDAMResource * resource in note.resources) {
-                ENResource * resultResource = [[ENResource alloc] initWithData:resource.data.body
-                                                                      mimeType:resource.mime
-                                                                      filename:resource.attributes.fileName];
-                [result addResource:resultResource];
-            }
-            
-            completion(result);
-        } else {
-            completion(nil);
-        }
-    }];
+    [builder buildNote:completion];
 }
 
 #pragma mark - Protected methods
@@ -160,6 +143,10 @@
     // If reminder is flagged on, set reminderOrder to the current UNIX timestamp by convention.
     if (self.isReminder) {
         attributes.reminderOrder = [[NSDate date] timeIntervalSince1970] * 1000.0;
+    }
+    
+    if (self.sourceUrl) {
+        attributes.sourceURL = self.sourceUrl;
     }
     
     note.attributes = attributes;
