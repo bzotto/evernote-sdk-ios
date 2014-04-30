@@ -11,8 +11,7 @@
 #import "ENMLConstants.h"
 #import "ENWebContentTransformer.h"
 
-#import "DTWebArchive.h"
-#import "UIPasteboard+DTWebArchive.h"
+#import "ENWebArchive.h"
 
 @interface ENWebClipNoteBuilder()
 
@@ -148,8 +147,11 @@
     NSArray *oldPasteboardContents = [[pasteboard items] copy];
     
     [webView copy:self];
-    DTWebArchive *webArchive = [pasteboard webArchive];
-    
+    ENWebArchive * webArchive = nil;
+    NSData * webArchiveData = [pasteboard dataForPasteboardType:ENWebArchivePboardType];
+    if (webArchiveData) {
+        webArchive = [ENWebArchive webArchiveWithData:webArchiveData];
+    }
     pasteboard.items = oldPasteboardContents;
     
     if (webArchive != nil) {

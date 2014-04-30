@@ -17,7 +17,7 @@
 
 #import "NSData+EvernoteSDK.h"
 
-#import "DTWebArchive.h"
+#import "ENWebArchive.h"
 
 @interface ENWebContentTransformer()<ENXMLSaxParserDelegate>
 
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) ENXMLDTD *enmlDTD;
 @property (strong, nonatomic) NSURL *archiveBaseURL;
 
-@property (strong, nonatomic) DTWebArchive *webArchive;
+@property (strong, nonatomic) ENWebArchive *webArchive;
 @property (strong, nonatomic) EDAMNote *note;
 
 @property (strong, nonatomic) NSArray *ignorableTags;
@@ -70,14 +70,14 @@
   
   self.enmlDTD = [ENXMLDTD enml2dtd];
 
-  if ([value isKindOfClass:[DTWebArchive class]] == YES || [value isKindOfClass:[NSString class]] == YES) {
+  if ([value isKindOfClass:[ENWebArchive class]] == YES || [value isKindOfClass:[NSString class]] == YES) {
     ENXMLSaxParser *parser = [[ENXMLSaxParser alloc] init];
     parser.isHTML = YES;
     parser.delegate = self;
     
     NSString *html = nil;
-    if ([value isKindOfClass:[DTWebArchive class]] == YES) {
-      DTWebArchive *webArchive = (DTWebArchive *)value;
+    if ([value isKindOfClass:[ENWebArchive class]] == YES) {
+      ENWebArchive *webArchive = (ENWebArchive *)value;
       html = [self htmlFromWebArchive:webArchive];
       self.baseURL = webArchive.mainResource.URL;
       self.webArchive = webArchive;
@@ -137,8 +137,8 @@
 
 #pragma mark -
 #pragma mark
-- (NSString *) htmlFromWebArchive:(DTWebArchive *)webArchive {
-  DTWebResource *mainResource = webArchive.mainResource;
+- (NSString *) htmlFromWebArchive:(ENWebArchive *)webArchive {
+  ENWebResource *mainResource = webArchive.mainResource;
   NSString *textEncodingName = mainResource.textEncodingName;
   if (textEncodingName == nil) {
     textEncodingName = @"UTF-8";
@@ -147,10 +147,10 @@
   CFStringEncoding cfStringEncoding = CFStringConvertIANACharSetNameToEncoding((__bridge CFStringRef)textEncodingName);
   NSStringEncoding stringEncoding = CFStringConvertEncodingToNSStringEncoding(cfStringEncoding);
   NSData *data = mainResource.data;
-  if (data == nil) {
-    data = webArchive.data;
+  if (!data) {
+    return nil;
   }
-
+    
   NSString *html = [[NSString alloc] initWithData:data
                                          encoding:stringEncoding];
   return html;
@@ -194,7 +194,7 @@
   if ([ENMLWriter validateURLComponents:absoluteURL] == NO) {
     NSArray *subresources = [self.webArchive subresources];
     NSURL *url = [NSURL URLWithString:urlAttribute];
-    for (DTWebResource *aResource in subresources) {
+    for (ENWebResource *aResource in subresources) {
       if ([[aResource URL] isEqual:url] == YES) {
         return url;
       }
@@ -230,7 +230,7 @@
   return edamData;
 }
 
-- (EDAMResource *) edamResourceFromWebResource:(DTWebResource *)webResource {
+- (EDAMResource *) edamResourceFromWebResource:(ENWebResource *)webResource {
   NSData *rsrcData = webResource.data;
   if (rsrcData == nil || [rsrcData length] == 0) {
     return nil;
@@ -307,7 +307,7 @@
       return;
     }
 
-    for (DTWebResource *aResource in self.webArchive.subresources) {
+    for (ENWebResource *aResource in self.webArchive.subresources) {
       if ([[[aResource URL] absoluteString] isEqualToString:[sanitizedURL absoluteString]] == YES) {
         EDAMResource *resource = [self edamResourceFromWebResource:aResource];
         if (resource != nil) {

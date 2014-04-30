@@ -228,19 +228,6 @@
 		BE2E25D918F4D6C300BD7E6E /* ENMLConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E25D718F4D6C200BD7E6E /* ENMLConstants.h */; };
 		BE2E25DA18F4D6C300BD7E6E /* ENMLConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25D818F4D6C200BD7E6E /* ENMLConstants.m */; };
 		BE2E25DD18F4DCE600BD7E6E /* ENSDKPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25DC18F4DCE600BD7E6E /* ENSDKPrivate.m */; };
-		BE48C6E8190F194E00025618 /* DTWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6E1190F194E00025618 /* DTWebArchive.h */; };
-		BE48C6E9190F194E00025618 /* DTWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6E1190F194E00025618 /* DTWebArchive.h */; };
-		BE48C6EA190F194E00025618 /* DTWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6E2190F194E00025618 /* DTWebArchive.m */; };
-		BE48C6EB190F194E00025618 /* DTWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6E2190F194E00025618 /* DTWebArchive.m */; };
-		BE48C6EC190F194E00025618 /* DTWebResource.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6E3190F194E00025618 /* DTWebResource.h */; };
-		BE48C6ED190F194E00025618 /* DTWebResource.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6E3190F194E00025618 /* DTWebResource.h */; };
-		BE48C6EE190F194E00025618 /* DTWebResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6E4190F194E00025618 /* DTWebResource.m */; };
-		BE48C6EF190F194E00025618 /* DTWebResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6E4190F194E00025618 /* DTWebResource.m */; };
-		BE48C6F0190F194E00025618 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BE48C6E5190F194E00025618 /* LICENSE */; };
-		BE48C6F1190F194E00025618 /* UIPasteboard+DTWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6E6190F194E00025618 /* UIPasteboard+DTWebArchive.h */; };
-		BE48C6F2190F194E00025618 /* UIPasteboard+DTWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6E6190F194E00025618 /* UIPasteboard+DTWebArchive.h */; };
-		BE48C6F3190F194E00025618 /* UIPasteboard+DTWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6E7190F194E00025618 /* UIPasteboard+DTWebArchive.m */; };
-		BE48C6F4190F194E00025618 /* UIPasteboard+DTWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6E7190F194E00025618 /* UIPasteboard+DTWebArchive.m */; };
 		BE48C6F719102CC600025618 /* ENWebContentTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6F519102CC600025618 /* ENWebContentTransformer.h */; };
 		BE48C6F819102CC600025618 /* ENWebContentTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6F519102CC600025618 /* ENWebContentTransformer.h */; };
 		BE48C6F919102CC600025618 /* ENWebContentTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6F619102CC600025618 /* ENWebContentTransformer.m */; };
@@ -249,6 +236,14 @@
 		BE48C6FE19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6FB19102DD900025618 /* ENWebClipNoteBuilder.h */; };
 		BE48C6FF19102DD900025618 /* ENWebClipNoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6FC19102DD900025618 /* ENWebClipNoteBuilder.m */; };
 		BE48C70019102DD900025618 /* ENWebClipNoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6FC19102DD900025618 /* ENWebClipNoteBuilder.m */; };
+		BE48C70319116D3400025618 /* ENWebResource.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70119116D3400025618 /* ENWebResource.h */; };
+		BE48C70419116D3400025618 /* ENWebResource.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70119116D3400025618 /* ENWebResource.h */; };
+		BE48C70519116D3400025618 /* ENWebResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70219116D3400025618 /* ENWebResource.m */; };
+		BE48C70619116D3400025618 /* ENWebResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70219116D3400025618 /* ENWebResource.m */; };
+		BE48C7091911713300025618 /* ENWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C7071911713200025618 /* ENWebArchive.h */; };
+		BE48C70A1911713300025618 /* ENWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C7071911713200025618 /* ENWebArchive.h */; };
+		BE48C70B1911713300025618 /* ENWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C7081911713300025618 /* ENWebArchive.m */; };
+		BE48C70C1911713300025618 /* ENWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C7081911713300025618 /* ENWebArchive.m */; };
 		BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */; };
 		BECDD2F118F5C8F3003736EE /* ENPreferencesStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */; };
 		BECDD2F418F77BC3003736EE /* ENNoteContent.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2F218F77BC3003736EE /* ENNoteContent.h */; };
@@ -469,17 +464,14 @@
 		BE2E25D718F4D6C200BD7E6E /* ENMLConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENMLConstants.h; sourceTree = "<group>"; };
 		BE2E25D818F4D6C200BD7E6E /* ENMLConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENMLConstants.m; sourceTree = "<group>"; };
 		BE2E25DC18F4DCE600BD7E6E /* ENSDKPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENSDKPrivate.m; sourceTree = "<group>"; };
-		BE48C6E1190F194E00025618 /* DTWebArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTWebArchive.h; sourceTree = "<group>"; };
-		BE48C6E2190F194E00025618 /* DTWebArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTWebArchive.m; sourceTree = "<group>"; };
-		BE48C6E3190F194E00025618 /* DTWebResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTWebResource.h; sourceTree = "<group>"; };
-		BE48C6E4190F194E00025618 /* DTWebResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTWebResource.m; sourceTree = "<group>"; };
-		BE48C6E5190F194E00025618 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		BE48C6E6190F194E00025618 /* UIPasteboard+DTWebArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPasteboard+DTWebArchive.h"; sourceTree = "<group>"; };
-		BE48C6E7190F194E00025618 /* UIPasteboard+DTWebArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPasteboard+DTWebArchive.m"; sourceTree = "<group>"; };
 		BE48C6F519102CC600025618 /* ENWebContentTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENWebContentTransformer.h; sourceTree = "<group>"; };
 		BE48C6F619102CC600025618 /* ENWebContentTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENWebContentTransformer.m; sourceTree = "<group>"; };
 		BE48C6FB19102DD900025618 /* ENWebClipNoteBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENWebClipNoteBuilder.h; sourceTree = "<group>"; };
 		BE48C6FC19102DD900025618 /* ENWebClipNoteBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENWebClipNoteBuilder.m; sourceTree = "<group>"; };
+		BE48C70119116D3400025618 /* ENWebResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENWebResource.h; sourceTree = "<group>"; };
+		BE48C70219116D3400025618 /* ENWebResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENWebResource.m; sourceTree = "<group>"; };
+		BE48C7071911713200025618 /* ENWebArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENWebArchive.h; sourceTree = "<group>"; };
+		BE48C7081911713300025618 /* ENWebArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENWebArchive.m; sourceTree = "<group>"; };
 		BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENPreferencesStore.h; sourceTree = "<group>"; };
 		BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENPreferencesStore.m; sourceTree = "<group>"; };
 		BECDD2F218F77BC3003736EE /* ENNoteContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNoteContent.h; sourceTree = "<group>"; };
@@ -772,6 +764,10 @@
 				BE48C6F619102CC600025618 /* ENWebContentTransformer.m */,
 				BE48C6FB19102DD900025618 /* ENWebClipNoteBuilder.h */,
 				BE48C6FC19102DD900025618 /* ENWebClipNoteBuilder.m */,
+				BE48C70119116D3400025618 /* ENWebResource.h */,
+				BE48C70219116D3400025618 /* ENWebResource.m */,
+				BE48C7071911713200025618 /* ENWebArchive.h */,
+				BE48C7081911713300025618 /* ENWebArchive.m */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -779,7 +775,6 @@
 		BE2E23F918EBA5D500BD7E6E /* 3rdParty */ = {
 			isa = PBXGroup;
 			children = (
-				BE48C6E0190F194E00025618 /* DTWebArchive */,
 				BE2E23FA18EBA5D500BD7E6E /* AFNetworking */,
 				BE2E23FD18EBA5D500BD7E6E /* cocoa-oauth */,
 				BE2E240318EBA5D500BD7E6E /* KSHTMLWriter */,
@@ -908,20 +903,6 @@
 			path = SendToEvernoteActivity;
 			sourceTree = "<group>";
 		};
-		BE48C6E0190F194E00025618 /* DTWebArchive */ = {
-			isa = PBXGroup;
-			children = (
-				BE48C6E1190F194E00025618 /* DTWebArchive.h */,
-				BE48C6E2190F194E00025618 /* DTWebArchive.m */,
-				BE48C6E3190F194E00025618 /* DTWebResource.h */,
-				BE48C6E4190F194E00025618 /* DTWebResource.m */,
-				BE48C6E5190F194E00025618 /* LICENSE */,
-				BE48C6E6190F194E00025618 /* UIPasteboard+DTWebArchive.h */,
-				BE48C6E7190F194E00025618 /* UIPasteboard+DTWebArchive.m */,
-			);
-			path = DTWebArchive;
-			sourceTree = "<group>";
-		};
 		BECDD3741908FFC1003736EE /* EvernoteSDKSample */ = {
 			isa = PBXGroup;
 			children = (
@@ -976,7 +957,6 @@
 				BE2E24B418EBA5D500BD7E6E /* TException.h in Headers */,
 				BE2E24AA18EBA5D500BD7E6E /* TBinaryProtocol.h in Headers */,
 				BE2E249E18EBA5D500BD7E6E /* KSHTMLWriter.h in Headers */,
-				BE48C6F1190F194E00025618 /* UIPasteboard+DTWebArchive.h in Headers */,
 				BE2E24AD18EBA5D500BD7E6E /* TProtocolException.h in Headers */,
 				BE2E246E18EBA5D500BD7E6E /* ENSDKAdvanced.h in Headers */,
 				BECDD2F818F77C0E003736EE /* ENPlaintextNoteContent.h in Headers */,
@@ -988,7 +968,7 @@
 				BE2E245F18EBA5D500BD7E6E /* EDAM.h in Headers */,
 				BE2E246618EBA5D500BD7E6E /* EDAMTypes.h in Headers */,
 				BE2E248A18EBA5D500BD7E6E /* ENNote.h in Headers */,
-				BE48C6E8190F194E00025618 /* DTWebArchive.h in Headers */,
+				BE48C7091911713300025618 /* ENWebArchive.h in Headers */,
 				BE2E24A618EBA5D500BD7E6E /* NSString+XMLAdditions.h in Headers */,
 				BE2E248818EBA5D500BD7E6E /* ENError.h in Headers */,
 				BE2E24BC18EBA5D500BD7E6E /* TMemoryBuffer.h in Headers */,
@@ -999,7 +979,6 @@
 				BE2E24C118EBA5D500BD7E6E /* EDAMNoteStoreClient+Utilities.h in Headers */,
 				BE2E246818EBA5D500BD7E6E /* EDAMUserStore.h in Headers */,
 				BE2E248618EBA5D500BD7E6E /* NSDate+EDAMAdditions.h in Headers */,
-				BE48C6EC190F194E00025618 /* DTWebResource.h in Headers */,
 				BE2E24D218EBA5D500BD7E6E /* ENOAuthAuthenticator.h in Headers */,
 				BE2E246C18EBA5D500BD7E6E /* ENNoteStoreClient.h in Headers */,
 				BE2E24AF18EBA5D500BD7E6E /* TProtocolFactory.h in Headers */,
@@ -1029,6 +1008,7 @@
 				BE2E247E18EBA5D500BD7E6E /* NSRegularExpression+ENAGRegex.h in Headers */,
 				BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */,
 				BE48C6FD19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */,
+				BE48C70319116D3400025618 /* ENWebResource.h in Headers */,
 				BE2E247918EBA5D500BD7E6E /* ENXMLDTD.h in Headers */,
 				BE2E25D918F4D6C300BD7E6E /* ENMLConstants.h in Headers */,
 				86B198571901DB0A008F606A /* ENNotebookPickerButton.h in Headers */,
@@ -1056,9 +1036,9 @@
 				860DF40F18FCCE51002B4793 /* ENNoteContent.h in Headers */,
 				860DF41118FCCE51002B4793 /* ENNotebook.h in Headers */,
 				860DF41318FCCE51002B4793 /* ENResource.h in Headers */,
-				BE48C6E9190F194E00025618 /* DTWebArchive.h in Headers */,
-				BE48C6F2190F194E00025618 /* UIPasteboard+DTWebArchive.h in Headers */,
+				BE48C70A1911713300025618 /* ENWebArchive.h in Headers */,
 				860DF41518FCCE51002B4793 /* ENNoteRef.h in Headers */,
+				BE48C70419116D3400025618 /* ENWebResource.h in Headers */,
 				860DF41718FCCE51002B4793 /* ENError.h in Headers */,
 				860DF41918FCCE51002B4793 /* ENSDKLogging.h in Headers */,
 				BE48C6F819102CC600025618 /* ENWebContentTransformer.h in Headers */,
@@ -1076,7 +1056,6 @@
 				BECDD3581908DE29003736EE /* EDAMUserStore.h in Headers */,
 				BECDD3591908DE29003736EE /* ENMLConstants.h in Headers */,
 				BECDD35A1908DE2A003736EE /* ENMLUtility.h in Headers */,
-				BE48C6ED190F194E00025618 /* DTWebResource.h in Headers */,
 				BECDD35B1908DE2A003736EE /* ENEncryptedContentInfo.h in Headers */,
 				BECDD35C1908DE2A003736EE /* ENMIMEUtils.h in Headers */,
 				BECDD35D1908DE2A003736EE /* ENMLWriter.h in Headers */,
@@ -1183,7 +1162,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE48C6F0190F194E00025618 /* LICENSE in Resources */,
 				865C383D18F8BA2400ECB2BA /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1233,6 +1211,7 @@
 				BE2E24C218EBA5D500BD7E6E /* EDAMNoteStoreClient+Utilities.m in Sources */,
 				BE2E24C018EBA5D500BD7E6E /* TTransportException.m in Sources */,
 				BE2E247F18EBA5D500BD7E6E /* NSRegularExpression+ENAGRegex.m in Sources */,
+				BE48C70519116D3400025618 /* ENWebResource.m in Sources */,
 				BE48C6F919102CC600025618 /* ENWebContentTransformer.m in Sources */,
 				BE2E247218EBA5D500BD7E6E /* ENMLUtility.m in Sources */,
 				BECDD2F118F5C8F3003736EE /* ENPreferencesStore.m in Sources */,
@@ -1268,6 +1247,7 @@
 				BE2E24AE18EBA5D500BD7E6E /* TProtocolException.m in Sources */,
 				BE2E247818EBA5D500BD7E6E /* ENMLWriter.m in Sources */,
 				BECDD2FD18F78072003736EE /* ENHTMLNoteContent.m in Sources */,
+				BE48C70B1911713300025618 /* ENWebArchive.m in Sources */,
 				BE2E248018EBA5D500BD7E6E /* NSString+EDAMAdditions.m in Sources */,
 				BE2E24CA18EBA5D500BD7E6E /* ENHTMLtoENMLConverter.m in Sources */,
 				BE48C6FF19102DD900025618 /* ENWebClipNoteBuilder.m in Sources */,
@@ -1278,9 +1258,7 @@
 				BE2E249518EBA5D500BD7E6E /* ENSession.m in Sources */,
 				BE2E25DD18F4DCE600BD7E6E /* ENSDKPrivate.m in Sources */,
 				BE2E248518EBA5D500BD7E6E /* NSDataBase64Additions.m in Sources */,
-				BE48C6EA190F194E00025618 /* DTWebArchive.m in Sources */,
 				BE2E248318EBA5D500BD7E6E /* NSData+EvernoteSDK.m in Sources */,
-				BE48C6F3190F194E00025618 /* UIPasteboard+DTWebArchive.m in Sources */,
 				BE2E24D018EBA5D500BD7E6E /* ENNotebookChooserViewController.m in Sources */,
 				BE2E249118EBA5D500BD7E6E /* ENResource.m in Sources */,
 				BE2E247418EBA5D500BD7E6E /* ENEncryptedContentInfo.m in Sources */,
@@ -1293,7 +1271,6 @@
 				BE2E24CE18EBA5D500BD7E6E /* ENLinkedNoteStoreClient.m in Sources */,
 				BE2E24BD18EBA5D500BD7E6E /* TMemoryBuffer.m in Sources */,
 				BE2E248F18EBA5D500BD7E6E /* ENNoteRef.m in Sources */,
-				BE48C6EE190F194E00025618 /* DTWebResource.m in Sources */,
 				BE2E246918EBA5D500BD7E6E /* EDAMUserStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1313,6 +1290,7 @@
 				860DF49918FDDFDB002B4793 /* ENLinkedNoteStoreClient.m in Sources */,
 				860DF49A18FDDFDB002B4793 /* ENBusinessNoteStoreClient.m in Sources */,
 				860DF49B18FDDFDB002B4793 /* ENNotebookChooserViewController.m in Sources */,
+				BE48C70619116D3400025618 /* ENWebResource.m in Sources */,
 				BE48C6FA19102CC600025618 /* ENWebContentTransformer.m in Sources */,
 				860DF49C18FDDFDB002B4793 /* ENOAuthAuthenticator.m in Sources */,
 				860DF49D18FDDFDB002B4793 /* ENOAuthViewController.m in Sources */,
@@ -1348,6 +1326,7 @@
 				860DF43118FCD022002B4793 /* ENSession.m in Sources */,
 				860DF43318FCD022002B4793 /* ENNote.m in Sources */,
 				860DF43518FCD022002B4793 /* ENNoteContent.m in Sources */,
+				BE48C70C1911713300025618 /* ENWebArchive.m in Sources */,
 				860DF43718FCD022002B4793 /* ENNotebook.m in Sources */,
 				860DF43918FCD022002B4793 /* ENResource.m in Sources */,
 				BE48C70019102DD900025618 /* ENWebClipNoteBuilder.m in Sources */,
@@ -1358,9 +1337,7 @@
 				860DF44618FCD022002B4793 /* EDAMErrors.m in Sources */,
 				860DF44818FCD022002B4793 /* EDAMLimits.m in Sources */,
 				860DF44A18FCD022002B4793 /* EDAMNoteStore.m in Sources */,
-				BE48C6EB190F194E00025618 /* DTWebArchive.m in Sources */,
 				860DF44C18FCD022002B4793 /* EDAMTypes.m in Sources */,
-				BE48C6F4190F194E00025618 /* UIPasteboard+DTWebArchive.m in Sources */,
 				860DF44E18FCD022002B4793 /* EDAMUserStore.m in Sources */,
 				860DF45018FCD022002B4793 /* ENMLConstants.m in Sources */,
 				860DF45218FCD022002B4793 /* ENMLUtility.m in Sources */,
@@ -1373,7 +1350,6 @@
 				860DF46018FCD022002B4793 /* NSString+EDAMAdditions.m in Sources */,
 				860DF46318FCD022002B4793 /* NSData+EvernoteSDK.m in Sources */,
 				860DF46518FCD022002B4793 /* NSDataBase64Additions.m in Sources */,
-				BE48C6EF190F194E00025618 /* DTWebResource.m in Sources */,
 				860DF46718FCD022002B4793 /* NSDate+EDAMAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
