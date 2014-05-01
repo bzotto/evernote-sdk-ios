@@ -16,8 +16,13 @@
 FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameInternational;
 FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameChina;
 
+@interface ENSession (Private)
+@property (nonatomic, readonly) EDAMUserID userID;
+@end
+
 @interface ENNotebook (Private)
 @property (nonatomic, readonly) NSString * guid;
+@property (nonatomic, readonly) BOOL isLinked;
 @property (nonatomic, strong) EDAMLinkedNotebook * linkedNotebook;
 @property (nonatomic, assign) BOOL isDefaultNotebookOverride;
 @property (nonatomic, assign) BOOL isShared;

@@ -76,18 +76,20 @@
     }
 }
 
-- (NSString *)ownerName
+- (NSString *)ownerDisplayName
 {
+    NSString * ownerName = nil;
     if (self.isBusinessNotebook) {
-        NSString * ownerName = self.notebook.contact.name;
+        ownerName = self.notebook.contact.name;
         if (ownerName.length == 0) {
-            ownerName = nil;
+            ownerName = [[ENSession sharedSession] businessDisplayName];
         }
-        return ownerName;
-    } else if ([self isLinked]) {
-        return self.linkedNotebook.username;
+    } else if (self.linkedNotebook) {
+        ownerName = self.linkedNotebook.username;
+    } else {
+        ownerName = [[ENSession sharedSession] userDisplayName];
     }
-    return nil;
+    return ownerName;
 }
 
 - (NSString *)guid
@@ -117,6 +119,23 @@
     return self.linkedNotebook != nil && self.notebook != nil;
 }
 
+- (BOOL)isOwnedByUser
+{
+    // If there's no linked record, the notebook exists in the primary account, which means owned by user.
+    if (!self.linkedNotebook) {
+        return YES;
+    }
+    
+    // If it's not a business notebook, but it is linked, then it's definitely NOT owned by the user.
+    if (![self isBusinessNotebook]) {
+        return NO;
+    }
+    
+    // Business notebooks are a little trickier. They are always linked, because technically the business owns
+    // them. What we really want to know is whether the contact user is the same as the current user.
+    return (self.notebook.contact.id == [[ENSession sharedSession] userID]);
+}
+
 - (BOOL)isDefaultNotebook
 {
     if (self.isDefaultNotebookOverride) {
@@ -129,7 +148,7 @@
 
 - (BOOL)allowsWriting
 {
-    if (![self isLinked]) {
+    if (!self.linkedNotebook) {
         // All personal notebooks are readwrite.
         return YES;
     }
@@ -151,8 +170,13 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; name = \"%@\"; linked = %@; business = %@; access = %@>",
-            [self class], self, self.name, self.isLinked ? @"YES" : @"NO", self.isBusinessNotebook ? @"YES" : @"NO", self.allowsWriting ? @"R/W" : @"R/O"];
+    NSMutableString * owner = [NSMutableString stringWithFormat:@"\"%@\"", [self ownerDisplayName]];
+    if (self.isOwnedByUser) {
+        [owner appendString:@" (me)"];
+    }
+    return [NSString stringWithFormat:@"<%@: %p; name = \"%@\"; business = %@; shared = %@; owner = %@; access = %@>",
+            [self class], self, self.name, self.isBusinessNotebook ? @"YES" : @"NO", self.isShared ? @"YES" : @"NO", owner,
+            self.allowsWriting ? @"R/W" : @"R/O"];
 }
 
 - (BOOL)isEqual:(id)object

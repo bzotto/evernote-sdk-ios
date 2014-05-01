@@ -49,11 +49,13 @@
 
 - (void)setNotebook:(ENNotebook *)notebook {
     [self.textLabel setText:notebook.name];
-    [self.detailTextLabel setText:notebook.ownerName];
+    if ([notebook isBusinessNotebook] || ![notebook isOwnedByUser]) {
+        [self.detailTextLabel setText:notebook.ownerDisplayName];
+    } else {
+        [self.detailTextLabel setText:nil];
+    }
     if ([notebook isBusinessNotebook]) {
         [self setAccessoryView:[self businessImageAccessoryView]];
-    } else if ([notebook isLinked]) {
-        [self setAccessoryView:[self sharedImageAccessoryView]];
     } else if ([notebook isShared]) {
         [self setAccessoryView:[self sharedImageAccessoryView]];
     } else {

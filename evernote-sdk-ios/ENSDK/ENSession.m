@@ -43,6 +43,7 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 @property (nonatomic, strong) NSMutableDictionary * guidsToResultNotebooks;
 @property (nonatomic, strong) NSMutableArray * linkedPersonalNotebooks;
 @property (nonatomic, strong) NSMutableDictionary * sharedBusinessNotebooks;
+@property (nonatomic, strong) NSCountedSet * sharedBusinessNotebookGuids;
 @property (nonatomic, strong) NSMutableDictionary * businessNotebooks;
 @property (nonatomic, strong) NSMutableDictionary * sharedNotebooks;
 @property (nonatomic, assign) NSInteger pendingSharedNotebooks;
@@ -325,6 +326,11 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     return nil;
 }
 
+- (EDAMUserID)userID
+{
+    return self.user.id;
+}
+
 - (BOOL)appNotebookIsLinked
 {
     return [[self.preferences objectForKey:ENSessionPreferencesAppNotebookIsLinked] boolValue];
@@ -487,19 +493,21 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         // Run through the results, and set each notebook keyed by its shareKey, which
         // is how we'll find corresponding linked notebooks.
         context.sharedBusinessNotebooks = [[NSMutableDictionary alloc] init];
+        context.sharedBusinessNotebookGuids = [[NSCountedSet alloc] init];
         for (EDAMSharedNotebook * notebook in sharedNotebooks) {
             [context.sharedBusinessNotebooks setObject:notebook forKey:notebook.shareKey];
+            [context.sharedBusinessNotebookGuids addObject:notebook.notebookGuid];
         }
         
         // Now continue on to grab all of the linked notebooks for the business.
-        [self listNotebooks_fetchLinkedBusinessNotebooksWithContext:context];
+        [self listNotebooks_fetchBusinessNotebooksWithContext:context];
     } failure:^(NSError *error) {
         ENSDKLogError(@"Error from listSharedNotebooks in business store: %@", error);
         [self listNotebooks_completeWithContext:context error:error];
     }];
 }
 
-- (void)listNotebooks_fetchLinkedBusinessNotebooksWithContext:(ENSessionListNotebooksContext *)context
+- (void)listNotebooks_fetchBusinessNotebooksWithContext:(ENSessionListNotebooksContext *)context
 {
     [self.businessNoteStore listNotebooksWithSuccess:^(NSArray *notebooks) {
         // Run through the results, and set each notebook keyed by its guid, which
@@ -526,6 +534,16 @@ static NSString * DeveloperToken, * NoteStoreUrl;
             // This linked notebook corresponds to a business notebook.
             EDAMNotebook * businessNotebook = [context.businessNotebooks objectForKey:sharedNotebook.notebookGuid];
             ENNotebook * result = [[ENNotebook alloc] initWithSharedNotebook:sharedNotebook forLinkedNotebook:linkedNotebook withBusinessNotebook:businessNotebook];
+
+            // Figure out if the business notebook is "shared". There are three cases here, all of which mean "shared": (1) I explicitly shared to individuals,
+            // (2) I shared with the whole business and (3) I joined someone else's shared business notebook. The first (and third) are indicated by more than
+            // one shared notebook record for this notebook GUID. The second one (if not covered by the first) is indicated by the presence of a business notebook
+            // on the notebook.
+            if ([context.sharedBusinessNotebookGuids countForObject:sharedNotebook.notebookGuid] > 1 ||
+                businessNotebook.businessNotebookIsSet) {
+                result.isShared = YES;
+            }
+            
             [context.resultNotebooks addObject:result];
             [context.linkedPersonalNotebooks removeObjectIdenticalTo:linkedNotebook]; // OK since we're enumerating a copy.
         }
