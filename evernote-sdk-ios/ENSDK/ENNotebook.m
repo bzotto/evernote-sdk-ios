@@ -51,6 +51,7 @@
         self.notebook = [decoder decodeObjectForKey:@"notebook"];
         self.linkedNotebook = [decoder decodeObjectForKey:@"linkedNotebook"];
         self.sharedNotebook = [decoder decodeObjectForKey:@"sharedNotebook"];
+        self.isShared = [decoder decodeBoolForKey:@"isShared"];
         self.isDefaultNotebookOverride = [decoder decodeBoolForKey:@"isDefaultNotebookOverride"];
         if (!self.notebook && !self.linkedNotebook && !self.sharedNotebook) {
             return nil;
@@ -64,6 +65,7 @@
     [encoder encodeObject:self.notebook forKey:@"notebook"];
     [encoder encodeObject:self.linkedNotebook forKey:@"linkedNotebook"];
     [encoder encodeObject:self.sharedNotebook forKey:@"sharedNotebook"];
+    [encoder encodeBool:self.isShared forKey:@"isShared"];
     [encoder encodeBool:self.isDefaultNotebookOverride forKey:@"isDefaultNotebookOverride"];
 }
 
