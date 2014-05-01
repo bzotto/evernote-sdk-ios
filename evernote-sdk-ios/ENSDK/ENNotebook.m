@@ -77,7 +77,11 @@
 
 - (NSString *)ownerName {
     if (self.isBusinessNotebook) {
-        return [ENSession sharedSession].businessDisplayName;
+        NSString * ownerName = self.notebook.contact.name;
+        if (ownerName.length == 0) {
+            ownerName = [ENSession sharedSession].businessDisplayName;
+        }
+        return ownerName;
     } else if ([self isLinked]) {
         return self.linkedNotebook.username;
     }
@@ -102,6 +106,15 @@
 - (BOOL)isLinked
 {
     return self.linkedNotebook != nil;
+}
+
+- (BOOL)isShared
+{
+    if (!self.notebook) {
+        return NO;
+    }
+    // XXX: This is not recommended. sharedNotebookIds is deprecated.
+    return self.notebook.sharedNotebookIds.count > 0;
 }
 
 - (BOOL)isBusinessNotebook

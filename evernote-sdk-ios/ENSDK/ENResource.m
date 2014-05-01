@@ -18,15 +18,15 @@
 @implementation ENResource
 - (id)initWithData:(NSData *)data mimeType:(NSString *)mimeType filename:(NSString *)filename
 {
-    if (!data || data.length >= INT32_MAX) {
-        return nil;
-    }
-
     self = [super init];
     if (self) {
         self.data = data;
         self.mimeType = mimeType;
         self.filename = filename;
+
+        if (!self.data) {
+            return nil;
+        }
     }
     return self;
 }

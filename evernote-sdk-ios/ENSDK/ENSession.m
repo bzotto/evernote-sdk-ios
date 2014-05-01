@@ -354,6 +354,8 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     self.primaryNoteStore = nil;
     self.businessNoteStore = nil;
     self.authCache = [[ENAuthCache alloc] init];
+    self.notebooksCache = nil;
+    self.notebooksCacheDate = nil;
     
     // Manually clear credentials. This ensures they're removed from the keychain also.
     ENCredentialStore * credentialStore = [self credentialStore];
