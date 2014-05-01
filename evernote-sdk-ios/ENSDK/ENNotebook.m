@@ -12,6 +12,7 @@
 @property (nonatomic, strong) EDAMNotebook * notebook;
 @property (nonatomic, strong) EDAMLinkedNotebook * linkedNotebook;
 @property (nonatomic, strong) EDAMSharedNotebook * sharedNotebook;
+@property (nonatomic, assign) BOOL isShared;
 @property (nonatomic, assign) BOOL isDefaultNotebookOverride;
 @end
 
@@ -75,11 +76,12 @@
     }
 }
 
-- (NSString *)ownerName {
+- (NSString *)ownerName
+{
     if (self.isBusinessNotebook) {
         NSString * ownerName = self.notebook.contact.name;
         if (ownerName.length == 0) {
-            ownerName = [ENSession sharedSession].businessDisplayName;
+            ownerName = nil;
         }
         return ownerName;
     } else if ([self isLinked]) {
@@ -106,15 +108,6 @@
 - (BOOL)isLinked
 {
     return self.linkedNotebook != nil;
-}
-
-- (BOOL)isShared
-{
-    if (!self.notebook) {
-        return NO;
-    }
-    // XXX: This is not recommended. sharedNotebookIds is deprecated.
-    return self.notebook.sharedNotebookIds.count > 0;
 }
 
 - (BOOL)isBusinessNotebook

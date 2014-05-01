@@ -40,6 +40,7 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 
 @interface ENSessionListNotebooksContext : NSObject
 @property (nonatomic, strong) NSMutableArray * resultNotebooks;
+@property (nonatomic, strong) NSMutableDictionary * guidsToResultNotebooks;
 @property (nonatomic, strong) NSMutableArray * linkedPersonalNotebooks;
 @property (nonatomic, strong) NSMutableDictionary * sharedBusinessNotebooks;
 @property (nonatomic, strong) NSMutableDictionary * businessNotebooks;
@@ -300,7 +301,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     return self.authenticator != nil;
 }
 
-- (BOOL)isIsPremiumUser
+- (BOOL)isPremiumUser
 {
     return self.user.privilege >= PrivilegeLevel_PREMIUM;
 }
@@ -413,6 +414,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     ENSessionListNotebooksContext * context = [[ENSessionListNotebooksContext alloc] init];
     context.completion = completion;
     context.resultNotebooks = [[NSMutableArray alloc] init];
+    context.guidsToResultNotebooks = [[NSMutableDictionary alloc] init];
     [self listNotebooks_listNotebooksWithContext:context];
 }
 
@@ -423,9 +425,10 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         for (EDAMNotebook * notebook in notebooks) {
             ENNotebook * result = [[ENNotebook alloc] initWithNotebook:notebook];
             [context.resultNotebooks addObject:result];
+            [context.guidsToResultNotebooks setObject:result forKey:notebook.guid];
         }
-        // Now get any linked notebooks.
-        [self listNotebooks_listLinkedNotebooksWithContext:context];
+        // Now get any shared notebooks records for the personal account.
+        [self listNotebooks_listSharedNotebooksWithContext:context];
     } failure:^(NSError * error) {
         if ([self isErrorDueToRestrictedAuth:error]) {
             // App has a single notebook auth token, so try getting linked notebooks.
@@ -433,6 +436,23 @@ static NSString * DeveloperToken, * NoteStoreUrl;
             return;
         }
         ENSDKLogError(@"Error from listNotebooks in user's store: %@", error);
+        [self listNotebooks_completeWithContext:context error:error];
+    }];
+}
+
+- (void)listNotebooks_listSharedNotebooksWithContext:(ENSessionListNotebooksContext *)context
+{
+    [self.primaryNoteStore listSharedNotebooksWithSuccess:^(NSArray * sharedNotebooks) {
+        // For each shared notebook, find its corresponding actual notebook, and flag that as
+        // shared.
+        for (EDAMSharedNotebook * sharedNotebook in sharedNotebooks) {
+            ENNotebook * userNotebook = [context.guidsToResultNotebooks objectForKey:sharedNotebook.notebookGuid];
+            userNotebook.isShared = YES;
+        }
+        context.guidsToResultNotebooks = nil;
+        [self listNotebooks_listLinkedNotebooksWithContext:context];
+    } failure:^(NSError *error) {
+        ENSDKLogError(@"Error from listSharedNotebooks in user's store: %@", error);
         [self listNotebooks_completeWithContext:context error:error];
     }];
 }

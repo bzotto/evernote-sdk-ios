@@ -54,6 +54,8 @@
         [self setAccessoryView:[self businessImageAccessoryView]];
     } else if ([notebook isLinked]) {
         [self setAccessoryView:[self sharedImageAccessoryView]];
+    } else if ([notebook isShared]) {
+        [self setAccessoryView:[self sharedImageAccessoryView]];
     } else {
         [self setAccessoryView:nil];
     }

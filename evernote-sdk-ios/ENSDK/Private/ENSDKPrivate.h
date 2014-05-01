@@ -20,6 +20,7 @@ FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameChina;
 @property (nonatomic, readonly) NSString * guid;
 @property (nonatomic, strong) EDAMLinkedNotebook * linkedNotebook;
 @property (nonatomic, assign) BOOL isDefaultNotebookOverride;
+@property (nonatomic, assign) BOOL isShared;
 // For a personal notebook
 - (id)initWithNotebook:(EDAMNotebook *)notebook;
 // For a non-business shared notebook
