@@ -8,6 +8,7 @@
 
 #import "ENOAuthAuthenticator.h"
 #import "ENUserStoreClient.h"
+#import "ENLoadingViewController.h"
 #import "ENOAuthViewController.h"
 #import "ENCredentials.h"
 #import "ENCredentialStore.h"
@@ -36,10 +37,14 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 - (NSString *)en_stringByUrlDecoding;
 @end
 
-@interface ENOAuthAuthenticator () <ENOAuthViewControllerDelegate>
+@interface ENOAuthAuthenticator () <ENOAuthViewControllerDelegate, ENLoadingViewControllerDelegate>
 @property (nonatomic, assign) BOOL inProgress;
 
-@property (nonatomic, strong) UIViewController * viewController;
+@property (nonatomic, assign) BOOL isCancelled;
+
+@property (nonatomic, strong) UIViewController * hostViewController;
+@property (nonatomic, strong) UINavigationController * authenticationViewController;
+@property (nonatomic, strong) ENOAuthViewController * oauthViewController;
 
 @property (nonatomic, assign) ENOAuthAuthenticatorState state;
 
@@ -53,8 +58,6 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 @property (nonatomic, assign) BOOL isSwitchingInProgress;
 
 @property (nonatomic, assign) BOOL userSelectedLinkedAppNotebook;
-
-@property (nonatomic, strong) ENOAuthViewController * oauthViewController;
 
 @property (nonatomic, strong) NSMutableData * receivedData;
 @property (nonatomic, strong) NSURLResponse * response;
@@ -97,13 +100,24 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
     }
     
     self.inProgress = YES;
-    self.viewController = viewController;
+    self.hostViewController = viewController;
     
     // remove all cookies from the Evernote service so that the user can log in with
     // different credentials after declining to authorize access
     [self emptyCookieJar];
     
     self.credentialStore = [[ENCredentialStore alloc] init];
+    
+    // Put up the holding controller that we use while bootstrapping and doing the initial OAuth
+    // exchange.
+    ENLoadingViewController * loading = [[ENLoadingViewController alloc] init];
+    loading.delegate = self;
+    
+    self.authenticationViewController = [[UINavigationController alloc] initWithRootViewController:loading];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.authenticationViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    [self.hostViewController presentViewController:self.authenticationViewController animated:YES completion:nil];
     
     // Start bootstrapping
     NSString * locale = [[NSLocale currentLocale] localeIdentifier];
@@ -124,6 +138,10 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)startOauthAuthentication
 {
+    if (self.isCancelled) {
+        return;
+    }
+
     // OAuth step 1: temporary credentials (aka request token) request
     NSURLRequest * tempTokenRequest = [ENGCOAuth URLRequestForPath:@"/oauth"
                                                     GETParameters:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -271,7 +289,7 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (BOOL)handleOpenURL:(NSURL *)url
 {
-    [self.viewController dismissViewControllerAnimated:YES completion:^{
+    [self.hostViewController dismissViewControllerAnimated:YES completion:^{
         // only handle our specific oauth_callback URLs
         if (![[url absoluteString] hasPrefix:[self oauthCallback]]) {
             return;
@@ -322,6 +340,10 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    if (self.isCancelled) {
+        return;
+    }
+
     self.receivedData = nil;
     self.response = nil;
     [self completeAuthenticationWithError:error];
@@ -340,6 +362,11 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    // The connections retain this object (their delegate) until they complete. If we've cancelled, just ignore the result.
+    if (self.isCancelled) {
+        return;
+    }
+    
     NSString *string = [[NSString alloc] initWithData:self.receivedData
                                              encoding:NSUTF8StringEncoding];
     
@@ -458,16 +485,10 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
                                                                                profileName:self.currentProfile
                                                                             allowSwitching:isSwitchAllowed
                                                                                   delegate:self];
-        UINavigationController *oauthNavController = [[UINavigationController alloc] initWithRootViewController:self.oauthViewController];
-        
-        // use a formsheet on iPad
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            self.oauthViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-            oauthNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-        }
-        [self.viewController presentViewController:oauthNavController animated:YES completion:^{
-            ;
-        }];
+
+        // Replace the loading view with the OAuth view. Don't animate the transition, and don't leave the loading
+        // view on the view stack.
+        [self.authenticationViewController setViewControllers:@[self.oauthViewController] animated:NO];
     }
     else {
         [self.oauthViewController updateUIForNewProfile:self.currentProfile withAuthorizationURL:authorizationURL];
@@ -478,7 +499,11 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)completeAuthenticationWithCredentials:(ENCredentials *)credentials usesLinkedAppNotebook:(BOOL)linkedAppNotebook
 {
-    self.viewController = nil;
+    if (self.isCancelled) {
+        return;
+    }
+
+    self.hostViewController = nil;
     NSMutableDictionary * authInfo = [[NSMutableDictionary alloc] init];
     if (linkedAppNotebook) {
         [authInfo setObject:@YES forKey:ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked];
@@ -488,8 +513,12 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)completeAuthenticationWithError:(NSError *)error
 {
+    if (self.isCancelled) {
+        return;
+    }
+    
     self.state = ENOAuthAuthenticatorStateLoggedOut;
-    self.viewController = nil;
+    self.hostViewController = nil;
     [self.delegate authenticatorDidFailWithError:error];
 }
 
@@ -584,7 +613,7 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)oauthViewControllerDidCancel:(ENOAuthViewController *)sender
 {
-    [self.viewController dismissViewControllerAnimated:YES completion:^{
+    [self.hostViewController dismissViewControllerAnimated:YES completion:^{
         NSError* error = [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeCancelled userInfo:nil];
         [self completeAuthenticationWithError:error];
     }];
@@ -597,7 +626,7 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)oauthViewController:(ENOAuthViewController *)sender didFailWithError:(NSError *)error
 {
-    [self.viewController dismissViewControllerAnimated:YES completion:^{
+    [self.hostViewController dismissViewControllerAnimated:YES completion:^{
         [self completeAuthenticationWithError:error];
     }];
     
@@ -652,7 +681,7 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 
 - (void)oauthViewController:(ENOAuthViewController *)sender receivedOAuthCallbackURL:(NSURL *)url
 {
-    [self.viewController dismissViewControllerAnimated:YES completion:^{
+    [self.hostViewController dismissViewControllerAnimated:YES completion:^{
         [self getOAuthTokenForURL:url];
     }];
 }
@@ -684,6 +713,17 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
 - (BOOL)isEvernoteInstalled
 {
     return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"en://"]];
+}
+
+- (void)loadingViewControllerDidCancel:(ENLoadingViewController *)viewController
+{
+    self.isCancelled = YES;
+    self.authenticationViewController = nil;
+    [self.hostViewController dismissViewControllerAnimated:YES completion:^{
+        self.state = ENOAuthAuthenticatorStateLoggedOut;
+        self.hostViewController = nil;
+        [self.delegate authenticatorDidFailWithError:[NSError errorWithDomain:ENErrorDomain code:ENErrorCodeCancelled userInfo:nil]];
+    }];
 }
 @end
 

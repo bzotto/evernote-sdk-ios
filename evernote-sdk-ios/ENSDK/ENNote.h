@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "Availability.h"
+@class ENNote;
 @class ENResource;
 @class ENNotebook;
 @class UIWebView;
+
+typedef void (^ENNotePopulateFromWebViewCompletionHandler)(ENNote * note);
 
 @interface ENNote : NSObject
 @property (nonatomic, copy) NSString * title;
@@ -21,5 +24,5 @@
 - (NSArray *)resources;
 - (void)addResource:(ENResource *)resource;
 
-+ (void)populateNoteFromWebView:(UIWebView *)url completion:(void (^)(ENNote *))completion;
++ (void)populateNoteFromWebView:(UIWebView *)url completion:(ENNotePopulateFromWebViewCompletionHandler)completion;
 @end

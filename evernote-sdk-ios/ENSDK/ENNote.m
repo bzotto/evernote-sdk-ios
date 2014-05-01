@@ -74,7 +74,7 @@
     }
 }
 
-+ (void)populateNoteFromWebView:(UIWebView *)webView completion:(void (^)(ENNote *))completion
++ (void)populateNoteFromWebView:(UIWebView *)webView completion:(ENNotePopulateFromWebViewCompletionHandler)completion
 {
     if (!completion) {
         ENSDKLogError(@"+populateNoteFromWebView requires a valid completion block");
@@ -87,6 +87,7 @@
     }
     
     ENWebClipNoteBuilder * builder = [[ENWebClipNoteBuilder alloc] initWithWebView:webView];
+    // The note builder's completion handler has the same signature and behavior as our own, so pass it directly through.
     [builder buildNote:completion];
 }
 

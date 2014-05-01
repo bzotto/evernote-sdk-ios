@@ -244,6 +244,10 @@
 		BE48C70A1911713300025618 /* ENWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C7071911713200025618 /* ENWebArchive.h */; };
 		BE48C70B1911713300025618 /* ENWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C7081911713300025618 /* ENWebArchive.m */; };
 		BE48C70C1911713300025618 /* ENWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C7081911713300025618 /* ENWebArchive.m */; };
+		BE48C70F1912FC1300025618 /* ENLoadingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70D1912FC1300025618 /* ENLoadingViewController.h */; };
+		BE48C7101912FC1300025618 /* ENLoadingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70D1912FC1300025618 /* ENLoadingViewController.h */; };
+		BE48C7111912FC1300025618 /* ENLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70E1912FC1300025618 /* ENLoadingViewController.m */; };
+		BE48C7121912FC1300025618 /* ENLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70E1912FC1300025618 /* ENLoadingViewController.m */; };
 		BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */; };
 		BECDD2F118F5C8F3003736EE /* ENPreferencesStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */; };
 		BECDD2F418F77BC3003736EE /* ENNoteContent.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2F218F77BC3003736EE /* ENNoteContent.h */; };
@@ -472,6 +476,8 @@
 		BE48C70219116D3400025618 /* ENWebResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENWebResource.m; sourceTree = "<group>"; };
 		BE48C7071911713200025618 /* ENWebArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENWebArchive.h; sourceTree = "<group>"; };
 		BE48C7081911713300025618 /* ENWebArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENWebArchive.m; sourceTree = "<group>"; };
+		BE48C70D1912FC1300025618 /* ENLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENLoadingViewController.h; sourceTree = "<group>"; };
+		BE48C70E1912FC1300025618 /* ENLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENLoadingViewController.m; sourceTree = "<group>"; };
 		BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENPreferencesStore.h; sourceTree = "<group>"; };
 		BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENPreferencesStore.m; sourceTree = "<group>"; };
 		BECDD2F218F77BC3003736EE /* ENNoteContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNoteContent.h; sourceTree = "<group>"; };
@@ -768,6 +774,8 @@
 				BE48C70219116D3400025618 /* ENWebResource.m */,
 				BE48C7071911713200025618 /* ENWebArchive.h */,
 				BE48C7081911713300025618 /* ENWebArchive.m */,
+				BE48C70D1912FC1300025618 /* ENLoadingViewController.h */,
+				BE48C70E1912FC1300025618 /* ENLoadingViewController.m */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -1005,6 +1013,7 @@
 				BE2E248118EBA5D500BD7E6E /* NSString+EDAMNilAdditions.h in Headers */,
 				BE2E24DC18EBA5D500BD7E6E /* NSString+ENScrubbing.h in Headers */,
 				BE2E248E18EBA5D500BD7E6E /* ENNoteRef.h in Headers */,
+				BE48C70F1912FC1300025618 /* ENLoadingViewController.h in Headers */,
 				BE2E247E18EBA5D500BD7E6E /* NSRegularExpression+ENAGRegex.h in Headers */,
 				BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */,
 				BE48C6FD19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */,
@@ -1043,6 +1052,7 @@
 				860DF41918FCCE51002B4793 /* ENSDKLogging.h in Headers */,
 				BE48C6F819102CC600025618 /* ENWebContentTransformer.h in Headers */,
 				860DF42D18FCCF06002B4793 /* ENSaveToEvernoteActivity.h in Headers */,
+				BE48C7101912FC1300025618 /* ENLoadingViewController.h in Headers */,
 				BE48C6FE19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */,
 				BECDD34F1908DE29003736EE /* ENSDKAdvanced.h in Headers */,
 				BECDD3501908DE29003736EE /* ENNoteStoreClient.h in Headers */,
@@ -1255,6 +1265,7 @@
 				BE2E24DD18EBA5D500BD7E6E /* NSString+ENScrubbing.m in Sources */,
 				BE2E24D318EBA5D500BD7E6E /* ENOAuthAuthenticator.m in Sources */,
 				BE2E249B18EBA5D500BD7E6E /* NSData+ENBase64.m in Sources */,
+				BE48C7111912FC1300025618 /* ENLoadingViewController.m in Sources */,
 				BE2E249518EBA5D500BD7E6E /* ENSession.m in Sources */,
 				BE2E25DD18F4DCE600BD7E6E /* ENSDKPrivate.m in Sources */,
 				BE2E248518EBA5D500BD7E6E /* NSDataBase64Additions.m in Sources */,
@@ -1334,6 +1345,7 @@
 				860DF43D18FCD022002B4793 /* ENError.m in Sources */,
 				860DF44118FCD022002B4793 /* ENNoteStoreClient.m in Sources */,
 				860DF44318FCD022002B4793 /* ENUserStoreClient.m in Sources */,
+				BE48C7121912FC1300025618 /* ENLoadingViewController.m in Sources */,
 				860DF44618FCD022002B4793 /* EDAMErrors.m in Sources */,
 				860DF44818FCD022002B4793 /* EDAMLimits.m in Sources */,
 				860DF44A18FCD022002B4793 /* EDAMNoteStore.m in Sources */,

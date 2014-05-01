@@ -243,6 +243,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     if (self.authenticator) {
         ENSDKLogInfo(@"Cannot restart authentication while it is still in progress.");
         completion([NSError errorWithDomain:ENErrorDomain code:ENErrorCodeUnknown userInfo:nil]);
+        return;
     }
 
     self.user = nil;
