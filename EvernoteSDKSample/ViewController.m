@@ -10,6 +10,7 @@
 #import <ENSDK/ENSDK.h>
 #import "UserInfoViewController.h"
 #import "SaveActivityViewController.h"
+#import "SVProgressHUD.h"
 
 NS_ENUM(NSInteger, SampleFunctions) {
     kSampleFunctionsUnauthenticate,
@@ -41,6 +42,8 @@ NS_ENUM(NSInteger, SampleFunctions) {
     UIBarButtonItem * backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:NULL];
     [self.navigationItem setBackBarButtonItem:backButton];
     [self update];
+    
+    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.7]];
 }
 
 - (void)update
@@ -159,7 +162,8 @@ NS_ENUM(NSInteger, SampleFunctions) {
         {
             self.webView = [[UIWebView alloc] initWithFrame:self.view.window.bounds];
             self.webView.delegate = self;
-            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://dev.evernote.com"]]];
+            [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.theatlantic.com/technology/print/2014/04/exploding-whales/361444/"]]];
             break;
         }
         default:
@@ -168,37 +172,53 @@ NS_ENUM(NSInteger, SampleFunctions) {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - UIWebViewDelegate
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)clipWebView
 {
-    NSLog(@"Web view fail: %@", error);
-    [self showSimpleAlertWithMessage:@"Failed to load web page to clip."];
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView
-{
-    ;
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    [ENNote populateNoteFromWebView:self.webView completion:^(ENNote * note) {
+    UIWebView * webView = self.webView;
+    self.webView.delegate = nil;
+    [self.webView stopLoading];
+    self.webView = nil;
+    
+    [ENNote populateNoteFromWebView:webView completion:^(ENNote * note) {
         if (!note) {
+            [self finishClip];
             return;
         }
-        [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
         [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
-            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
             NSString * message = nil;
             if (noteRef) {
                 message = @"Web note created.";
             } else {
                 message = @"Failed to create web note.";
             }
+            [self finishClip];
             [self showSimpleAlertWithMessage:message];
         }];
     }];
+}
+
+- (void)finishClip
+{
+    [SVProgressHUD dismiss];
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(clipWebView) object:nil];
+    NSLog(@"Web view fail: %@", error);
+    self.webView = nil;
+    [self finishClip];
+    [self showSimpleAlertWithMessage:@"Failed to load web page to clip."];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    // At the end of every load complete, cancel a pending perform and start a new one. We wait for 3
+    // seconds for the page to "settle down"
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(clipWebView) object:nil];
+    [self performSelector:@selector(clipWebView) withObject:nil afterDelay:3.0];
 }
 
 #pragma mark - UIImagePickerController
@@ -211,7 +231,7 @@ NS_ENUM(NSInteger, SampleFunctions) {
     ENNote * note = [[ENNote alloc] init];
     note.title = @"Photo note";
     [note addResource:resource];
-    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         NSString * message = nil;
@@ -220,6 +240,7 @@ NS_ENUM(NSInteger, SampleFunctions) {
         } else {
             message = @"Failed to create photo note.";
         }
+        [SVProgressHUD dismiss];
         [self showSimpleAlertWithMessage:message];
     }];
     

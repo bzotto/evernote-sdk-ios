@@ -8,10 +8,7 @@
 
 #import "ENHTMLtoENMLConverter.h"
 #import "ENMLConstants.h"
-
-#define AppLogDebug NSLog
-#define AppLogInfo NSLog
-#define AppLogError NSLog
+#import "ENSDKPrivate.h"
 
 @implementation ENHTMLtoENMLConverter
 
@@ -101,7 +98,7 @@
     BOOL success = [_enmlWriter startElement:tag
                               withAttributes:attrDict];
     if (success == NO) {
-      AppLogDebug(@"startElement:%@ returned NO, skipping element and children", tag);
+      ENSDKLogInfo(@"startElement:%@ returned NO, skipping element and children", tag);
       _skipCount++;
     }
   }

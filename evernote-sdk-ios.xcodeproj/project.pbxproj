@@ -248,6 +248,9 @@
 		BE48C7101912FC1300025618 /* ENLoadingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70D1912FC1300025618 /* ENLoadingViewController.h */; };
 		BE48C7111912FC1300025618 /* ENLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70E1912FC1300025618 /* ENLoadingViewController.m */; };
 		BE48C7121912FC1300025618 /* ENLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70E1912FC1300025618 /* ENLoadingViewController.m */; };
+		BE48C71819131AC200025618 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE48C71519131AC200025618 /* LICENSE.txt */; };
+		BE48C71919131AC200025618 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C71719131AC200025618 /* SVProgressHUD.m */; };
+		BEA8992F1913215C001619FE /* angle-mask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA8992E1913215C001619FE /* angle-mask@2x.png */; };
 		BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */; };
 		BECDD2F118F5C8F3003736EE /* ENPreferencesStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */; };
 		BECDD2F418F77BC3003736EE /* ENNoteContent.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2F218F77BC3003736EE /* ENNoteContent.h */; };
@@ -478,6 +481,10 @@
 		BE48C7081911713300025618 /* ENWebArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENWebArchive.m; sourceTree = "<group>"; };
 		BE48C70D1912FC1300025618 /* ENLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENLoadingViewController.h; sourceTree = "<group>"; };
 		BE48C70E1912FC1300025618 /* ENLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENLoadingViewController.m; sourceTree = "<group>"; };
+		BE48C71519131AC200025618 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		BE48C71619131AC200025618 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		BE48C71719131AC200025618 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		BEA8992E1913215C001619FE /* angle-mask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "angle-mask@2x.png"; sourceTree = "<group>"; };
 		BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENPreferencesStore.h; sourceTree = "<group>"; };
 		BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENPreferencesStore.m; sourceTree = "<group>"; };
 		BECDD2F218F77BC3003736EE /* ENNoteContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNoteContent.h; sourceTree = "<group>"; };
@@ -911,9 +918,29 @@
 			path = SendToEvernoteActivity;
 			sourceTree = "<group>";
 		};
+		BE48C71319131AC200025618 /* 3rdparty */ = {
+			isa = PBXGroup;
+			children = (
+				BE48C71419131AC200025618 /* SVProgressHUD */,
+			);
+			path = 3rdparty;
+			sourceTree = "<group>";
+		};
+		BE48C71419131AC200025618 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				BE48C71519131AC200025618 /* LICENSE.txt */,
+				BE48C71619131AC200025618 /* SVProgressHUD.h */,
+				BE48C71719131AC200025618 /* SVProgressHUD.m */,
+				BEA8992E1913215C001619FE /* angle-mask@2x.png */,
+			);
+			path = SVProgressHUD;
+			sourceTree = "<group>";
+		};
 		BECDD3741908FFC1003736EE /* EvernoteSDKSample */ = {
 			isa = PBXGroup;
 			children = (
+				BE48C71319131AC200025618 /* 3rdparty */,
 				BECDD37D1908FFC1003736EE /* AppDelegate.h */,
 				BECDD37E1908FFC1003736EE /* AppDelegate.m */,
 				BECDD3861908FFC1003736EE /* ViewController.h */,
@@ -1180,6 +1207,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEA8992F1913215C001619FE /* angle-mask@2x.png in Resources */,
+				BE48C71819131AC200025618 /* LICENSE.txt in Resources */,
 				86F2D7FD1909EDAA00C0AA7F /* ENSDKResources.bundle in Resources */,
 				BECDD38A1908FFC2003736EE /* Images.xcassets in Resources */,
 				BECDD3791908FFC1003736EE /* InfoPlist.strings in Resources */,
@@ -1375,6 +1404,7 @@
 				BECDD3A9190908A9003736EE /* UserInfoViewController.m in Sources */,
 				BECDD37F1908FFC1003736EE /* AppDelegate.m in Sources */,
 				BECDD37B1908FFC1003736EE /* main.m in Sources */,
+				BE48C71919131AC200025618 /* SVProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

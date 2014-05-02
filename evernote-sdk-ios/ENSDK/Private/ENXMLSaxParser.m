@@ -7,16 +7,12 @@
 //
 
 #import "ENXMLSaxParser.h"
-
+#import "ENSDKPrivate.h"
 #import "ENXMLDTD.h"
 #import "ENXMLUtils.h"
 
 #include <libxml/HTMLtree.h>
 #include <unistd.h>
-
-#define AppLogDebug NSLog
-#define AppLogInfo NSLog
-#define AppLogError NSLog
 
 NSString * const ENXMLSaxParserErrorDomain = @"ENXMLSaxParserErrorDomain";
 
@@ -37,7 +33,7 @@ static void fatalErrorCallback(void *ctx, const char *msg, ...) {
   NSString *message = [NSString stringWithCString:msg encoding:NSUTF8StringEncoding];
   NSString *errorMessage = [[NSString alloc] initWithFormat:message arguments:args];
   va_end(args);
-  AppLogError(@"%s %@", __PRETTY_FUNCTION__, errorMessage);
+  ENSDKLogError(@"ENXMLSaxParser: fatal error %@", errorMessage);
 
   ENXMLSaxParser *parser = (__bridge ENXMLSaxParser *)ctx;
   id<ENXMLSaxParserDelegate> delegate = parser->_delegate;
@@ -55,7 +51,7 @@ static void errorCallback(void *ctx, const char *msg, ...) {
   NSString *message = [NSString stringWithCString:msg encoding:NSUTF8StringEncoding];
   NSString *errorMessage = [[NSString alloc] initWithFormat:message arguments:args];
   va_end(args);
-  AppLogError(@"%s %@", __PRETTY_FUNCTION__, errorMessage);
+  ENSDKLogInfo(@"ENXMLSaxParser: %@ (nonfatal)", errorMessage);
 #if 0
   ENXMLSaxParser *parser = (__bridge ENXMLSaxParser *)ctx;
   id<ENXMLSaxParserDelegate> delegate = parser->_delegate;
@@ -166,7 +162,7 @@ static xmlEntityPtr getEntitySAXCallback (void * ctx,
     return result;
   }
 
-  AppLogInfo(@"Ignoring unknown entity '%s'", name);
+  ENSDKLogInfo(@"Ignoring unknown entity '%s'", name);
   return NULL;
 }
 
@@ -309,11 +305,11 @@ static xmlEntityPtr getEntitySAXCallback (void * ctx,
   NSError *attrError = nil;
   NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:file error:&attrError];
   if (fileAttributes == nil) {
-    AppLogError(@"attributesOfItemAtPath:%@ returned error:%@", file, attrError);
+    ENSDKLogError(@"attributesOfItemAtPath:%@ returned error:%@", file, attrError);
     return NO;
   }
   if ([fileAttributes fileSize] == 0) {
-    AppLogError(@"The file %@ is 0 bytes!", file);
+    ENSDKLogError(@"The file %@ is 0 bytes!", file);
     return NO;
   }
   
@@ -334,7 +330,7 @@ static xmlEntityPtr getEntitySAXCallback (void * ctx,
                              maxLength:pagesize];
     
     if (amountRead < 0) {
-      AppLogInfo(@"read:maxLength: returned: %i", amountRead);
+      ENSDKLogInfo(@"read:maxLength: returned: %i", amountRead);
       _parserHalted = YES;
     }
     else if (amountRead == 0) {
