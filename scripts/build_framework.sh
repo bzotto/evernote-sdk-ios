@@ -31,7 +31,7 @@ mkdir -p "${INSTALL_DIR}/Versions"
 mkdir -p "${INSTALL_DIR}/Versions/${FMK_VERSION}"
 mkdir -p "${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources"
 mkdir -p "${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers"
-mkdir -p "${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers/AdvancedHeaders"
+mkdir -p "${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers/Advanced"
 
 # Creates the internal links.
 # It MUST uses relative path, otherwise will not work when the folder is copied/moved.
@@ -43,7 +43,7 @@ ln -s "Versions/Current/${FMK_NAME}" "${INSTALL_DIR}/${FMK_NAME}"
 # Copies the headers and resources files to the final product folder.
 cp -R "${DEVICE_DIR}/Headers/" "${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers/"
 cp -R "${DEVICE_DIR}/" "${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/"
-cp -R "${DEVICE_DIR}/PrivateHeaders/" "${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers/AdvancedHeaders/"
+cp -R "${DEVICE_DIR}/PrivateHeaders/" "${INSTALL_DIR}/Versions/${FMK_VERSION}/Headers/Advanced/"
 
 # Removes the binary and header from the resources folder.
 rm -r "${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/Headers" "${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/PrivateHeaders" "${INSTALL_DIR}/Versions/${FMK_VERSION}/Resources/${FMK_NAME}"
