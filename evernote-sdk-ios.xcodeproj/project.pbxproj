@@ -278,7 +278,6 @@
 		BECDD35F1908DE2A003736EE /* ENXMLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23DD18EBA5D400BD7E6E /* ENXMLUtils.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BECDD3601908DE2A003736EE /* ENXMLWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23DE18EBA5D400BD7E6E /* ENXMLWriter.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BECDD3611908DE2A003736EE /* NSRegularExpression+ENAGRegex.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23E018EBA5D400BD7E6E /* NSRegularExpression+ENAGRegex.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		BECDD3621908DE2A003736EE /* NSString+EDAMAdditions.m in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23E218EBA5D400BD7E6E /* NSString+EDAMAdditions.m */; settings = {ATTRIBUTES = (Private, ); }; };
 		BECDD3631908DE2A003736EE /* NSData+EvernoteSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23E418EBA5D400BD7E6E /* NSData+EvernoteSDK.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BECDD3641908DE2A003736EE /* NSDataBase64Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23E618EBA5D500BD7E6E /* NSDataBase64Additions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BECDD3651908DE2A003736EE /* NSDate+EDAMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E23E818EBA5D500BD7E6E /* NSDate+EDAMAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1100,7 +1099,6 @@
 				BECDD35F1908DE2A003736EE /* ENXMLUtils.h in Headers */,
 				BECDD3601908DE2A003736EE /* ENXMLWriter.h in Headers */,
 				BECDD3611908DE2A003736EE /* NSRegularExpression+ENAGRegex.h in Headers */,
-				BECDD3621908DE2A003736EE /* NSString+EDAMAdditions.m in Headers */,
 				BECDD3631908DE2A003736EE /* NSData+EvernoteSDK.h in Headers */,
 				BECDD3641908DE2A003736EE /* NSDataBase64Additions.h in Headers */,
 				BECDD3651908DE2A003736EE /* NSDate+EDAMAdditions.h in Headers */,

@@ -28,7 +28,6 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "KSHTMLWriter.h"
 
 /** Utility methods to work with ENML.
  */

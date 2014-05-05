@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Availability.h"
 @class ENNote;
 @class ENResource;
 @class ENNotebook;
