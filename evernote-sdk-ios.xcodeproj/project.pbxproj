@@ -229,28 +229,30 @@
 		BE2E25DA18F4D6C300BD7E6E /* ENMLConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25D818F4D6C200BD7E6E /* ENMLConstants.m */; };
 		BE2E25DD18F4DCE600BD7E6E /* ENSDKPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E25DC18F4DCE600BD7E6E /* ENSDKPrivate.m */; };
 		BE48C6F719102CC600025618 /* ENWebContentTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6F519102CC600025618 /* ENWebContentTransformer.h */; };
-		BE48C6F819102CC600025618 /* ENWebContentTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6F519102CC600025618 /* ENWebContentTransformer.h */; };
 		BE48C6F919102CC600025618 /* ENWebContentTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6F619102CC600025618 /* ENWebContentTransformer.m */; };
 		BE48C6FA19102CC600025618 /* ENWebContentTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6F619102CC600025618 /* ENWebContentTransformer.m */; };
 		BE48C6FD19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6FB19102DD900025618 /* ENWebClipNoteBuilder.h */; };
-		BE48C6FE19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C6FB19102DD900025618 /* ENWebClipNoteBuilder.h */; };
 		BE48C6FF19102DD900025618 /* ENWebClipNoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6FC19102DD900025618 /* ENWebClipNoteBuilder.m */; };
 		BE48C70019102DD900025618 /* ENWebClipNoteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C6FC19102DD900025618 /* ENWebClipNoteBuilder.m */; };
 		BE48C70319116D3400025618 /* ENWebResource.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70119116D3400025618 /* ENWebResource.h */; };
-		BE48C70419116D3400025618 /* ENWebResource.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70119116D3400025618 /* ENWebResource.h */; };
 		BE48C70519116D3400025618 /* ENWebResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70219116D3400025618 /* ENWebResource.m */; };
 		BE48C70619116D3400025618 /* ENWebResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70219116D3400025618 /* ENWebResource.m */; };
 		BE48C7091911713300025618 /* ENWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C7071911713200025618 /* ENWebArchive.h */; };
-		BE48C70A1911713300025618 /* ENWebArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C7071911713200025618 /* ENWebArchive.h */; };
 		BE48C70B1911713300025618 /* ENWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C7081911713300025618 /* ENWebArchive.m */; };
 		BE48C70C1911713300025618 /* ENWebArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C7081911713300025618 /* ENWebArchive.m */; };
 		BE48C70F1912FC1300025618 /* ENLoadingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70D1912FC1300025618 /* ENLoadingViewController.h */; };
-		BE48C7101912FC1300025618 /* ENLoadingViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BE48C70D1912FC1300025618 /* ENLoadingViewController.h */; };
 		BE48C7111912FC1300025618 /* ENLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70E1912FC1300025618 /* ENLoadingViewController.m */; };
 		BE48C7121912FC1300025618 /* ENLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70E1912FC1300025618 /* ENLoadingViewController.m */; };
 		BE48C71819131AC200025618 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE48C71519131AC200025618 /* LICENSE.txt */; };
 		BE48C71919131AC200025618 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C71719131AC200025618 /* SVProgressHUD.m */; };
 		BEA8992F1913215C001619FE /* angle-mask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA8992E1913215C001619FE /* angle-mask@2x.png */; };
+		BEA8998B1917F099001619FE /* TProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E241A18EBA5D500BD7E6E /* TProtocol.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA8998C1917F099001619FE /* TProtocolUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E241E18EBA5D500BD7E6E /* TProtocolUtil.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA8998D1917F099001619FE /* TApplicationException.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242018EBA5D500BD7E6E /* TApplicationException.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA8998E1917F099001619FE /* TException.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242218EBA5D500BD7E6E /* TException.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA8998F1917F099001619FE /* TObjective-C.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242518EBA5D500BD7E6E /* TObjective-C.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA899901917F099001619FE /* TProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242618EBA5D500BD7E6E /* TProcessor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA899911917F099001619FE /* TTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242D18EBA5D500BD7E6E /* TTransport.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */; };
 		BECDD2F118F5C8F3003736EE /* ENPreferencesStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */; };
 		BECDD2F418F77BC3003736EE /* ENNoteContent.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2F218F77BC3003736EE /* ENNoteContent.h */; };
@@ -1071,15 +1073,10 @@
 				860DF40F18FCCE51002B4793 /* ENNoteContent.h in Headers */,
 				860DF41118FCCE51002B4793 /* ENNotebook.h in Headers */,
 				860DF41318FCCE51002B4793 /* ENResource.h in Headers */,
-				BE48C70A1911713300025618 /* ENWebArchive.h in Headers */,
 				860DF41518FCCE51002B4793 /* ENNoteRef.h in Headers */,
-				BE48C70419116D3400025618 /* ENWebResource.h in Headers */,
 				860DF41718FCCE51002B4793 /* ENError.h in Headers */,
 				860DF41918FCCE51002B4793 /* ENSDKLogging.h in Headers */,
-				BE48C6F819102CC600025618 /* ENWebContentTransformer.h in Headers */,
 				860DF42D18FCCF06002B4793 /* ENSaveToEvernoteActivity.h in Headers */,
-				BE48C7101912FC1300025618 /* ENLoadingViewController.h in Headers */,
-				BE48C6FE19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */,
 				BECDD34F1908DE29003736EE /* ENSDKAdvanced.h in Headers */,
 				BECDD3501908DE29003736EE /* ENNoteStoreClient.h in Headers */,
 				BECDD3511908DE29003736EE /* ENUserStoreClient.h in Headers */,
@@ -1096,6 +1093,13 @@
 				BECDD35C1908DE2A003736EE /* ENMIMEUtils.h in Headers */,
 				BECDD35D1908DE2A003736EE /* ENMLWriter.h in Headers */,
 				BECDD35E1908DE2A003736EE /* ENXMLDTD.h in Headers */,
+				BEA8998B1917F099001619FE /* TProtocol.h in Headers */,
+				BEA8998C1917F099001619FE /* TProtocolUtil.h in Headers */,
+				BEA8998D1917F099001619FE /* TApplicationException.h in Headers */,
+				BEA8998E1917F099001619FE /* TException.h in Headers */,
+				BEA8998F1917F099001619FE /* TObjective-C.h in Headers */,
+				BEA899901917F099001619FE /* TProcessor.h in Headers */,
+				BEA899911917F099001619FE /* TTransport.h in Headers */,
 				BECDD35F1908DE2A003736EE /* ENXMLUtils.h in Headers */,
 				BECDD3601908DE2A003736EE /* ENXMLWriter.h in Headers */,
 				BECDD3611908DE2A003736EE /* NSRegularExpression+ENAGRegex.h in Headers */,
