@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 n/a. All rights reserved.
 //
 
-#import "ENSDK.h"
-#import "EDAM/EDAM.h"
+#import <ENSDK/ENSDK.h>
+#import "EDAM.h"
 #import "ENNoteStoreClient.h"
 #import "ENUserStoreClient.h"
 #import "ENPreferencesStore.h"

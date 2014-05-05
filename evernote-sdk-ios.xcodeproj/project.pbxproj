@@ -253,6 +253,8 @@
 		BEA8998F1917F099001619FE /* TObjective-C.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242518EBA5D500BD7E6E /* TObjective-C.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BEA899901917F099001619FE /* TProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242618EBA5D500BD7E6E /* TProcessor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BEA899911917F099001619FE /* TTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E242D18EBA5D500BD7E6E /* TTransport.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA899921917F59C001619FE /* ENStoreClient.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E245018EBA5D500BD7E6E /* ENStoreClient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BEA899931917F7E8001619FE /* ENLinkedNotebookRef.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E244418EBA5D500BD7E6E /* ENLinkedNotebookRef.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2EE18F5C8F3003736EE /* ENPreferencesStore.h */; };
 		BECDD2F118F5C8F3003736EE /* ENPreferencesStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD2EF18F5C8F3003736EE /* ENPreferencesStore.m */; };
 		BECDD2F418F77BC3003736EE /* ENNoteContent.h in Headers */ = {isa = PBXBuildFile; fileRef = BECDD2F218F77BC3003736EE /* ENNoteContent.h */; };
@@ -1102,6 +1104,8 @@
 				BEA899911917F099001619FE /* TTransport.h in Headers */,
 				BECDD35F1908DE2A003736EE /* ENXMLUtils.h in Headers */,
 				BECDD3601908DE2A003736EE /* ENXMLWriter.h in Headers */,
+				BEA899921917F59C001619FE /* ENStoreClient.h in Headers */,
+				BEA899931917F7E8001619FE /* ENLinkedNotebookRef.h in Headers */,
 				BECDD3611908DE2A003736EE /* NSRegularExpression+ENAGRegex.h in Headers */,
 				BECDD3631908DE2A003736EE /* NSData+EvernoteSDK.h in Headers */,
 				BECDD3641908DE2A003736EE /* NSDataBase64Additions.h in Headers */,
