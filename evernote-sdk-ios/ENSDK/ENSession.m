@@ -348,12 +348,14 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     // Note also that this is asynchronous, but the rest of this method gets rid of all the session state,
     // so keep the user store around long enough to see it through, but keep it separate from the
     // normal session state.
-    self.userStorePendingRevocation = self.userStore;
-    [self.userStorePendingRevocation revokeLongSessionWithAuthenticationToken:self.primaryAuthenticationToken success:^{
-        self.userStorePendingRevocation = nil;
-    } failure:^(NSError *error) {
-        self.userStorePendingRevocation = nil;
-    }];
+    if (self.isAuthenticated) {
+        self.userStorePendingRevocation = self.userStore;
+        [self.userStorePendingRevocation revokeLongSessionWithAuthenticationToken:self.primaryAuthenticationToken success:^{
+            self.userStorePendingRevocation = nil;
+        } failure:^(NSError *error) {
+            self.userStorePendingRevocation = nil;
+        }];
+    }
     
     self.isAuthenticated = NO;
     self.user = nil;
@@ -961,7 +963,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (ENUserStoreClient *)userStore
 {
-    if (!_userStore) {
+    if (!_userStore && self.primaryAuthenticationToken) {
         _userStore = [ENUserStoreClient userStoreClientWithUrl:[self userStoreUrl] authenticationToken:self.primaryAuthenticationToken];
     }
     return _userStore;
