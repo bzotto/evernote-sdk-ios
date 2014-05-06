@@ -1,32 +1,32 @@
 //
-//  SSKeychain.m
+//  ENSSKeychain.m
 //  SSToolkit
 //
 //  Created by Sam Soffes on 5/19/10.
 //  Copyright (c) 2009-2011 Sam Soffes. All rights reserved.
 //
 
-#import "SSKeychain.h"
+#import "ENSSKeychain.h"
 
-NSString *const kSSKeychainErrorDomain = @"com.samsoffes.sskeychain";
+NSString *const kENSSKeychainErrorDomain = @"com.samsoffes.sskeychain";
 
-NSString *const kSSKeychainAccountKey = @"acct";
-NSString *const kSSKeychainCreatedAtKey = @"cdat";
-NSString *const kSSKeychainClassKey = @"labl";
-NSString *const kSSKeychainDescriptionKey = @"desc";
-NSString *const kSSKeychainLabelKey = @"labl";
-NSString *const kSSKeychainLastModifiedKey = @"mdat";
-NSString *const kSSKeychainWhereKey = @"svce";
+NSString *const kENSSKeychainAccountKey = @"acct";
+NSString *const kENSSKeychainCreatedAtKey = @"cdat";
+NSString *const kENSSKeychainClassKey = @"labl";
+NSString *const kENSSKeychainDescriptionKey = @"desc";
+NSString *const kENSSKeychainLabelKey = @"labl";
+NSString *const kENSSKeychainLastModifiedKey = @"mdat";
+NSString *const kENSSKeychainWhereKey = @"svce";
 
 #if __IPHONE_4_0 && TARGET_OS_IPHONE  
-CFTypeRef SSKeychainAccessibilityType = NULL;
+CFTypeRef ENSSKeychainAccessibilityType = NULL;
 #endif
 
-@interface SSKeychain ()
+@interface ENSSKeychain ()
 + (NSMutableDictionary *)_queryForService:(NSString *)service account:(NSString *)account;
 @end
 
-@implementation SSKeychain
+@implementation ENSSKeychain
 
 #pragma mark - Getting Accounts
 
@@ -46,7 +46,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 
 
 + (NSArray *)accountsForService:(NSString *)service error:(NSError **)error {
-    OSStatus status = SSKeychainErrorBadArguments;
+    OSStatus status = ENSSKeychainErrorBadArguments;
     NSMutableDictionary *query = [self _queryForService:service account:nil];
 #if __has_feature(objc_arc)
 	[query setObject:(__bridge id)kCFBooleanTrue forKey:(__bridge id)kSecReturnAttributes];
@@ -63,7 +63,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 	status = SecItemCopyMatching((CFDictionaryRef)query, &result);
 #endif
     if (status != noErr && error != NULL) {
-		*error = [NSError errorWithDomain:kSSKeychainErrorDomain code:status userInfo:nil];
+		*error = [NSError errorWithDomain:kENSSKeychainErrorDomain code:status userInfo:nil];
 		return nil;
 	}
 	
@@ -102,10 +102,10 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 
 
 + (NSData *)passwordDataForService:(NSString *)service account:(NSString *)account error:(NSError **)error {
-    OSStatus status = SSKeychainErrorBadArguments;
+    OSStatus status = ENSSKeychainErrorBadArguments;
 	if (!service || !account) {
 		if (error) {
-			*error = [NSError errorWithDomain:kSSKeychainErrorDomain code:status userInfo:nil];
+			*error = [NSError errorWithDomain:kENSSKeychainErrorDomain code:status userInfo:nil];
 		}
 		return nil;
 	}
@@ -123,7 +123,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 #endif
 	
 	if (status != noErr && error != NULL) {
-		*error = [NSError errorWithDomain:kSSKeychainErrorDomain code:status userInfo:nil];
+		*error = [NSError errorWithDomain:kENSSKeychainErrorDomain code:status userInfo:nil];
 		return nil;
 	}
 	
@@ -143,7 +143,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 
 
 + (BOOL)deletePasswordForService:(NSString *)service account:(NSString *)account error:(NSError **)error {
-	OSStatus status = SSKeychainErrorBadArguments;
+	OSStatus status = ENSSKeychainErrorBadArguments;
 	if (service && account) {
 		NSMutableDictionary *query = [self _queryForService:service account:account];
 #if __has_feature(objc_arc)
@@ -153,7 +153,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 #endif
 	}
 	if (status != noErr && error != NULL) {
-		*error = [NSError errorWithDomain:kSSKeychainErrorDomain code:status userInfo:nil];
+		*error = [NSError errorWithDomain:kENSSKeychainErrorDomain code:status userInfo:nil];
 	}
 	return (status == noErr);
     
@@ -179,7 +179,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 
 
 + (BOOL)setPasswordData:(NSData *)password forService:(NSString *)service account:(NSString *)account error:(NSError **)error {
-    OSStatus status = SSKeychainErrorBadArguments;
+    OSStatus status = ENSSKeychainErrorBadArguments;
 	if (password && service && account) {
         [self deletePasswordForService:service account:account];
         NSMutableDictionary *query = [self _queryForService:service account:account];
@@ -190,7 +190,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 #endif
 		
 #if __IPHONE_4_0 && TARGET_OS_IPHONE
-		if (SSKeychainAccessibilityType) {
+		if (ENSSKeychainAccessibilityType) {
 #if __has_feature(objc_arc)
 			[query setObject:(id)[self accessibilityType] forKey:(__bridge id)kSecAttrAccessible];
 #else
@@ -206,7 +206,7 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 #endif
 	}
 	if (status != noErr && error != NULL) {
-		*error = [NSError errorWithDomain:kSSKeychainErrorDomain code:status userInfo:nil];
+		*error = [NSError errorWithDomain:kENSSKeychainErrorDomain code:status userInfo:nil];
 	}
 	return (status == noErr);
 }
@@ -216,16 +216,16 @@ CFTypeRef SSKeychainAccessibilityType = NULL;
 
 #if __IPHONE_4_0 && TARGET_OS_IPHONE 
 + (CFTypeRef)accessibilityType {
-	return SSKeychainAccessibilityType;
+	return ENSSKeychainAccessibilityType;
 }
 
 
 + (void)setAccessibilityType:(CFTypeRef)accessibilityType {
 	CFRetain(accessibilityType);
-	if (SSKeychainAccessibilityType) {
-		CFRelease(SSKeychainAccessibilityType);
+	if (ENSSKeychainAccessibilityType) {
+		CFRelease(ENSSKeychainAccessibilityType);
 	}
-	SSKeychainAccessibilityType = accessibilityType;
+	ENSSKeychainAccessibilityType = accessibilityType;
 }
 #endif
 

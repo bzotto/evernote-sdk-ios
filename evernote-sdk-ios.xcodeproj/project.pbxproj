@@ -57,7 +57,7 @@
 		860DF48718FDDDC4002B4793 /* KSWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E240918EBA5D500BD7E6E /* KSWriter.m */; };
 		860DF48818FDDDC4002B4793 /* KSXMLAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E240B18EBA5D500BD7E6E /* KSXMLAttributes.m */; };
 		860DF48918FDDDC4002B4793 /* KSXMLWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E240D18EBA5D500BD7E6E /* KSXMLWriter.m */; };
-		860DF48A18FDDE33002B4793 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E241418EBA5D500BD7E6E /* SSKeychain.m */; };
+		860DF48A18FDDE33002B4793 /* ENSSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E241418EBA5D500BD7E6E /* ENSSKeychain.m */; };
 		860DF48B18FDDE61002B4793 /* ENAFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E23FC18EBA5D500BD7E6E /* ENAFURLConnectionOperation.m */; };
 		860DF48C18FDDE61002B4793 /* ENGCOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E23FF18EBA5D500BD7E6E /* ENGCOAuth.m */; };
 		860DF48D18FDDE61002B4793 /* NSData+ENBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E240218EBA5D500BD7E6E /* NSData+ENBase64.m */; };
@@ -168,8 +168,8 @@
 		BE2E24A518EBA5D500BD7E6E /* KSXMLWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E240D18EBA5D500BD7E6E /* KSXMLWriter.m */; };
 		BE2E24A618EBA5D500BD7E6E /* NSString+XMLAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E240F18EBA5D500BD7E6E /* NSString+XMLAdditions.h */; };
 		BE2E24A718EBA5D500BD7E6E /* NSString+XMLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E241018EBA5D500BD7E6E /* NSString+XMLAdditions.m */; };
-		BE2E24A818EBA5D500BD7E6E /* SSKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E241318EBA5D500BD7E6E /* SSKeychain.h */; };
-		BE2E24A918EBA5D500BD7E6E /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E241418EBA5D500BD7E6E /* SSKeychain.m */; };
+		BE2E24A818EBA5D500BD7E6E /* ENSSKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E241318EBA5D500BD7E6E /* ENSSKeychain.h */; };
+		BE2E24A918EBA5D500BD7E6E /* ENSSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E241418EBA5D500BD7E6E /* ENSSKeychain.m */; };
 		BE2E24AA18EBA5D500BD7E6E /* TBinaryProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E241818EBA5D500BD7E6E /* TBinaryProtocol.h */; };
 		BE2E24AB18EBA5D500BD7E6E /* TBinaryProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E241918EBA5D500BD7E6E /* TBinaryProtocol.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		BE2E24AC18EBA5D500BD7E6E /* TProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = BE2E241A18EBA5D500BD7E6E /* TProtocol.h */; };
@@ -409,8 +409,8 @@
 		BE2E240F18EBA5D500BD7E6E /* NSString+XMLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLAdditions.h"; sourceTree = "<group>"; };
 		BE2E241018EBA5D500BD7E6E /* NSString+XMLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLAdditions.m"; sourceTree = "<group>"; };
 		BE2E241218EBA5D500BD7E6E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		BE2E241318EBA5D500BD7E6E /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
-		BE2E241418EBA5D500BD7E6E /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
+		BE2E241318EBA5D500BD7E6E /* ENSSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENSSKeychain.h; sourceTree = "<group>"; };
+		BE2E241418EBA5D500BD7E6E /* ENSSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENSSKeychain.m; sourceTree = "<group>"; };
 		BE2E241618EBA5D500BD7E6E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BE2E241818EBA5D500BD7E6E /* TBinaryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBinaryProtocol.h; sourceTree = "<group>"; };
 		BE2E241918EBA5D500BD7E6E /* TBinaryProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBinaryProtocol.m; sourceTree = "<group>"; };
@@ -847,8 +847,8 @@
 			isa = PBXGroup;
 			children = (
 				BE2E241218EBA5D500BD7E6E /* LICENSE */,
-				BE2E241318EBA5D500BD7E6E /* SSKeychain.h */,
-				BE2E241418EBA5D500BD7E6E /* SSKeychain.m */,
+				BE2E241318EBA5D500BD7E6E /* ENSSKeychain.h */,
+				BE2E241418EBA5D500BD7E6E /* ENSSKeychain.m */,
 			);
 			path = SSKeychain;
 			sourceTree = "<group>";
@@ -982,7 +982,7 @@
 				BE2E24B818EBA5D500BD7E6E /* TProcessor.h in Headers */,
 				BE2E24D918EBA5D500BD7E6E /* ENXMLSaxParser.h in Headers */,
 				BE2E24B718EBA5D500BD7E6E /* TObjective-C.h in Headers */,
-				BE2E24A818EBA5D500BD7E6E /* SSKeychain.h in Headers */,
+				BE2E24A818EBA5D500BD7E6E /* ENSSKeychain.h in Headers */,
 				86CB761B18FF4554002F267E /* ENTheme.h in Headers */,
 				BE2E249018EBA5D500BD7E6E /* ENResource.h in Headers */,
 				BE2E24D418EBA5D500BD7E6E /* ENOAuthViewController.h in Headers */,
@@ -1263,7 +1263,7 @@
 				BE2E246718EBA5D500BD7E6E /* EDAMTypes.m in Sources */,
 				BE2E24BB18EBA5D500BD7E6E /* THTTPClient.m in Sources */,
 				BE2E248718EBA5D500BD7E6E /* NSDate+EDAMAdditions.m in Sources */,
-				BE2E24A918EBA5D500BD7E6E /* SSKeychain.m in Sources */,
+				BE2E24A918EBA5D500BD7E6E /* ENSSKeychain.m in Sources */,
 				BE2E246518EBA5D500BD7E6E /* EDAMNoteStore.m in Sources */,
 				BE2E24AB18EBA5D500BD7E6E /* TBinaryProtocol.m in Sources */,
 				BECDD3C9190A2DE7003736EE /* ENSDKResourceLoader.m in Sources */,
@@ -1350,7 +1350,7 @@
 				860DF48B18FDDE61002B4793 /* ENAFURLConnectionOperation.m in Sources */,
 				860DF48C18FDDE61002B4793 /* ENGCOAuth.m in Sources */,
 				860DF48D18FDDE61002B4793 /* NSData+ENBase64.m in Sources */,
-				860DF48A18FDDE33002B4793 /* SSKeychain.m in Sources */,
+				860DF48A18FDDE33002B4793 /* ENSSKeychain.m in Sources */,
 				86F2D802190A348F00C0AA7F /* ENSDKResourceLoader.m in Sources */,
 				86CB761E18FF4554002F267E /* ENTheme.m in Sources */,
 				860DF48518FDDDC4002B4793 /* KSForwardingWriter.m in Sources */,
