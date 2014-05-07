@@ -165,9 +165,11 @@
             [resources addObject:resource];
         }
     }
-    if (resources.count > 0) {
-        [note setResources:resources];
-    }
+    
+    // Always set the resources array, even if empty. If we end up using this EDAMNote to
+    // update an existing note, we always desire the intention of removing any existing resources.
+    [note setResources:resources];
+    
     return note;
 }
 
