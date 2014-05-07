@@ -123,7 +123,7 @@ typedef void (^ENMLHTMLCompletionBlock)(NSString* html, NSError *error);
         [self writeResource:foundResource withAttributes:scrubbedAttributes];
     }
     else {
-        [self.htmlWriter startElement:elementName];
+        [self.htmlWriter startElement:elementName attributes:attributeDict];
     }
     
 }
