@@ -105,6 +105,7 @@
     ENSaveToEvernoteViewController * s2a = [[ENSaveToEvernoteViewController alloc] init];
     s2a.delegate = self;
     UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:s2a];
+    nav.modalPresentationStyle = UIModalPresentationFormSheet;
     return nav;
 }
 
