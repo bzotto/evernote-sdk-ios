@@ -18,6 +18,14 @@
     return [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.0];
 }
 
++(UIColor*)defaultBusinessColor {
+    return [UIColor colorWithRed:77.0/255 green:129.0/255 blue:140.0/255 alpha:1];
+}
+
++(UIColor*)defaultShareColor {
+    return [UIColor colorWithWhite:0.302 alpha:0.800];
+}
+
 BOOL IsIPad() {
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 }

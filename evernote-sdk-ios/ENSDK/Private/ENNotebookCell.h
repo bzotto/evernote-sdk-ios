@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ENNotebook.h"
+#import "ENNotebookTypeView.h"
 
 @interface ENNotebookCell : UITableViewCell
 
@@ -16,5 +17,6 @@
 @property (assign, nonatomic) BOOL isCurrentNotebook;
 @property (strong, nonatomic) ENNotebook *notebook;
 @property (strong, nonatomic) UIButton *checkButton;
+@property (strong, nonatomic) ENNotebookTypeView *notebookTypeView;
 
 @end

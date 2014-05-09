@@ -13,6 +13,8 @@
 
 +(UIColor*)defaultTintColor;
 +(UIColor*)defaultBackgroundColor;
++(UIColor*)defaultBusinessColor;
++(UIColor*)defaultShareColor;
 BOOL IsIPad();
 
 @end

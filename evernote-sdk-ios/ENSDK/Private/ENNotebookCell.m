@@ -11,6 +11,8 @@
 
 @implementation ENNotebookCell
 
+#define COLOR_NOTEBOOK_SHARED_LABEL [UIColor colorWithRed:45.0/255 green:190.0/255 blue:96.0/255 alpha:1]
+#define COLOR_NOTEBOOK_BUSINESS_LABEL [UIColor colorWithRed:77.0/255 green:129.0/255 blue:140.0/255 alpha:1]
 #define kIconTintColor  [UIColor colorWithRed:0.44 green:0.44 blue:0.44 alpha:1]
 #define kCellInsetLeft  38.0
 
@@ -21,7 +23,7 @@
         [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];
         [self.textLabel setTextColor:[UIColor colorWithRed:25.0 / 255.0 green:25.0 / 255.0 blue:25.0 / 255.0 alpha:1.0]];
         [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:11.0]];
-        [self.detailTextLabel setTextColor:[UIColor colorWithRed:93.0 / 255.0 green:93.0 / 255.0 blue:93.0 / 255.0 alpha:1.0]];
+        [self.detailTextLabel setTextColor:COLOR_NOTEBOOK_SHARED_LABEL];
         [self setSeparatorInset:UIEdgeInsetsMake(0.0, kCellInsetLeft, 0.0, 0.0)];
         self.checkButton = [[UIButton alloc] init];
         [self.contentView addSubview:self.checkButton];
@@ -35,16 +37,16 @@
     return self;
 }
 
-- (UIImageView *)businessImageAccessoryView {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ENSDKResources.bundle/ENBusinessIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    [imageView setTintColor:kIconTintColor];
-    return imageView;
+- (ENNotebookTypeView *)businessAccessoryView {
+    _notebookTypeView = [[ENNotebookTypeView alloc] initWithFrame:CGRectMake(0.0, 0.0, 26.0, 26.0)];
+    _notebookTypeView.isBusiness = YES;
+    return _notebookTypeView;
 }
 
-- (UIImageView *)sharedImageAccessoryView {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ENSDKResources.bundle/ENMultiplePeopleIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-    [imageView setTintColor:kIconTintColor];
-    return imageView;
+- (ENNotebookTypeView *)sharedAccessoryView {
+    _notebookTypeView = [[ENNotebookTypeView alloc] initWithFrame:CGRectMake(0.0, 0.0, 26.0, 26.0)];
+    _notebookTypeView.isBusiness = NO;
+    return _notebookTypeView;
 }
 
 - (void)setNotebook:(ENNotebook *)notebook {
@@ -55,9 +57,11 @@
         [self.detailTextLabel setText:nil];
     }
     if ([notebook isBusinessNotebook]) {
-        [self setAccessoryView:[self businessImageAccessoryView]];
+        [self.detailTextLabel setTextColor:COLOR_NOTEBOOK_BUSINESS_LABEL];
+        [self setAccessoryView:[self businessAccessoryView]];
     } else if ([notebook isShared]) {
-        [self setAccessoryView:[self sharedImageAccessoryView]];
+        [self.detailTextLabel setTextColor:COLOR_NOTEBOOK_SHARED_LABEL];
+        [self setAccessoryView:[self sharedAccessoryView]];
     } else {
         [self setAccessoryView:nil];
     }
