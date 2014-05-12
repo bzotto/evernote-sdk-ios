@@ -15,6 +15,8 @@
 +(UIColor*)defaultBackgroundColor;
 +(UIColor*)defaultBusinessColor;
 +(UIColor*)defaultShareColor;
++(UIColor*)defaultSeparatorColor;
 BOOL IsIPad();
+CGFloat OnePxHeight();
 
 @end

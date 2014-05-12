@@ -26,8 +26,16 @@
     return [UIColor colorWithWhite:0.302 alpha:0.800];
 }
 
++(UIColor*)defaultSeparatorColor {
+    return [UIColor colorWithRed:210.0/255.0 green:210.0/255.0 blue:210.0/255.0 alpha:1];
+}
+
 BOOL IsIPad() {
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}
+
+CGFloat OnePxHeight() {
+    return 1.0/[UIScreen mainScreen].scale;
 }
 
 @end

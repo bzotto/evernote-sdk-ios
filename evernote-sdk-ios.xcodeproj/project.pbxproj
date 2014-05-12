@@ -89,6 +89,19 @@
 		86CB761B18FF4554002F267E /* ENTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 86CB761918FF4554002F267E /* ENTheme.h */; };
 		86CB761D18FF4554002F267E /* ENTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CB761A18FF4554002F267E /* ENTheme.m */; };
 		86CB761E18FF4554002F267E /* ENTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 86CB761A18FF4554002F267E /* ENTheme.m */; };
+		86D49E3F191DA4A8001C3581 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 86D49E38191DA4A8001C3581 /* LICENSE */; };
+		86D49E40191DA4A8001C3581 /* RMSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 86D49E39191DA4A8001C3581 /* RMSTextField.h */; };
+		86D49E41191DA4A8001C3581 /* RMSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 86D49E39191DA4A8001C3581 /* RMSTextField.h */; };
+		86D49E42191DA4A8001C3581 /* RMSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D49E3A191DA4A8001C3581 /* RMSTextField.m */; };
+		86D49E43191DA4A8001C3581 /* RMSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D49E3A191DA4A8001C3581 /* RMSTextField.m */; };
+		86D49E44191DA4A8001C3581 /* RMSTokenConstraintManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 86D49E3B191DA4A8001C3581 /* RMSTokenConstraintManager.h */; };
+		86D49E45191DA4A8001C3581 /* RMSTokenConstraintManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 86D49E3B191DA4A8001C3581 /* RMSTokenConstraintManager.h */; };
+		86D49E46191DA4A8001C3581 /* RMSTokenConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D49E3C191DA4A8001C3581 /* RMSTokenConstraintManager.m */; };
+		86D49E47191DA4A8001C3581 /* RMSTokenConstraintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D49E3C191DA4A8001C3581 /* RMSTokenConstraintManager.m */; };
+		86D49E48191DA4A8001C3581 /* RMSTokenView.h in Headers */ = {isa = PBXBuildFile; fileRef = 86D49E3D191DA4A8001C3581 /* RMSTokenView.h */; };
+		86D49E49191DA4A8001C3581 /* RMSTokenView.h in Headers */ = {isa = PBXBuildFile; fileRef = 86D49E3D191DA4A8001C3581 /* RMSTokenView.h */; };
+		86D49E4A191DA4A8001C3581 /* RMSTokenView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D49E3E191DA4A8001C3581 /* RMSTokenView.m */; };
+		86D49E4B191DA4A8001C3581 /* RMSTokenView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D49E3E191DA4A8001C3581 /* RMSTokenView.m */; };
 		86F2D7FB1909ECD300C0AA7F /* libevernote-sdk-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB3D1AD1524ED96001C4534 /* libevernote-sdk-ios.a */; };
 		86F2D7FD1909EDAA00C0AA7F /* ENSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */; };
 		86F2D802190A348F00C0AA7F /* ENSDKResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDD3C7190A2DE7003736EE /* ENSDKResourceLoader.m */; };
@@ -329,6 +342,13 @@
 		86CB761318FF33D4002F267E /* ENSaveToEvernoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENSaveToEvernoteViewController.m; sourceTree = "<group>"; };
 		86CB761918FF4554002F267E /* ENTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENTheme.h; sourceTree = "<group>"; };
 		86CB761A18FF4554002F267E /* ENTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENTheme.m; sourceTree = "<group>"; };
+		86D49E38191DA4A8001C3581 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		86D49E39191DA4A8001C3581 /* RMSTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMSTextField.h; sourceTree = "<group>"; };
+		86D49E3A191DA4A8001C3581 /* RMSTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMSTextField.m; sourceTree = "<group>"; };
+		86D49E3B191DA4A8001C3581 /* RMSTokenConstraintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMSTokenConstraintManager.h; sourceTree = "<group>"; };
+		86D49E3C191DA4A8001C3581 /* RMSTokenConstraintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMSTokenConstraintManager.m; sourceTree = "<group>"; };
+		86D49E3D191DA4A8001C3581 /* RMSTokenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMSTokenView.h; sourceTree = "<group>"; };
+		86D49E3E191DA4A8001C3581 /* RMSTokenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMSTokenView.m; sourceTree = "<group>"; };
 		86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ENSDKResources.bundle; sourceTree = SOURCE_ROOT; };
 		A9BE476B1781FAFA00471BF7 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		BE2E23BF18EBA5D400BD7E6E /* EDAM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDAM.h; sourceTree = "<group>"; };
@@ -616,6 +636,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		86D49E37191DA4A8001C3581 /* RMSTokenView */ = {
+			isa = PBXGroup;
+			children = (
+				86D49E38191DA4A8001C3581 /* LICENSE */,
+				86D49E39191DA4A8001C3581 /* RMSTextField.h */,
+				86D49E3A191DA4A8001C3581 /* RMSTextField.m */,
+				86D49E3B191DA4A8001C3581 /* RMSTokenConstraintManager.h */,
+				86D49E3C191DA4A8001C3581 /* RMSTokenConstraintManager.m */,
+				86D49E3D191DA4A8001C3581 /* RMSTokenView.h */,
+				86D49E3E191DA4A8001C3581 /* RMSTokenView.m */,
+			);
+			path = RMSTokenView;
+			sourceTree = "<group>";
+		};
 		BE2E23BC18EBA5D400BD7E6E /* ENSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -783,6 +817,7 @@
 			isa = PBXGroup;
 			children = (
 				BE7E5F2D1921808B00A4DA30 /* Thrift */,
+				86D49E37191DA4A8001C3581 /* RMSTokenView */,
 				BE2E23FA18EBA5D500BD7E6E /* AFNetworking */,
 				BE2E23FD18EBA5D500BD7E6E /* cocoa-oauth */,
 				BE2E240318EBA5D500BD7E6E /* KSHTMLWriter */,
@@ -946,6 +981,7 @@
 				BE2E24D918EBA5D500BD7E6E /* ENXMLSaxParser.h in Headers */,
 				BE2E24A818EBA5D500BD7E6E /* ENSSKeychain.h in Headers */,
 				BE7E5F461921808B00A4DA30 /* TBinaryProtocol.h in Headers */,
+				86D49E40191DA4A8001C3581 /* RMSTextField.h in Headers */,
 				86CB761B18FF4554002F267E /* ENTheme.h in Headers */,
 				BE2E249018EBA5D500BD7E6E /* ENResource.h in Headers */,
 				BE2E24D418EBA5D500BD7E6E /* ENOAuthViewController.h in Headers */,
@@ -1005,9 +1041,11 @@
 				BE48C70F1912FC1300025618 /* ENLoadingViewController.h in Headers */,
 				BE2E247E18EBA5D500BD7E6E /* NSRegularExpression+ENAGRegex.h in Headers */,
 				BECDD2F018F5C8F3003736EE /* ENPreferencesStore.h in Headers */,
+				86D49E44191DA4A8001C3581 /* RMSTokenConstraintManager.h in Headers */,
 				BE48C6FD19102DD900025618 /* ENWebClipNoteBuilder.h in Headers */,
 				BE48C70319116D3400025618 /* ENWebResource.h in Headers */,
 				BE2E247918EBA5D500BD7E6E /* ENXMLDTD.h in Headers */,
+				86D49E48191DA4A8001C3581 /* RMSTokenView.h in Headers */,
 				BE2E25D918F4D6C300BD7E6E /* ENMLConstants.h in Headers */,
 				86B198571901DB0A008F606A /* ENNotebookPickerButton.h in Headers */,
 				BE2E248218EBA5D500BD7E6E /* NSData+EvernoteSDK.h in Headers */,
@@ -1050,7 +1088,9 @@
 				BECDD3531908DE29003736EE /* EDAM.h in Headers */,
 				BECDD3541908DE29003736EE /* EDAMErrors.h in Headers */,
 				BECDD3551908DE29003736EE /* EDAMLimits.h in Headers */,
+				86D49E41191DA4A8001C3581 /* RMSTextField.h in Headers */,
 				BECDD3561908DE29003736EE /* EDAMNoteStore.h in Headers */,
+				86D49E45191DA4A8001C3581 /* RMSTokenConstraintManager.h in Headers */,
 				BECDD3571908DE29003736EE /* EDAMTypes.h in Headers */,
 				BECDD3581908DE29003736EE /* EDAMUserStore.h in Headers */,
 				BECDD3591908DE29003736EE /* ENMLConstants.h in Headers */,
@@ -1059,6 +1099,14 @@
 				BECDD35C1908DE2A003736EE /* ENMIMEUtils.h in Headers */,
 				BECDD35D1908DE2A003736EE /* ENMLWriter.h in Headers */,
 				BECDD35E1908DE2A003736EE /* ENXMLDTD.h in Headers */,
+				BEA8998B1917F099001619FE /* TProtocol.h in Headers */,
+				BEA8998C1917F099001619FE /* TProtocolUtil.h in Headers */,
+				86D49E49191DA4A8001C3581 /* RMSTokenView.h in Headers */,
+				BEA8998D1917F099001619FE /* TApplicationException.h in Headers */,
+				BEA8998E1917F099001619FE /* TException.h in Headers */,
+				BEA8998F1917F099001619FE /* TObjective-C.h in Headers */,
+				BEA899901917F099001619FE /* TProcessor.h in Headers */,
+				BEA899911917F099001619FE /* TTransport.h in Headers */,
 				BECDD35F1908DE2A003736EE /* ENXMLUtils.h in Headers */,
 				BECDD3601908DE2A003736EE /* ENXMLWriter.h in Headers */,
 				BEA899921917F59C001619FE /* ENStoreClient.h in Headers */,
@@ -1163,6 +1211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE7E5F451921808B00A4DA30 /* LICENSE in Resources */,
+				86D49E3F191DA4A8001C3581 /* LICENSE in Resources */,
 				865C383D18F8BA2400ECB2BA /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1225,6 +1274,8 @@
 				BE7E5F501921808B00A4DA30 /* THTTPClient.m in Sources */,
 				BE2E246518EBA5D500BD7E6E /* EDAMNoteStore.m in Sources */,
 				BE7E5F541921808B00A4DA30 /* TProtocol.m in Sources */,
+				BE2E24AB18EBA5D500BD7E6E /* TBinaryProtocol.m in Sources */,
+				86D49E46191DA4A8001C3581 /* RMSTokenConstraintManager.m in Sources */,
 				BECDD3C9190A2DE7003736EE /* ENSDKResourceLoader.m in Sources */,
 				BE2E247618EBA5D500BD7E6E /* ENMIMEUtils.m in Sources */,
 				BE2E247018EBA5D500BD7E6E /* ENUserStoreClient.m in Sources */,
@@ -1260,6 +1311,7 @@
 				BE2E249B18EBA5D500BD7E6E /* NSData+ENBase64.m in Sources */,
 				BE48C7111912FC1300025618 /* ENLoadingViewController.m in Sources */,
 				BE2E249518EBA5D500BD7E6E /* ENSession.m in Sources */,
+				86D49E4A191DA4A8001C3581 /* RMSTokenView.m in Sources */,
 				BE2E25DD18F4DCE600BD7E6E /* ENSDKPrivate.m in Sources */,
 				BE2E248518EBA5D500BD7E6E /* NSDataBase64Additions.m in Sources */,
 				BE2E248318EBA5D500BD7E6E /* NSData+EvernoteSDK.m in Sources */,
@@ -1274,6 +1326,8 @@
 				BE2E249F18EBA5D500BD7E6E /* KSHTMLWriter.m in Sources */,
 				BE2E24D818EBA5D500BD7E6E /* ENStoreClient.m in Sources */,
 				BE2E24CE18EBA5D500BD7E6E /* ENLinkedNoteStoreClient.m in Sources */,
+				BE2E24BD18EBA5D500BD7E6E /* TMemoryBuffer.m in Sources */,
+				86D49E42191DA4A8001C3581 /* RMSTextField.m in Sources */,
 				BE2E248F18EBA5D500BD7E6E /* ENNoteRef.m in Sources */,
 				BE2E246918EBA5D500BD7E6E /* EDAMUserStore.m in Sources */,
 			);
@@ -1309,6 +1363,7 @@
 				860DF4A118FDDFDB002B4793 /* ENPreferencesStore.m in Sources */,
 				860DF4A218FDDFDB002B4793 /* ENPlaintextNoteContent.m in Sources */,
 				860DF4A318FDDFDB002B4793 /* ENHTMLNoteContent.m in Sources */,
+				86D49E47191DA4A8001C3581 /* RMSTokenConstraintManager.m in Sources */,
 				860DF49018FDDEE2002B4793 /* ENSaveToEvernoteActivity.m in Sources */,
 				860DF48B18FDDE61002B4793 /* ENAFURLConnectionOperation.m in Sources */,
 				860DF48C18FDDE61002B4793 /* ENGCOAuth.m in Sources */,
@@ -1339,6 +1394,7 @@
 				860DF44318FCD022002B4793 /* ENUserStoreClient.m in Sources */,
 				BE48C7121912FC1300025618 /* ENLoadingViewController.m in Sources */,
 				860DF44618FCD022002B4793 /* EDAMErrors.m in Sources */,
+				86D49E4B191DA4A8001C3581 /* RMSTokenView.m in Sources */,
 				860DF44818FCD022002B4793 /* EDAMLimits.m in Sources */,
 				860DF44A18FCD022002B4793 /* EDAMNoteStore.m in Sources */,
 				860DF44C18FCD022002B4793 /* EDAMTypes.m in Sources */,
@@ -1354,6 +1410,7 @@
 				860DF45F18FCD022002B4793 /* NSRegularExpression+ENAGRegex.m in Sources */,
 				860DF46018FCD022002B4793 /* NSString+EDAMAdditions.m in Sources */,
 				860DF46318FCD022002B4793 /* NSData+EvernoteSDK.m in Sources */,
+				86D49E43191DA4A8001C3581 /* RMSTextField.m in Sources */,
 				860DF46518FCD022002B4793 /* NSDataBase64Additions.m in Sources */,
 				860DF46718FCD022002B4793 /* NSDate+EDAMAdditions.m in Sources */,
 			);

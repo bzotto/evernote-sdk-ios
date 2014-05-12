@@ -11,11 +11,11 @@
 #import "ENNotebookPickerButton.h"
 #import "ENSDK.h"
 #import "ENTheme.h"
+#import "RMSTokenView.h"
 
 #define kTitleViewHeight        50.0
-#define kTagsViewHeight         38.0
+#define kTagsViewHeight         44.0
 #define kNotebookViewHeight     50.0
-#define kDividerColor           [UIColor colorWithRed:210.0/255.0 green:210.0/255.0 blue:210.0/255.0 alpha:1]
 #define kTextLeftPadding        20
 
 @interface ENSaveToEvernoteActivity (Private)
@@ -27,17 +27,13 @@
 @property (nonatomic, strong) UITextField * titleField;
 @property (nonatomic, strong) UITextField * notebookField;
 @property (nonatomic, strong) ENNotebookPickerButton * notebookButton;
-@property (nonatomic, strong) UITextField * tagsField;
+@property (nonatomic, strong) RMSTokenView * tagsView;
 
 @property (nonatomic, strong) NSArray * notebookList;
 @property (nonatomic, strong) ENNotebook * currentNotebook;
 @end
 
 @implementation ENSaveToEvernoteViewController
-
-CGFloat OnePxHeight() {
-    return 1.0/[UIScreen mainScreen].scale;
-}
 
 - (void)loadView {
     [super loadView];
@@ -47,7 +43,7 @@ CGFloat OnePxHeight() {
     
     UITextField *titleField = [[UITextField alloc] initWithFrame:CGRectZero];
     titleField.translatesAutoresizingMaskIntoConstraints = NO;
-    [titleField setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:18.0]];
+    [titleField setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0]];
     [titleField setTextColor:[UIColor colorWithRed:0.51 green:0.51 blue:0.51 alpha:1]];
     UIView *paddingView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadding, 0)];
     titleField.leftView = paddingView1;
@@ -57,21 +53,13 @@ CGFloat OnePxHeight() {
     
     UIView *divider1 = [[UIView alloc] initWithFrame:CGRectZero];
     divider1.translatesAutoresizingMaskIntoConstraints = NO;
-    [divider1 setBackgroundColor: kDividerColor];
+    [divider1 setBackgroundColor: [ENTheme defaultSeparatorColor]];
     [self.view addSubview:divider1];
     
-    UITextField *tagsField = [[UITextField alloc] initWithFrame:CGRectZero];
-    tagsField.translatesAutoresizingMaskIntoConstraints = NO;
-    UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kTextLeftPadding, 0)];
-    tagsField.leftView = paddingView2;
-    tagsField.leftViewMode = UITextFieldViewModeAlways;
-    [self.view addSubview:tagsField];
-    self.tagsField = tagsField;
-    
-    UIView *divider2 = [[UIView alloc] initWithFrame:CGRectZero];
-    divider2.translatesAutoresizingMaskIntoConstraints = NO;
-    [divider2 setBackgroundColor:kDividerColor];
-    [self.view addSubview:divider2];
+    RMSTokenView *tagsView = [[RMSTokenView alloc] initWithFrame:CGRectZero];
+    tagsView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:tagsView];
+    self.tagsView = tagsView;
     
     UITextField *notebookField = [[UITextField alloc] initWithFrame:CGRectZero];
     [notebookField setText:NSLocalizedString(@"Notebook", @"Notebook")];
@@ -93,14 +81,14 @@ CGFloat OnePxHeight() {
     
     UIView *divider3 = [[UIView alloc] initWithFrame:CGRectZero];
     divider3.translatesAutoresizingMaskIntoConstraints = NO;
-    [divider3 setBackgroundColor:kDividerColor];
+    [divider3 setBackgroundColor:[ENTheme defaultSeparatorColor]];
     [self.view addSubview:divider3];
     
-    NSString *format = [NSString stringWithFormat:@"V:[titleField(%f)][divider1(%f)][tagsField(>=%f)][divider2(%f)][notebookField(%f)][divider3(%f)]", kTitleViewHeight, OnePxHeight(), kTagsViewHeight, OnePxHeight(), kNotebookViewHeight, OnePxHeight()];
+    NSString *format = [NSString stringWithFormat:@"V:[titleField(%f)][divider1(%f)][tagsView(>=%f)][notebookField(%f)][divider3(%f)]", kTitleViewHeight, OnePxHeight(), kTagsViewHeight, kNotebookViewHeight, OnePxHeight()];
     [self.view addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:format
                                                                        options:NSLayoutFormatAlignAllLeft | NSLayoutFormatAlignAllRight
                                                                        metrics:nil
-                                                                         views:NSDictionaryOfVariableBindings(titleField, divider1, tagsField, divider2, notebookField, divider3)]];
+                                                                         views:NSDictionaryOfVariableBindings(titleField, divider1, tagsView, notebookField, divider3)]];
     [self.view addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[titleField]|"
                                                                        options:0
                                                                        metrics:nil
@@ -119,7 +107,7 @@ CGFloat OnePxHeight() {
         [self.titleField setPlaceholder:NSLocalizedString(@"Add Title", @"Add Title")];
     }
     self.notebookField.delegate = self;
-    self.tagsField.placeholder = NSLocalizedString(@"Add Tag", @"Add Tag");
+    self.tagsView.placeholder = NSLocalizedString(@"Add Tag", @"Add Tag");
 }
 
 - (void)viewDidLoad
@@ -176,17 +164,9 @@ CGFloat OnePxHeight() {
     }
     note.notebook = self.currentNotebook;
     
-    // Parse out tags from between commas and trim whitespace.
-    NSArray * tags = [self.tagsField.text componentsSeparatedByString:@","];
-    NSMutableArray * sanitizedTags = [NSMutableArray array];
-    for (NSString * tag in tags) {
-        NSString * sanitizedTag = [tag stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if (sanitizedTag.length > 1) {
-            [sanitizedTags addObject:sanitizedTag];
-        }
-    }
-    if (sanitizedTags.count > 0) {
-        note.tagNames = sanitizedTags;
+    NSArray * tags = [self.tagsView tokens];
+    if (tags.count > 0) {
+        note.tagNames = tags;
     }
     
     // Upload the note.
