@@ -895,13 +895,13 @@ withResourcesAlternateData:(BOOL)withResourcesAlternateData
  
  This authenticationToken can be used with the various other NoteStore calls to find and retrieve notes, and if the permissions in the shared notebook are sufficient, to make changes to the contents of the notebook.
  
- @param  shareKey The 'shareKey' identifier from the SharedNotebook that was granted to some recipient. This string internally encodes the notebook identifier and a security signature.
+ @param  shareKeyOrGlobalId The 'shareKey' (or 'globalId') identifier from the SharedNotebook that was granted to some recipient. This string internally encodes the notebook identifier and a security signature.
  @param success Success completion block.
  @param failure Failure completion block.
  */
-- (void)authenticateToSharedNotebookWithShareKey:(NSString *)shareKey
-                                         success:(void(^)(EDAMAuthenticationResult *result))success
-                                         failure:(void(^)(NSError *error))failure;
+- (void)authenticateToSharedNotebook:(NSString *)shareKeyOrGlobalId
+                             success:(void(^)(EDAMAuthenticationResult *result))success
+                             failure:(void(^)(NSError *error))failure;
 
 /** This function is used to retrieve extended information about a shared notebook by a guest who has already authenticated to access that notebook.
  

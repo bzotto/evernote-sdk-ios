@@ -103,9 +103,9 @@
 
 #pragma mark - Private Synchronous Helpers
 
-- (EDAMAuthenticationResult *)authenticateToSharedNotebookWithShareKey:(NSString *)shareKey
+- (EDAMAuthenticationResult *)authenticateToSharedNotebookWithGlobalId:(NSString *)globalId
 {
-    return [self.client authenticateToSharedNotebook:shareKey authenticationToken:self.authenticationToken];
+    return [self.client authenticateToSharedNotebook:globalId authenticationToken:self.authenticationToken];
 }
 
 #pragma mark - NoteStore sync methods
@@ -754,12 +754,12 @@ withResourcesAlternateData:(BOOL)withResourcesAlternateData
     } success:success failure:failure];
 }
 
-- (void)authenticateToSharedNotebookWithShareKey:(NSString *)shareKey
-                                         success:(void(^)(EDAMAuthenticationResult *result))success
-                                         failure:(void(^)(NSError *error))failure
+- (void)authenticateToSharedNotebook:(NSString *)shareKeyOrGlobalId
+                             success:(void(^)(EDAMAuthenticationResult *result))success
+                             failure:(void(^)(NSError *error))failure
 {
     [self invokeAsyncIdBlock:^id {
-        return [self.client authenticateToSharedNotebook:shareKey authenticationToken:self.authenticationToken];
+        return [self.client authenticateToSharedNotebook:shareKeyOrGlobalId authenticationToken:self.authenticationToken];
     } success:success failure:failure];
 }
 

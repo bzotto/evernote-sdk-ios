@@ -1087,7 +1087,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         // Create a temporary note store client for the linked note store, with our primary auth token,
         // in order to authenticate to the shared notebook.
         ENNoteStoreClient * linkedNoteStore = [ENNoteStoreClient noteStoreClientWithUrl:linkedNotebookRef.noteStoreUrl authenticationToken:self.primaryAuthenticationToken];
-        auth = [linkedNoteStore authenticateToSharedNotebookWithShareKey:linkedNotebookRef.sharedNotebookGlobalId];
+        auth = [linkedNoteStore authenticateToSharedNotebookWithGlobalId:linkedNotebookRef.sharedNotebookGlobalId];
         [self.authCache setAuthenticationResult:auth forLinkedNotebookGuid:linkedNotebookRef.guid];
     }
     return auth.authenticationToken;

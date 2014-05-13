@@ -62,7 +62,7 @@ FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameChina;
 
 // N.B. This method is synchronous and can throw exceptions.
 // Should be called only from within protected code blocks
-- (EDAMAuthenticationResult *)authenticateToSharedNotebookWithShareKey:(NSString *)shareKey;
+- (EDAMAuthenticationResult *)authenticateToSharedNotebookWithGlobalId:(NSString *)globalId;
 @end
 
 @interface ENUserStoreClient (Private)
