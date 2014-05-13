@@ -18,6 +18,9 @@
  */
 
 #import "THTTPClient.h"
+#import "ENAFURLConnectionOperation.h"
+
+typedef void (^ProgressBlock)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite);
 
 @interface THTTPClient()
 
@@ -27,6 +30,8 @@
 @property (strong, nonatomic) NSString *userAgent;
 @property (assign, nonatomic) int timeout;
 
+@property (copy, nonatomic) ProgressBlock uploadBlock;
+@property (copy, nonatomic) ProgressBlock downloadBlock;
 
 @end
 
@@ -77,7 +82,7 @@
   
   NSString * userAgent = self.userAgent;
   if (userAgent == nil) {
-    userAgent = @"Cocoa/THTTPClient";
+      userAgent = [THTTPClient createClientVersionString];
   }
   [request setValue: userAgent forHTTPHeaderField: @"User-Agent"];
   
@@ -96,9 +101,22 @@
 
   NSURLResponse * response;
   NSError * error;
-  NSData * responseData = [NSURLConnection sendSynchronousRequest: request
-                                                returningResponse: &response
-                                                            error: &error];
+  NSData *responseData = nil;
+  ENAFURLConnectionOperation * httpOperation = [[ENAFURLConnectionOperation alloc] initWithRequest:request];
+ 
+  if(self.uploadBlock) {
+     [httpOperation setUploadProgressBlock:self.uploadBlock];
+  }
+  if(self.downloadBlock) {
+    [httpOperation setDownloadProgressBlock:self.downloadBlock];
+  }
+ 
+  [httpOperation start];
+  [httpOperation waitUntilFinished];
+    
+  responseData = [httpOperation responseData];
+  response = [httpOperation response];
+  error = [httpOperation error];
 
   [self.requestData setLength: 0];
 
@@ -122,10 +140,38 @@
 
   self.responseData = responseData;
   self.responseDataOffset = 0;
+  self.uploadBlock = nil;
+  self.downloadBlock = nil;
 }
 
 - (void)cancel {
     // noop
 }
 
+- (void)setUploadProgressBlock:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block {
+  self.uploadBlock = block;
+}
+
+- (void)setDownloadProgressBlock:(void (^)(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead))block {
+  self.downloadBlock = block;
+}
+
++ (NSString *)createClientVersionString
+{
+	NSString * clientName = nil;
+    NSString * locale = [NSString stringWithFormat: @"%@",
+                         [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode]];
+    
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    NSString *appName = [infoDic valueForKey:(id)kCFBundleNameKey];
+    NSString * buildVersion = [infoDic valueForKey: @"SourceVersion"];
+    if (buildVersion == nil) {
+        buildVersion = [infoDic valueForKey:(id)kCFBundleVersionKey];
+    }
+    clientName = [NSString stringWithFormat: @"%@ iOS/%@ (%@);",
+                  appName,
+                  buildVersion,
+                  locale];
+	return clientName;
+}
 @end

@@ -34,15 +34,15 @@
 @implementation EDAMNoteStoreClient (Utilities)
 
 - (void)cancel {
-//    [[self.outProtocol transport] cancel];
+    [[self.outProtocol transport] cancel];
 }
 
 - (void)setUploadProgressBlock:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block {
-//    [[self.outProtocol transport] setUploadProgressBlock:block];
+    [[self.outProtocol transport] setUploadProgressBlock:block];
 }
 
 - (void)setDownloadProgressBlock:(void (^)(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead))block {
-//    [[self.outProtocol transport] setDownloadProgressBlock:block];
+    [[self.inProtocol transport] setDownloadProgressBlock:block];
 }
 
 @end

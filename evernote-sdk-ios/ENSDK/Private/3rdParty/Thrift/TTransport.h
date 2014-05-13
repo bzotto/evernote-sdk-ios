@@ -38,6 +38,9 @@
 
 - (void) cancel;
 
+- (void)setUploadProgressBlock:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block;
+
+- (void)setDownloadProgressBlock:(void (^)(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead))block;
 @end
 
 @interface TTransportException : TException

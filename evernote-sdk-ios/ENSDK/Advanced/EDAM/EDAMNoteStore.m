@@ -375,6 +375,16 @@
   return self;
 }
 
+- (id<TProtocol>)inProtocol
+{
+    return _inProtocol;
+}
+
+- (id<TProtocol>)outProtocol
+{
+    return _outProtocol;
+}
+
 - (EDAMSyncState *) getSyncState: (NSString *) authenticationToken
 {
   [TProtocolUtil sendMessage:@"getSyncState"
