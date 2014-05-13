@@ -15,7 +15,7 @@
     linkedNotebookRef.guid = linkedNotebook.guid;
     linkedNotebookRef.noteStoreUrl = linkedNotebook.noteStoreUrl;
     linkedNotebookRef.shardId = linkedNotebook.shardId;
-    linkedNotebookRef.shareKey = linkedNotebook.shareKey;
+    linkedNotebookRef.sharedNotebookGlobalId = linkedNotebook.sharedNotebookGlobalId;
     return linkedNotebookRef;
 }
 
@@ -26,7 +26,7 @@
         self.guid = [decoder decodeObjectForKey:@"guid"];
         self.noteStoreUrl = [decoder decodeObjectForKey:@"noteStoreUrl"];
         self.shardId = [decoder decodeObjectForKey:@"shardId"];
-        self.shareKey = [decoder decodeObjectForKey:@"shareKey"];
+        self.sharedNotebookGlobalId = [decoder decodeObjectForKey:@"sharedNotebookGlobalId"];
     }
     return self;
 }
@@ -36,6 +36,6 @@
     [encoder encodeObject:self.guid forKey:@"guid"];
     [encoder encodeObject:self.noteStoreUrl forKey:@"noteStoreUrl"];
     [encoder encodeObject:self.shardId forKey:@"shardId"];
-    [encoder encodeObject:self.shareKey forKey:@"shareKey"];
+    [encoder encodeObject:self.sharedNotebookGlobalId forKey:@"sharedNotebookGlobalId"];
 }
 @end

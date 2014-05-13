@@ -143,7 +143,7 @@
 
     // If reminder is flagged on, set reminderOrder to the current UNIX timestamp by convention.
     if (self.isReminder) {
-        attributes.reminderOrder = [[NSDate date] timeIntervalSince1970] * 1000.0;
+        attributes.reminderOrder = @([[NSDate date] timeIntervalSince1970] * 1000.0);
     }
     
     if (self.sourceUrl) {

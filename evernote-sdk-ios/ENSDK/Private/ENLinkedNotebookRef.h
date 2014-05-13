@@ -16,6 +16,6 @@
 @property (nonatomic, strong) NSString * guid;
 @property (nonatomic, strong) NSString * noteStoreUrl;
 @property (nonatomic, strong) NSString * shardId;
-@property (nonatomic, strong) NSString * shareKey;
+@property (nonatomic, strong) NSString * sharedNotebookGlobalId;
 + (ENLinkedNotebookRef *)linkedNotebookRefFromLinkedNotebook:(EDAMLinkedNotebook *)linkedNotebook;
 @end

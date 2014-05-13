@@ -66,11 +66,11 @@ authenticationToken:(NSString *)authenticationToken
 authenticationResult:(EDAMAuthenticationResult *)authenticationResult
 {
     return [self initWithHost:host
-                   edamUserId:[NSString stringWithFormat:@"%d", authenticationResult.user.id]
+                   edamUserId:[NSString stringWithFormat:@"%d", [authenticationResult.user.id intValue]]
                  noteStoreUrl:authenticationResult.noteStoreUrl
               webApiUrlPrefix:authenticationResult.webApiUrlPrefix
           authenticationToken:authenticationResult.authenticationToken
-               expirationDate:[NSDate dateWithTimeIntervalSince1970:((double)authenticationResult.expiration / 1000.0f)]];
+               expirationDate:[NSDate dateWithTimeIntervalSince1970:((double)[authenticationResult.expiration longLongValue] / 1000.0f)]];
 }
 
 - (BOOL)saveToKeychain

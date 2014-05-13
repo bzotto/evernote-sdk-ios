@@ -8,9 +8,10 @@
 
 #import "ENNoteStoreClient.h"
 #import "ENSDKPrivate.h"
-#import "Thrift.h"
 #import "ENAuthCache.h"
 #import "EDAMNoteStoreClient+Utilities.h"
+#import "THTTPClient.h"
+#import "TBinaryProtocol.h"
 
 @interface ENNoteStoreClient ()
 @property (nonatomic, strong) EDAMNoteStoreClient * client;

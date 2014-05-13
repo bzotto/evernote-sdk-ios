@@ -99,7 +99,7 @@
 - (BOOL)isValid
 {
     NSTimeInterval age = fabs([self.cachedDate timeIntervalSinceNow]);
-    EDAMTimestamp expirationAge = (self.authResult.expiration - self.authResult.currentTime) / 1000;
+    EDAMTimestamp expirationAge = ([self.authResult.expiration longLongValue] - [self.authResult.currentTime longLongValue]) / 1000;
     // we're okay if the token is within 90% of the expiration time
     if (age > (.9 * expirationAge)) {
         return NO;

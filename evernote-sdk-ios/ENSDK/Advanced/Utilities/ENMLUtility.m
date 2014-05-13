@@ -193,8 +193,8 @@ typedef void (^ENMLHTMLCompletionBlock)(NSString* html, NSError *error);
     NSNumber *width = [attributes objectForKey:@"width"];
     NSNumber *height = [attributes objectForKey:@"height"];
     if (width == nil || height == nil) {
-        width = [NSNumber numberWithInt:[resource width]];
-        height = [NSNumber numberWithInt:[resource height]];
+        width = [NSNumber numberWithInt:[resource.width intValue]];
+        height = [NSNumber numberWithInt:[resource.height intValue]];
     }
     
     [imageAttributes setObject:width

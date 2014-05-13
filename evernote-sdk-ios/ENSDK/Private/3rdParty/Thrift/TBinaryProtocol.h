@@ -17,11 +17,18 @@
  * under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "TProcessor.h"
+#import "TProtocol.h"
+#import "TTransport.h"
 
-@protocol TProcessorFactory <NSObject>
+@interface TBinaryProtocol : NSObject <TProtocol>
 
-- (id<TProcessor>) processorForTransport: (id<TTransport>) transport;
+- (id) initWithTransport: (id <TTransport>) transport;
+
+- (id) initWithTransport: (id <TTransport>) transport
+              strictRead: (BOOL) strictRead
+             strictWrite: (BOOL) strictWrite;
+
+- (int32_t) messageSizeLimit;
+- (void) setMessageSizeLimit: (int32_t) sizeLimit;
 
 @end

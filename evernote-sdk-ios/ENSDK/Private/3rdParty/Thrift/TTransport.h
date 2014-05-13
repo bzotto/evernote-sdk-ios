@@ -17,6 +17,8 @@
  * under the License.
  */
 
+#import "TException.h"
+
 @protocol TTransport <NSObject>
 
   /**
@@ -36,8 +38,13 @@
 
 - (void) cancel;
 
-- (void)setUploadProgressBlock:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block;
+@end
 
-- (void)setDownloadProgressBlock:(void (^)(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead))block;
+@interface TTransportException : TException
+
++ (id) exceptionWithReason: (NSString *) reason
+                     error: (NSError *) error;
+
++ (id) exceptionWithReason: (NSString *) reason;
 
 @end

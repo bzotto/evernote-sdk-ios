@@ -19,16 +19,39 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TException : NSException {
-}
+@protocol TProtocol;
 
-+ (id) exceptionWithName: (NSString *) name;
+@interface TException : NSException 
 
-+ (id) exceptionWithName: (NSString *) name
-                  reason: (NSString *) reason;
++ (id) exceptionWithName:(NSString *) name;
 
-+ (id) exceptionWithName: (NSString *) name
-                  reason: (NSString *) reason
-                   error: (NSError *) error;
++ (id) exceptionWithName:(NSString *) name
+                  reason:(NSString *) reason;
+
++ (id) exceptionWithName:(NSString *) name
+                  reason:(NSString *) reason
+                   error:(NSError *) error;
+
+@end
+
+enum {
+  TApplicationException_UNKNOWN = 0,
+  TApplicationException_UNKNOWN_METHOD = 1,
+  TApplicationException_INVALID_MESSAGE_TYPE = 2,
+  TApplicationException_WRONG_METHOD_NAME = 3,
+  TApplicationException_BAD_SEQUENCE_ID = 4,
+  TApplicationException_MISSING_RESULT = 5,
+  TApplicationException_INTERNAL_ERROR = 6,
+  TApplicationException_PROTOCOL_ERROR = 7
+};
+
+@interface TApplicationException : TException
+
++ (TApplicationException *) read: (id <TProtocol>) protocol;
+
+- (void) write: (id <TProtocol>) protocol;
+
++ (TApplicationException *) exceptionWithType: (int) type
+                                       reason: (NSString *) message;
 
 @end

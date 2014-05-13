@@ -20,35 +20,15 @@
 #import <Foundation/Foundation.h>
 #import "TTransport.h"
 
-typedef void (^ProgressBlock)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite);
+@interface THTTPClient : NSObject <TTransport>
 
-@interface THTTPClient : NSObject <TTransport> {
-  NSURL * mURL;
-  NSMutableURLRequest * mRequest;
-  NSMutableData * mRequestData;
-  NSData * mResponseData;
-  int mResponseDataOffset;
-  NSString * mUserAgent;
-  int mTimeout;
-}
+- (id) initWithURL:(NSURL *)aURL;
 
-@property (nonatomic,copy) ProgressBlock uploadBlock;
-@property (nonatomic,copy) ProgressBlock downloadBlock;
+- (id) initWithURL:(NSURL *)aURL
+         userAgent:(NSString *)userAgent
+           timeout:(int)timeout;
 
-/**
- The operation queue which manages operations enqueued by the HTTP client.
- */
-@property (nonatomic,readonly) NSOperationQueue* operationQueue;
-
-- (id) initWithURL: (NSURL *) aURL;
-
-- (id) initWithURL: (NSURL *) aURL
-         userAgent: (NSString *) userAgent
-           timeout: (int) timeout;
-
-- (void) setURL: (NSURL *) aURL;
-
-- (void) cancel;
+@property (strong, nonatomic) NSURL *url;
 
 @end
 

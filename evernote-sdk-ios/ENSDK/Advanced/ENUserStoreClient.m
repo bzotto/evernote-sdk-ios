@@ -8,7 +8,8 @@
 
 #import "ENUserStoreClient.h"
 #import "ENSDKPrivate.h"
-#import "Thrift.h"
+#import "TBinaryProtocol.h"
+#import "THTTPClient.h"
 
 @interface ENUserStoreClient ()
 @property (nonatomic, strong) EDAMUserStoreClient * client;

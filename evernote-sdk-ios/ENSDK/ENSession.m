@@ -305,12 +305,12 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (BOOL)isPremiumUser
 {
-    return self.user.privilege >= PrivilegeLevel_PREMIUM;
+    return [self.user.privilege intValue] >= PrivilegeLevel_PREMIUM;
 }
 
 - (BOOL)isBusinessUser
 {
-    return self.user.accounting.businessIdIsSet;
+    return self.user.accounting.businessId != nil;
 }
 
 - (NSString *)userDisplayName
@@ -329,7 +329,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (EDAMUserID)userID
 {
-    return self.user.id;
+    return [self.user.id intValue];
 }
 
 - (BOOL)appNotebookIsLinked
@@ -498,7 +498,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         context.sharedBusinessNotebooks = [[NSMutableDictionary alloc] init];
         context.sharedBusinessNotebookGuids = [[NSCountedSet alloc] init];
         for (EDAMSharedNotebook * notebook in sharedNotebooks) {
-            [context.sharedBusinessNotebooks setObject:notebook forKey:notebook.shareKey];
+            [context.sharedBusinessNotebooks setObject:notebook forKey:notebook.globalId];
             [context.sharedBusinessNotebookGuids addObject:notebook.notebookGuid];
         }
         
@@ -532,7 +532,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     // account, check for a corresponding business shared notebook (by shareKey). If we find it, also
     // grab its corresponding notebook object from the business notebook list.
     for (EDAMLinkedNotebook * linkedNotebook in [context.linkedPersonalNotebooks copy]) {
-        EDAMSharedNotebook * sharedNotebook = [context.sharedBusinessNotebooks objectForKey:linkedNotebook.shareKey];
+        EDAMSharedNotebook * sharedNotebook = [context.sharedBusinessNotebooks objectForKey:linkedNotebook.sharedNotebookGlobalId];
         if (sharedNotebook) {
             // This linked notebook corresponds to a business notebook.
             EDAMNotebook * businessNotebook = [context.businessNotebooks objectForKey:sharedNotebook.notebookGuid];
@@ -543,7 +543,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
             // one shared notebook record for this notebook GUID. The second one (if not covered by the first) is indicated by the presence of a business notebook
             // on the notebook.
             if ([context.sharedBusinessNotebookGuids countForObject:sharedNotebook.notebookGuid] > 1 ||
-                businessNotebook.businessNotebookIsSet) {
+                businessNotebook.businessNotebook != nil) {
                 result.isShared = YES;
             }
             
@@ -704,8 +704,8 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 - (void)uploadNote_updateWithContext:(ENSessionUploadNoteContext *)context
 {
     context.note.guid = context.refToReplace.guid;
-    context.note.active = YES;
-    if (context.note.notebookGuidIsSet) {
+    context.note.active = @YES;
+    if (context.note.notebookGuid != nil) {
         // Allowing arbitrary update of notebook that the note is in would require a ton of logic that would require deleting and re-creating
         // if it moves across shard (share/business) boundaries. We punt on that whole problem here by simply disallowing notebook change
         // as part of an update flow.
@@ -1087,7 +1087,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         // Create a temporary note store client for the linked note store, with our primary auth token,
         // in order to authenticate to the shared notebook.
         ENNoteStoreClient * linkedNoteStore = [ENNoteStoreClient noteStoreClientWithUrl:linkedNotebookRef.noteStoreUrl authenticationToken:self.primaryAuthenticationToken];
-        auth = [linkedNoteStore authenticateToSharedNotebookWithShareKey:linkedNotebookRef.shareKey];
+        auth = [linkedNoteStore authenticateToSharedNotebookWithShareKey:linkedNotebookRef.sharedNotebookGlobalId];
         [self.authCache setAuthenticationResult:auth forLinkedNotebookGuid:linkedNotebookRef.guid];
     }
     return auth.authenticationToken;

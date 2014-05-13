@@ -18,37 +18,22 @@
  */
 
 #import "TBinaryProtocol.h"
-#import "TProtocolException.h"
-#import "TObjective-C.h"
 
 int32_t VERSION_1 = 0x80010000;
 int32_t VERSION_MASK = 0xffff0000;
 
+@interface TBinaryProtocol()
 
-static TBinaryProtocolFactory * gSharedFactory = nil;
-
-@implementation TBinaryProtocolFactory
-
-+ (TBinaryProtocolFactory *) sharedFactory {
-  if (gSharedFactory == nil) {
-    gSharedFactory = [[TBinaryProtocolFactory alloc] init];
-  }
-
-  return gSharedFactory;
-}
-
-- (TBinaryProtocol *) newProtocolOnTransport: (id <TTransport>) transport {
-  return [[TBinaryProtocol alloc] initWithTransport: transport];
-}
+@property (strong, nonatomic) id <TTransport> transport;
+@property (assign, nonatomic) BOOL strictRead;
+@property (assign, nonatomic) BOOL strictWrite;
+@property (assign, nonatomic) int32_t messageSizeLimit;
 
 @end
 
-
-
 @implementation TBinaryProtocol
 
-- (id) initWithTransport: (id <TTransport>) transport
-{
+- (id) initWithTransport: (id <TTransport>) transport {
   return [self initWithTransport: transport strictRead: NO strictWrite: NO];
 }
 
@@ -57,40 +42,15 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
              strictWrite: (BOOL) strictWrite
 {
   self = [super init];
-  mTransport = [transport retain_stub];
-  mStrictRead = strictRead;
-  mStrictWrite = strictWrite;
+  if (self != nil) {
+    self.transport = transport;
+    self.strictRead = strictRead;
+    self.strictWrite = strictWrite;
+  }
   return self;
 }
 
-
-- (int32_t) messageSizeLimit
-{
-  return mMessageSizeLimit;
-}
-
-
-- (void) setMessageSizeLimit: (int32_t) sizeLimit
-{
-  mMessageSizeLimit = sizeLimit;
-}
-
-
-- (void) dealloc
-{
-  [mTransport release_stub];
-  [super dealloc_stub];
-}
-
-
-- (id <TTransport>) transport
-{
-  return mTransport;
-}
-
-
-- (NSString *) readStringBody: (int) size
-{
+- (NSString *) readStringBody: (int) size {
   char * buffer = malloc(size+1);
   if (!buffer) {
     @throw [TProtocolException exceptionWithName: @"TProtocolException"
@@ -98,7 +58,8 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
                                                    __PRETTY_FUNCTION__,
                                                    size]];;
   }
-  [mTransport readAll: (uint8_t *) buffer offset: 0 length: size];
+  
+  [self.transport readAll: (uint8_t *) buffer offset: 0 length: size];
   buffer[size] = 0;
   NSString * result = [NSString stringWithUTF8String: buffer];
   free(buffer);
@@ -115,7 +76,7 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
     int version = size & VERSION_MASK;
     if (version != VERSION_1) {
       @throw [TProtocolException exceptionWithName: @"TProtocolException"
-                                 reason: @"Bad version in readMessageBegin"];
+                                            reason: @"Bad version in readMessageBegin"];
     }
     if (type != NULL) {
       *type = version & 0x00FF;
@@ -128,16 +89,23 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
     if (sequenceID != NULL) {
       *sequenceID = seqID;
     }
-  } else {
-    if (mStrictRead) {
+  }
+  else {
+    if (self.strictRead) {
       @throw [TProtocolException exceptionWithName: @"TProtocolException"
-                                 reason: @"Missing version in readMessageBegin, old client?"];
+                                            reason: @"Missing version in readMessageBegin, old client?"];
     }
-    if ([self messageSizeLimit] > 0 && size > [self messageSizeLimit]) {
-      @throw [TProtocolException exceptionWithName: @"TProtocolException"
-                                            reason: [NSString stringWithFormat: @"Message too big.  Size limit is: %d Message size is: %d",
-                                                     mMessageSizeLimit,
-                                                     size]];
+    if ([self messageSizeLimit] > 0 && size > self.messageSizeLimit) {
+      if (size == '<!DO' || size == '<htm') {
+        @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                                              reason: @"Service did not return a Thrift structure"];
+      }
+      else {
+        @throw [TProtocolException exceptionWithName: @"TProtocolException"
+                                              reason: [NSString stringWithFormat: @"Message too big.  Size limit is: %d Message size is: %d",
+                                                       self.messageSizeLimit,
+                                                       size]];
+      }
     }
     NSString * messageName = [self readStringBody: size];
     if (name != NULL) {
@@ -154,20 +122,15 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   }
 }
 
-
 - (void) readMessageEnd {}
 
-
-- (void) readStructBeginReturningName: (NSString **) name
-{
+- (void) readStructBeginReturningName: (NSString **) name {
   if (name != NULL) {
     *name = nil;
   }
 }
 
-
 - (void) readStructEnd {}
-
 
 - (void) readFieldBeginReturningName: (NSString **) name
                                 type: (int *) fieldType
@@ -188,88 +151,75 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   }
 }
 
-
 - (void) readFieldEnd {}
 
-
-- (int32_t) readI32
-{
+- (int32_t) readI32 {
   uint8_t i32rd[4];
-  [mTransport readAll: i32rd offset: 0 length: 4];
-  return
-    ((i32rd[0] & 0xff) << 24) |
-    ((i32rd[1] & 0xff) << 16) |
-    ((i32rd[2] & 0xff) <<  8) |
-    ((i32rd[3] & 0xff));
+  [self.transport readAll: i32rd offset: 0 length: 4];
+  
+  return (((i32rd[0] & 0xff) << 24) |
+          ((i32rd[1] & 0xff) << 16) |
+          ((i32rd[2] & 0xff) <<  8) |
+          ((i32rd[3] & 0xff)));
 }
 
 
-- (NSString *) readString
-{
+- (NSString *) readString {
   int size = [self readI32];
   return [self readStringBody: size];
 }
 
-
-- (BOOL) readBool
-{
+- (BOOL) readBool {
   return [self readByte] == 1;
 }
 
-- (uint8_t) readByte
-{
+- (uint8_t) readByte {
   uint8_t myByte;
-  [mTransport readAll: &myByte offset: 0 length: 1];
+  [self.transport readAll: &myByte offset: 0 length: 1];
   return myByte;
 }
 
-- (short) readI16
-{
+- (short) readI16 {
   uint8_t buff[2];
-  [mTransport readAll: buff offset: 0 length: 2];
-  return (short)
-    (((buff[0] & 0xff) << 8) |
-     ((buff[1] & 0xff)));
-  return 0;
+  [self.transport readAll: buff offset: 0 length: 2];
+  return ((short)
+          (((buff[0] & 0xff) << 8) |
+           ((buff[1] & 0xff))));
 }
 
-- (int64_t) readI64;
-{
+- (int64_t) readI64; {
   uint8_t i64rd[8];
-  [mTransport readAll: i64rd offset: 0 length: 8];
-  return
-    ((int64_t)(i64rd[0] & 0xff) << 56) |
-    ((int64_t)(i64rd[1] & 0xff) << 48) |
-    ((int64_t)(i64rd[2] & 0xff) << 40) |
-    ((int64_t)(i64rd[3] & 0xff) << 32) |
-    ((int64_t)(i64rd[4] & 0xff) << 24) |
-    ((int64_t)(i64rd[5] & 0xff) << 16) |
-    ((int64_t)(i64rd[6] & 0xff) <<  8) |
-    ((int64_t)(i64rd[7] & 0xff));
+  [self.transport readAll: i64rd offset: 0 length: 8];
+  
+  return (((int64_t)(i64rd[0] & 0xff) << 56) |
+          ((int64_t)(i64rd[1] & 0xff) << 48) |
+          ((int64_t)(i64rd[2] & 0xff) << 40) |
+          ((int64_t)(i64rd[3] & 0xff) << 32) |
+          ((int64_t)(i64rd[4] & 0xff) << 24) |
+          ((int64_t)(i64rd[5] & 0xff) << 16) |
+          ((int64_t)(i64rd[6] & 0xff) <<  8) |
+          ((int64_t)(i64rd[7] & 0xff)));
 }
 
-- (double) readDouble;
-{
+- (double) readDouble; {
   // FIXME - will this get us into trouble on PowerPC?
   int64_t ieee754 = [self readI64];
   return *((double *) &ieee754);
 }
 
-
-- (NSData *) readBinary
-{
+- (NSData *) readBinary {
   int32_t size = [self readI32];
   uint8_t * buff = malloc(size);
   if (buff == NULL) {
     @throw [TProtocolException
-             exceptionWithName: @"TProtocolException"
-             reason: [NSString stringWithFormat: @"Out of memory.  Unable to allocate %d bytes trying to read binary data.",
-                               size]];
+            exceptionWithName: @"TProtocolException"
+            reason: [NSString stringWithFormat: @"Out of memory.  Unable to allocate %d bytes trying to read binary data.",
+                     size]];
   }
-  [mTransport readAll: buff offset: 0 length: size];
+  
+  [self.transport readAll: buff offset: 0 length: size];
   return [NSData dataWithBytesNoCopy: buff length: size];
 }
-
 
 - (void) readMapBeginReturningKeyType: (int *) keyType
                             valueType: (int *) valueType
@@ -305,9 +255,7 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   }
 }
 
-
 - (void) readSetEnd {}
-
 
 - (void) readListBeginReturningElementType: (int *) elementType
                                       size: (int *) size
@@ -322,41 +270,34 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   }
 }
 
-
 - (void) readListEnd {}
 
-
-- (void) writeByte: (uint8_t) value
-{
-  [mTransport write: &value offset: 0 length: 1];
+- (void) writeByte: (uint8_t) value {
+  [self.transport write: &value offset: 0 length: 1];
 }
-
 
 - (void) writeMessageBeginWithName: (NSString *) name
                               type: (int) messageType
                         sequenceID: (int) sequenceID
 {
-  if (mStrictWrite) {
+  if (self.strictWrite) {
     int version = VERSION_1 | messageType;
     [self writeI32: version];
     [self writeString: name];
     [self writeI32: sequenceID];
-  } else {
+  }
+  else {
     [self writeString: name];
     [self writeByte: messageType];
     [self writeI32: sequenceID];
   }
 }
 
-
 - (void) writeMessageEnd {}
 
-
-- (void) writeStructBeginWithName: (NSString *) name {}
-
+- (void) writeStructBeginWithName: (__unused NSString *) name {}
 
 - (void) writeStructEnd {}
-
 
 - (void) writeFieldBeginWithName: (NSString *) name
                             type: (int) fieldType
@@ -366,7 +307,6 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   [self writeI16: fieldID];
 }
 
-
 - (void) writeI32: (int32_t) value
 {
   uint8_t buff[4];
@@ -374,20 +314,17 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   buff[1] = 0xFF & (value >> 16);
   buff[2] = 0xFF & (value >> 8);
   buff[3] = 0xFF & value;
-  [mTransport write: buff offset: 0 length: 4];
+  [self.transport write: buff offset: 0 length: 4];
 }
 
-- (void) writeI16: (short) value
-{
+- (void) writeI16: (short) value {
   uint8_t buff[2];
   buff[0] = 0xff & (value >> 8);
   buff[1] = 0xff & value;
-  [mTransport write: buff offset: 0 length: 2];
+  [self.transport write: buff offset: 0 length: 2];
 }
 
-
-- (void) writeI64: (int64_t) value
-{
+- (void) writeI64: (int64_t) value {
   uint8_t buff[8];
   buff[0] = 0xFF & (value >> 56);
   buff[1] = 0xFF & (value >> 48);
@@ -397,46 +334,39 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   buff[5] = 0xFF & (value >> 16);
   buff[6] = 0xFF & (value >> 8);
   buff[7] = 0xFF & value;
-  [mTransport write: buff offset: 0 length: 8];
+  [self.transport write: buff offset: 0 length: 8];
 }
 
-- (void) writeDouble: (double) value
-{
+- (void) writeDouble: (double) value {
   // spit out IEEE 754 bits - FIXME - will this get us in trouble on
   // PowerPC?
   [self writeI64: *((int64_t *) &value)];
 }
 
-
-- (void) writeString: (NSString *) value
-{
+- (void) writeString: (NSString *) value {
   if (value != nil) {
     const char * utf8Bytes = [value UTF8String];
-    size_t length = strlen(utf8Bytes);
+    int length = (int)strlen(utf8Bytes);
     [self writeI32: length];
-    [mTransport write: (uint8_t *) utf8Bytes offset: 0 length: length];
-  } else {
+    [self.transport write: (uint8_t *) utf8Bytes offset: 0 length: length];
+  }
+  else {
     // instead of crashing when we get null, let's write out a zero
     // length string
     [self writeI32: 0];
   }
 }
 
-
-- (void) writeBinary: (NSData *) data
-{
-  [self writeI32: [data length]];
-  [mTransport write: [data bytes] offset: 0 length: [data length]];
+- (void) writeBinary: (NSData *) data {
+  [self writeI32: (int)[data length]];
+  [self.transport write: [data bytes] offset: 0 length: (int)[data length]];
 }
 
-- (void) writeFieldStop
-{
+- (void) writeFieldStop {
   [self writeByte: TType_STOP];
 }
 
-
 - (void) writeFieldEnd {}
-
 
 - (void) writeMapBeginWithKeyType: (int) keyType
                         valueType: (int) valueType
@@ -449,7 +379,6 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 
 - (void) writeMapEnd {}
 
-
 - (void) writeSetBeginWithElementType: (int) elementType
                                  size: (int) size
 {
@@ -459,7 +388,6 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 
 - (void) writeSetEnd {}
 
-
 - (void) writeListBeginWithElementType: (int) elementType
                                   size: (int) size
 {
@@ -468,7 +396,6 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 }
 
 - (void) writeListEnd {}
-
 
 - (void) writeBool: (BOOL) value
 {

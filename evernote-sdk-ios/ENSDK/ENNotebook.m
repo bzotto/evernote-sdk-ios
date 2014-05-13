@@ -135,7 +135,7 @@
     
     // Business notebooks are a little trickier. They are always linked, because technically the business owns
     // them. What we really want to know is whether the contact user is the same as the current user.
-    return (self.notebook.contact.id == [[ENSession sharedSession] userID]);
+    return ([self.notebook.contact.id intValue] == [[ENSession sharedSession] userID]);
 }
 
 - (BOOL)isDefaultNotebook
@@ -143,7 +143,7 @@
     if (self.isDefaultNotebookOverride) {
         return YES;
     } else if (self.notebook) {
-        return self.notebook.defaultNotebook;
+        return [self.notebook.defaultNotebook boolValue];
     }
     return NO;
 }
@@ -155,10 +155,10 @@
         return YES;
     }
     
-    int privilege = self.sharedNotebook.privilege;
+    int privilege = [self.sharedNotebook.privilege intValue];
     if (privilege == SharedNotebookPrivilegeLevel_GROUP) {
         // Need to consult the business notebook object privilege.
-        privilege = self.notebook.businessNotebook.privilege;
+        privilege = [self.notebook.businessNotebook.privilege intValue];
     }
     
     if (privilege == SharedNotebookPrivilegeLevel_MODIFY_NOTEBOOK_PLUS_ACTIVITY ||

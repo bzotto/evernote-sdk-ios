@@ -18,9 +18,9 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "TException.h"
 
-#import "TTransport.h"
-
+@protocol TTransport;
 
 enum {
   TMessageType_CALL = 1,
@@ -42,7 +42,8 @@ enum {
   TType_STRUCT = 12,
   TType_MAP    = 13,
   TType_SET    = 14,
-  TType_LIST   = 15
+  TType_LIST   = 15,
+  TType_BINARY = 16,
 };
 
 
@@ -84,7 +85,6 @@ enum {
                                  size: (int *) size;
 - (void) readMapEnd;
 
-
 - (void) readSetBeginReturningElementType: (int *) elementType
                                      size: (int *) size;
 - (void) readSetEnd;
@@ -93,7 +93,6 @@ enum {
 - (void) readListBeginReturningElementType: (int *) elementType
                                       size: (int *) size;
 - (void) readListEnd;
-
 
 - (void) writeMessageBeginWithName: (NSString *) name
                               type: (int) messageType
@@ -132,17 +131,36 @@ enum {
                              size: (int) size;
 - (void) writeMapEnd;
 
-
 - (void) writeSetBeginWithElementType: (int) elementType
                                  size: (int) size;
 - (void) writeSetEnd;
-
 
 - (void) writeListBeginWithElementType: (int) elementType
                                   size: (int) size;
 
 - (void) writeListEnd;
 
-
 @end
 
+@interface TProtocolException : TException
+@end
+
+@interface TProtocolUtil : NSObject
+
++ (void) skipType: (int) type onProtocol: (id <TProtocol>) protocol;
+
++ (void) readFromProtocol:(id<TProtocol>)inProtocol
+               ontoObject:(id)object;
+
++ (id) readMessage:(NSString *)message
+      fromProtocol:(id<TProtocol>)inProtocol
+ withResponseTypes:(NSArray *)responseTypes;
+
++ (void) writeObject:(id)object
+        ontoProtocol:(id<TProtocol>)outProtocol;
+
++ (void) sendMessage:(NSString *)messageName
+          toProtocol:(id<TProtocol>)outProtocol
+        withArgPairs:(NSArray *)argPairs;
+
+@end

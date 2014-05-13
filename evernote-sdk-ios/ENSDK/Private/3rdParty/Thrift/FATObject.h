@@ -1,8 +1,8 @@
 /*
- * EDAMNoteStoreClient+Utilities.m
+ * FATObject.h
  * evernote-sdk-ios
  *
- * Copyright 2012 Evernote Corporation
+ * Copyright 2014 Evernote Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,22 +27,19 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "EDAMNoteStoreClient+Utilities.h"
-#import "TProtocol.h"
-#import "TTransport.h"
+#import <Foundation/Foundation.h>
+#import "FATField.h"
 
-@implementation EDAMNoteStoreClient (Utilities)
+@interface FATObject : NSObject <NSCoding, NSCopying>
 
-- (void)cancel {
-//    [[self.outProtocol transport] cancel];
-}
++ (NSString *) structName;
++ (NSArray *) structFields;
 
-- (void)setUploadProgressBlock:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block {
-//    [[self.outProtocol transport] setUploadProgressBlock:block];
-}
+@end
 
-- (void)setDownloadProgressBlock:(void (^)(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead))block {
-//    [[self.outProtocol transport] setDownloadProgressBlock:block];
-}
+@interface FATException : NSException <NSCoding, NSCopying>
+
++ (NSString *) structName;
++ (NSArray *) structFields;
 
 @end

@@ -169,7 +169,7 @@ NSString * ENStoreClientDidFailWithAuthenticationErrorNotification = @"ENStoreCl
         
         if ([exception respondsToSelector:@selector(errorCode)]) {
             // Evernote Thrift exception classes have an errorCode property
-            int edamErrorCode = [(id)exception errorCode];
+            int edamErrorCode = [[(id)exception errorCode] intValue];
             sanitizedErrorCode = [[self class] sanitizedErrorCodeFromEDAMErrorCode:edamErrorCode];
             userInfo[@"EDAMErrorCode"] = @(edamErrorCode); // Put this in the user info in case the caller cares.            
         } else if ([exception isKindOfClass:[TException class]]) {
@@ -183,10 +183,10 @@ NSString * ENStoreClientDidFailWithAuthenticationErrorNotification = @"ENStoreCl
         
         if ([exception isKindOfClass:[EDAMSystemException class]] == YES) {
             EDAMSystemException* systemException = (EDAMSystemException*)exception;
-            if ([systemException rateLimitDurationIsSet]) {
-                userInfo[@"rateLimitDuration"] = @([systemException rateLimitDuration]);
+            if (systemException.rateLimitDuration) {
+                userInfo[@"rateLimitDuration"] = [systemException rateLimitDuration];
             }
-            if ([systemException messageIsSet]) {
+            if (systemException.message) {
                 userInfo[@"message"] = [systemException message];
             }
         } else if ([exception isKindOfClass:[EDAMNotFoundException class]]) {
