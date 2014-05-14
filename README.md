@@ -1,26 +1,22 @@
-"Simple" Evernote SDK for iOS version 2.0
-=========================================
-
-**HEADS-UP!** This fork of the SDK is unofficial and a work in progress. Although most of the "public" objects are fairly stable, changes are being made overall quite frequently. Some things might well not work as you expect. Your feedback is very valued.
-
-NB: There currently is no "sample app" in the actual Xcode project. There will be one soon. Until then, you can just grab the files directly.
+Evernote Cloud SDK for iOS version 2.0 (beta)
+======================================
 
 What this is
 ------------
-A simple, workflow-oriented library built on the Evernote Cloud API. It's designed to make common tasks a piece of cake!
+A simple, workflow-oriented library built on the Evernote Cloud API. It's designed to drop into your app easily and make the most common tasks very simple to accomplish. It is also the (eventual) successor to the evernote-ios-sdk library, although while this library has beta status, that one is still available and supported.
 
 Installing
 ----------
 
 ### Register for an Evernote API key (and secret)...
 
-You can do this on the [Evernote Developers portal page](http://dev.evernote.com/documentation/cloud/).
+You can do this on the [Evernote Developers portal page](http://dev.evernote.com/documentation/cloud/). Most applications will want to do this-- it's easy and instant.
 
-### ...OR get a Developer Token
+### ...or get a Developer Token
 
-You can also just test-drive the SDK against your personal production Evernote account, if you're afraid of commitment and don't like sandboxes. [Get a developer token here](https://www.evernote.com/api/DeveloperToken.action). Make sure to use the alternate setup instructions given in the "Modify Your App Delegate" section below.
+You can also just test-drive the SDK against your personal production Evernote account, if you're afraid of commitment or are building a one-off tool for yourself. [Get a developer token here](https://www.evernote.com/api/DeveloperToken.action). Make sure to then use the alternate setup instructions given in the "Modify Your App Delegate" section below.
 
-### Include the code
+### Build and include the framework
 
 You have a few options:
 
@@ -35,21 +31,20 @@ You have a few options:
 
 		Framework built successfully! Please find in /Users/echeng/Documents/Evernote/evernote-sdk-ios-new/scripts/..//Products/ENSDK.framework
 
-	Please add the ENSDK.framework and the ENSDKResources.bundle in the Products folder into your projects. Make sure you check "Copy items into destination group's folder (if needed)"
+	Please add the ENSDK.framework and the ENSDKResources.bundle in the Products folder into your projects. Make sure you check "Copy items into destination group's folder (if needed)" This should
 
-- (Alternative) Copy ENSDKResources.bundle and evernote-sdk-ios folder (in the same folder with ENSDKResources.bundle) into your Xcode project directly. This will build the SDK files as part of your project when you build it. 
+- (Alternative) If you want to build the entire SDK source alongside your own project files, you can do that too. Copy ENSDKResources.bundle and the evernote-sdk-ios folder (in the same folder with ENSDKResources.bundle) into your Xcode project directly. Add the new files to your app target.
 
 ### Link with frameworks
 
-evernote-sdk-ios depends on some frameworks, so you'll need to add them to any target's "Link Binary With Libraries" Build Phase.
-Add the following frameworks in the "Link Binary With Libraries" phase
+evernote-sdk-ios depends on a couple system frameworks, so you'll need to add them to any target's "Link Binary With Libraries" Build Phase. Add the following frameworks in the "Link Binary With Libraries" phase
 
 - MobileCoreServices.framework
 - libxml2.dylib
 
 ### Modify your application's main plist file
 
-Create an array key called URL types with a single array sub-item called URL Schemes. Give this a single item with your consumer key prefixed with 'en-'
+Users will have the fastest OAuth experience in your app if they already have the Evernote app installed. To facilitate this, create an array key called URL types with a single array sub-item called URL Schemes. Give this a single item with your consumer key prefixed with 'en-'
 
 	<key>CFBundleURLTypes</key>
 	<array>
@@ -63,15 +58,13 @@ Create an array key called URL types with a single array sub-item called URL Sch
 		</dict>
 	</array>
 
-### Add the header file to any file that uses the Evernote SDK
+### Add the standard header file to any file that uses the Evernote SDK
 
     #import <ENSDK/ENSDK.h>
 
 ### Modify your AppDelegate
 
-First you set up the ENSession, configuring it with your consumer key and secret.
-
-The SDK supports the Yinxiang Biji (Evernote China) service by default. Please make sure your consumer key has been [activated](http://dev.evernote.com/support/) for the China service.
+First you set up the `ENSession`, configuring it with your consumer key and secret.
 
 Do something like this in your AppDelegate's `application:didFinishLaunchingWithOptions:` method.
 
@@ -91,13 +84,13 @@ Do something like this in your AppDelegate's `application:didFinishLaunchingWith
 							      optionalHost:SANDBOX_HOST];
 	}
 
-ALTERNATE: If you are using a Developer Token to access *only* your personal, production account, then *don't* set a consumer key/secret (or the sandbox environment). Instead, give the SDK your developer token and Note Store URL (both personalized and available from [this page](https://www.evernote.com/api/DeveloperToken.action)). Replace the setup call above with the following.
+Alternative if you're using a Developer Token (see above) to access *only* your personal, production account: *don't* set a consumer key/secret (or the sandbox environment). Instead, give the SDK your developer token and Note Store URL (both personalized and available from [this page](https://www.evernote.com/api/DeveloperToken.action)). Replace the setup call above with the following.
 
         [ENSession setSharedSessionDeveloperToken:@"the token string"
                                      noteStoreUrl:@"the url that you got from us"];
 
 
-Do something like this in your AppDelegate's `application:openURL:sourceApplication:annotation:` method. If the method doesn't exist, add it.
+Finally, do something like this in your AppDelegate's `application:openURL:sourceApplication:annotation:` method. If the method doesn't exist, add it.
 
 	- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 		BOOL didHandle = [[ENSession sharedSession] handleOpenURL:url];
@@ -107,12 +100,21 @@ Do something like this in your AppDelegate's `application:openURL:sourceApplicat
 
 Now you're good to go.
 
+N.B. The SDK supports switching between environments to the Yinxiang Biji (Evernote China) service transparently. Please make sure your consumer key has been [activated](http://dev.evernote.com/support/) for the China service before you deploy or test with the China service.
+
+Using the Sample App
+--------------------
+
+The SDK comes with a simple sample application, called (shockingly) `EvernoteSDKSample` so you can see the workflow for basic functionality. This is set up as a target within the Xcode project. Building this project will also build the SDK and link to it as a library. This app demonstrates authentication, creating simple notes, web clips, and using the ENSaveToEvernoteActivity subclass of UIActivity (below).
+
+*Note* You will still need to edit the AppDelegate of the sample to include your consumer key and secret. 
+
 Using the Evernote SDK
 ----------------------
 
 ### Authenticate
 
-You'll need to authenticate the `ENSession`, passing in your view controller.
+When the session starts up, if it's not already authenticated, you'll need to authenticate the `ENSession`, passing in your view controller.
 
 A normal place to do this would be a "link to Evernote" button action.
 
@@ -129,7 +131,7 @@ A normal place to do this would be a "link to Evernote" button action.
         }
     }];
 
-Calling authenticateWithViewController:completion: will start the OAuth process. ENSession will open a new modal view controller, to display Evernote's OAuth web page and handle all the back-and-forth OAuth handshaking. When the user finishes this process, Evernote's modal view controller will be dismissed.
+Calling `-authenticateWithViewController:completion:` will start the OAuth process. ENSession will open a new modal view controller (or bounce to an installed Evernote app if applicable) to display Evernote's OAuth web page and handle all the back-and-forth OAuth handshaking. When the user finishes this process, Evernote's modal view controller will be dismissed.
 
 Authentication credentials are saved on the device once the user grants access, so this step is only necessary as part of an explicit linking. Subsequent access to the shared session will automatically restore the existing session for you. You can ask a session if it's already authenticated using the `-isAuthenticated` property.
 
@@ -195,9 +197,21 @@ This method will capture content from the DOM. Images in the page will be captur
 
 If your app doesn't already have your content into visible web views, you can always create an offscreen `UIWebView` and populate a note from it once loaded. When doing this, please bear in mind that the dimensions of the web view (even when offscreen) can affect the rendered contents. Also note that `UIWebView`'s delegate methods don't indicate when the whole page has "completely" loaded if your page includes linked (remote) resources. 
 
+### Using the UIActivity subclass (share sheet)
+
+Want a simple way of sending content to Evernote without building any UI yourself? We've got it for you. You can use the `ENSaveToEvernoteActivity` class when opening the standard iOS activity panel. The SaveToEvernoteActivity knows how to handle items of type NSString and UIImage (and also can handle pre-created ENResource and ENNote objects). This will place an Evernote logo icon in the activity sheet that the user can choose. They'll get a convenient UI for selecting notebook, title, tags, etc.
+
+    ENSaveToEvernoteActivity * saveActivity = [[ENSaveToEvernoteActivity alloc] init];
+    saveActivity.noteTitle = @"Default title";
+    NSArray * items = [NSArray arrayWithObject:(self.textView.text)];
+    UIActivityViewController * activityController = [[UIActivityViewController alloc] initWithActivityItems:items                                                                              		      
+                                                                                      applicationActivities:@[saveActivity]];
+    [self presentViewController:activityController animated:YES completion:nil];
+
+
 ### What else is in here?
 
-The high level functions include those on `ENSession`, and you can look at `ENNote`, `ENResource`, `ENNotebook` for simple models of these objects as well.
+The high level functions include those on `ENSession`, and you can look at `ENNote`, `ENResource`, `ENNotebook` for simple models of these objects as well. Other things ENSession can do for you is enumerate all notebooks a user has access to 
 
 See below for some initial notes on supporting more advanced functionality via including the "Advanced" header and using the full EDAM layer.
 
@@ -206,19 +220,32 @@ FAQ
 
 ### What iOS versions are supported?
 
-This version of the SDK is designed for iOS 7 (and above). The current public version of the SDK in Evernote's repo supports back to iOS 5.
+This version of the SDK is designed for iOS 7 (and above). 
 
 ### Does the Evernote SDK support ARC?
 
-Obvi. (To use the SDK in a non-ARC project, please use the -fobjc-arc compiler flag on all the files in the Evernote SDK.)
+Yes. (To use the SDK in a non-ARC project, please use the -fobjc-arc compiler flag on all the files in the Evernote SDK.)
 
-### What if I want to do more than the meager few functions offered on ENSession?
+### Evernote can do lots of things that aren't available in ENSession. How can I do more?
 
-ENSession is a really broad, workflow-oriented abstraction layer. It's currently optimized for the creation and upload of new notes, but not a whole lot more. You can get closer to the metal, but it will require a fair bit of understanding of Evernote's object model and API.
+ENSession is an intentionally general, workflow-oriented abstraction layer. It's currently optimized for the creation and upload of new notes. You can get closer to the metal, but it will require a fair bit of understanding of Evernote's object model and API.
 
-First off, import `<ENSDK/Advanced/ENSDKAdvanced.h>` instead of `ENSDK.h`. Then ask an authenticated session for its `-primaryNoteStore`. You can look at the header for `ENNoteStoreClient` to see all the methods offered on it, with block-based completion parameters. Knock yourself out. This note store client won't work with a user's business data or shared notebook data directly; you can get note store clients for those destinations by asking for `-businessNoteStore` and `-noteStoreForLinkedNotebook:`  More info is currently beyond the scope of this README but check out the full developer docs.
+First off, import `<ENSDK/Advanced/ENSDKAdvanced.h>` instead of `ENSDK.h`. Then ask an authenticated session for its `-primaryNoteStore`. You can look at the header for `ENNoteStoreClient` to see all the methods offered on it, with block-based completion parameters. You won't generally be able to use any of the "EN"-prefixed objects in this world; you're at the "EDAM" layer, which are the actual objects that the Evernote service works with. These are powerful but somewhat complex; [please see the full API documentation for information on what you are able to do](http://dev.evernote.com/doc/reference/).
+
+This "primary" note store client can only interact with a user's personal account, and won't work with a user's business data or shared notebook data directly; you can get note store clients for those destinations by asking for `-businessNoteStore` and `-noteStoreForLinkedNotebook:`  
+
+### My app uses an App Notebook. What do I need to do special?
+
+In general, nothing. ENSession will simply return only a single notebook if you `listNotebooks` (unless the user has deleted your app notebook, in which case it will have no results). New notes created in a default (`nil`) notebook will go into your App Notebook.
+
+*Please Note*: ENSession knows how to handle a user selecting any available notebook (including a linked or business notebook) for its App Notebook. However, if you are using the "advanced" functions in the SDK and dropping down to the EDAM layer, you'll need to be aware of the intricacies of managing the potential of talking to a linked notebook. But you can opt-out of allowing users to pick a linked notebook, by simply setting 
+
+    [[ENSession sharedSession].supportsLinkedAppNotebook = NO
+
+as part of your setup, prior to authenticating a user. Our advice is usually to opt out of this unless you are really conversant in the API, but feel free to get in touch for more info.
 
 ### Where can I find out more about the Evernote service, API, and object model for my more sophisticated integration?
 
 Please check out the [Evernote Developers portal page](http://dev.evernote.com/documentation/cloud/).
-Apple style docs are [here](http://dev.evernote.com/documentation/reference/ios/).
+
+Please also see the [complete cloud API documentation](http://dev.evernote.com/doc/reference/)
