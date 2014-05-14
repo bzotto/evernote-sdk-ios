@@ -9,6 +9,7 @@
 #import "ENWebArchive.h"
 
 NSString * const ENWebArchivePboardType = @"Apple Web Archive pasteboard type";
+NSString * const ENWebArchiveDataMIMEType = @"application/x-webarchive";
 
 static NSString * const ENWebArchiveDictionaryMainResourceKey = @"WebMainResource";
 static NSString * const ENWebArchiveDictionarySubresourcesKey = @"WebSubresources";
@@ -66,5 +67,41 @@ static NSString * const ENWebArchiveDictionarySubframeArchivesKey = @"WebSubfram
         self.subframeArchives = subframeArchives;
     }
     return self;
+}
+
+- (id)propertyList
+{
+    NSMutableDictionary * dictionary = [[NSMutableDictionary alloc] init];
+    if (self.mainResource) {
+        dictionary[ENWebArchiveDictionaryMainResourceKey] = [self.mainResource propertyList];
+    }
+    NSMutableArray * subresourcesArray = [[NSMutableArray alloc] init];
+    for (ENWebResource * subresource in self.subresources) {
+        [subresourcesArray addObject:[subresource propertyList]];
+    }
+    dictionary[ENWebArchiveDictionarySubresourcesKey] = subresourcesArray;
+    
+    NSMutableArray * subframeArchivesArray = [[NSMutableArray alloc] init];
+    for (ENWebResource * subframeArchive in self.subframeArchives) {
+        [subframeArchivesArray addObject:[subframeArchive propertyList]];
+    }
+    dictionary[ENWebArchiveDictionarySubframeArchivesKey] = subframeArchivesArray;
+    return dictionary;
+}
+
+- (NSData *)data
+{
+    NSDictionary * propertyList = [self propertyList];
+    NSError * error = nil;
+    NSData * data = [NSPropertyListSerialization dataWithPropertyList:propertyList
+                                                               format:NSPropertyListBinaryFormat_v1_0
+                                                              options:0
+                                                                error:&error];
+    if (!data) {
+        NSLog(@"Error serializing web archive to data: %@", error);
+        return nil;
+    }
+    
+    return data;
 }
 @end

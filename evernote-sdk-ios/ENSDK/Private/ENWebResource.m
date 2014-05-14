@@ -8,6 +8,8 @@
 
 #import "ENWebResource.h"
 
+NSString * const ENWebResourceTextEncodingNameUTF8 = @"UTF-8";
+
 static NSString * const ENWebResourceDictionaryDataKey = @"WebResourceData";
 static NSString * const ENWebResourceDictionaryURLKey = @"WebResourceURL";
 static NSString * const ENWebResourceDictionaryMIMETypeKey = @"WebResourceMIMEType";
@@ -43,5 +45,26 @@ static NSString * const ENWebResourceDictionaryFrameNameKey = @"WebResourceFrame
         self.frameName = frameName;
     }
     return self;
+}
+
+- (id)propertyList
+{
+    NSMutableDictionary * dictionary = [[NSMutableDictionary alloc] init];
+    if (self.data) {
+        dictionary[ENWebResourceDictionaryDataKey] = self.data;
+    }
+    if (self.URL) {
+        dictionary[ENWebResourceDictionaryURLKey] = [self.URL absoluteString];
+    }
+    if (self.MIMEType) {
+        dictionary[ENWebResourceDictionaryMIMETypeKey] = self.MIMEType;
+    }
+    if (self.textEncodingName) {
+        dictionary[ENWebResourceDictionaryTextEncodingNameKey] = self.textEncodingName;
+    }
+    if (self.frameName) {
+        dictionary[ENWebResourceDictionaryFrameNameKey] = self.frameName;
+    }
+    return dictionary;
 }
 @end

@@ -10,6 +10,7 @@
 #import "ENWebResource.h"
 
 extern NSString * const ENWebArchivePboardType;
+extern NSString * const ENWebArchiveDataMIMEType;
 
 @interface ENWebArchive : NSObject
 + (ENWebArchive *)webArchiveWithData:(NSData *)data;
@@ -19,4 +20,6 @@ extern NSString * const ENWebArchivePboardType;
 - (ENWebResource *)mainResource;
 - (NSArray *)subresources;
 - (NSArray *)subframeArchives;
+
+- (NSData *)data;
 @end

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const ENWebResourceTextEncodingNameUTF8;
+
 @interface ENWebResource : NSObject
 + (ENWebResource *)webResourceWithDictionary:(NSDictionary *)dictionary;
 - (id)initWithData:(NSData *)data
@@ -20,4 +22,6 @@
 - (NSString *)MIMEType;
 - (NSString *)textEncodingName;
 - (NSString *)frameName;
+
+- (id)propertyList;
 @end
