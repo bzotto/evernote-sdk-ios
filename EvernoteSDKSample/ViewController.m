@@ -233,7 +233,6 @@ NS_ENUM(NSInteger, SampleFunctions) {
     [note addResource:resource];
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
-        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
         NSString * message = nil;
         if (noteRef) {
             message = @"Photo note created.";
