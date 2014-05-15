@@ -35,8 +35,6 @@
 
 #import <CommonCrypto/CommonHMAC.h>
 
-#import "NSData+ENBase64.h"
-
 // static variables
 static NSString *GCOAuthUserAgent = nil;
 static time_t GCOAuthTimeStampOffset = 0;
@@ -150,7 +148,7 @@ static BOOL GCOAuthUseHTTPSCookieStorage = YES;
     
     // base 64
     NSData *data = [NSData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH];
-    return [data base64EncodedString];
+    return [data base64EncodedStringWithOptions:0];
     
 }
 - (NSString *)signatureBase {

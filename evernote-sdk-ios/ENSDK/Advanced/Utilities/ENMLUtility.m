@@ -31,11 +31,8 @@
 #import "ENSDKAdvanced.h"
 #import "ENMLConstants.h"
 #import "KSHTMLWriter.h"
-#import "NSDataBase64Additions.h"
-
 
 typedef void (^ENMLHTMLCompletionBlock)(NSString* html, NSError *error);
-
 
 @interface ENMLUtility ()
 
@@ -178,7 +175,8 @@ typedef void (^ENMLHTMLCompletionBlock)(NSString* html, NSError *error);
     
     NSMutableDictionary *imageAttributes = [NSMutableDictionary dictionaryWithDictionary:attributes];
     NSString *mime = [resource mime];
-    NSString* imgStr = [NSString stringWithFormat:@"data:%@;base64,%@",mime,[[[resource data] body] enbase64Encoding]];
+    NSString *resourceBodyBase64 = [[[resource data] body] base64EncodedStringWithOptions:0];
+    NSString* imgStr = [NSString stringWithFormat:@"data:%@;base64,%@",mime,resourceBodyBase64];
 
     [imageAttributes setObject:imgStr
                         forKey:@"src"];
