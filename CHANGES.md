@@ -1,3 +1,9 @@
+= 2.0
+
+* New workflow-oriented SDK surface via ENSession. (EDAM layer still available; see README).
+* SDK will as a .framework via a command-line script for easy inclusion in projects.
+* Significantly streamlined code size.
+
 = 1.3.0 
 
 * ENML writer
