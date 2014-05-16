@@ -1157,7 +1157,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = n/a;
+				ORGANIZATIONNAME = "Evernote Corporation";
 			};
 			buildConfigurationList = 0BB3D1A71524ED96001C4534 /* Build configuration list for PBXProject "evernote-sdk-ios" */;
 			compatibilityVersion = "Xcode 3.2";
