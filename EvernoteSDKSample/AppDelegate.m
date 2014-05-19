@@ -14,6 +14,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#warning Add Consumer Key and Consumer Secret, but also modify your app's Info.plist according to documentation!
+#warning Remove these warnings once done with it.
+
     // Set shared session key information.
     [ENSession setSharedSessionConsumerKey:@"your key"
                             consumerSecret:@"your secret"
