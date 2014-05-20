@@ -152,9 +152,6 @@
     
     // Setup note attributes. Use app bundle name for source application unless the app wants to override.
     NSString * sourceApplication = [[ENSession sharedSession] sourceApplication];
-    if (!sourceApplication) {
-        sourceApplication = [[NSBundle mainBundle] bundleIdentifier];
-    }
     EDAMNoteAttributes * attributes = [[EDAMNoteAttributes alloc] init];
     attributes.sourceApplication = sourceApplication;
 

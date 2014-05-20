@@ -70,4 +70,27 @@
 {
     return [NSKeyedArchiver archivedDataWithRootObject:self];
 }
+
+- (NSString *)description
+{
+    NSMutableString * str = [[NSMutableString alloc] init];
+    NSString * typeStr = nil;
+    switch (self.type) {
+        case ENNoteRefTypePersonal:
+            typeStr = @"personal";
+            break;
+        case ENNoteRefTypeBusiness:
+            typeStr = @"business";
+            break;
+        case ENNoteRefTypeShared:
+            typeStr = @"shared";
+            break;
+    }
+    [str appendFormat:@"<%@: %p; guid = %@; type = %@", [self class], self, self.guid, typeStr];
+    if (self.linkedNotebook) {
+        [str appendFormat:@"; link shard = %@", self.linkedNotebook.shardId];
+    }
+    [str appendString:@">"];
+    return str;
+}
 @end

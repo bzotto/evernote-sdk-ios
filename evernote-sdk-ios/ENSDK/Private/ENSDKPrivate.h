@@ -83,6 +83,12 @@ FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameChina;
 // N.B. This method is synchronous and can throw exceptions.
 // Should be called only from within protected code blocks
 - (EDAMAuthenticationResult *)authenticateToSharedNotebookWithGlobalId:(NSString *)globalId;
+
+// Private pesudo-recursive method that gets all matching notes batch by batch until exhausted.
+- (void)findNotesMetadataWithFilter:(EDAMNoteFilter *)filter
+                         resultSpec:(EDAMNotesMetadataResultSpec *)resultSpec
+                            success:(void(^)(NSArray *notesMetadataList))success
+                            failure:(void(^)(NSError *error))failure;
 @end
 
 @interface ENUserStoreClient (Private)
@@ -96,6 +102,11 @@ FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameChina;
 @interface ENPreferencesStore (Private)
 - (id)initWithStoreFilename:(NSString *)filename;
 @end
+
+// Bit twiddling macros
+#define EN_FLAG_ISSET(v, f)	(!!((v) & (f)))
+#define EN_FLAG_SET(v, f)	((v) |= (f))
+#define EN_FLAG_CLEAR(v, f)	((v) &= (~(f)))
 
 // Logging utility macros.
 #define ENSDKLogInfo(...) \

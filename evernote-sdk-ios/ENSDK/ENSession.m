@@ -42,6 +42,11 @@ NSString * const ENSessionHostSandbox = @"sandbox.evernote.com";
 NSString * const ENSessionDidAuthenticateNotification = @"ENSessionDidAuthenticateNotification";
 NSString * const ENSessionDidUnauthenticateNotification = @"ENSessionDidUnauthenticateNotification";
 
+// Values visible publicly.
+NSUInteger ENSessionSearchScopeDefault = ENSessionSearchScopePersonal;
+NSUInteger ENSessionSearchScopeAll = NSIntegerMax;
+NSUInteger ENSessionSortOrderDefault = ENSessionSortOrderTitle;
+
 // Constants valid only in this file.
 static NSString * ENSessionBootstrapServerBaseURLStringCN  = @"app.yinxiang.com";
 static NSString * ENSessionBootstrapServerBaseURLStringUS  = @"www.evernote.com";
@@ -68,7 +73,7 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 @property (nonatomic, strong) NSMutableDictionary * sharedNotebooks;
 @property (nonatomic, assign) NSInteger pendingSharedNotebooks;
 @property (nonatomic, strong) NSError * error;
-@property (nonatomic, strong) ENSessionListNotebooksCompletionHandler completion;
+@property (nonatomic, copy) ENSessionListNotebooksCompletionHandler completion;
 @end
 
 @interface ENSessionUploadNoteContext : NSObject
@@ -76,16 +81,32 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 @property (nonatomic, strong) ENNoteRef * refToReplace;
 @property (nonatomic, strong) ENNotebook * notebook;
 @property (nonatomic, assign) ENSessionUploadPolicy policy;
-@property (nonatomic, strong) ENSessionUploadNoteCompletionHandler completion;
-@property (nonatomic, strong) ENSessionUploadNoteProgressHandler progress;
+@property (nonatomic, copy) ENSessionUploadNoteCompletionHandler completion;
+@property (nonatomic, copy) ENSessionUploadNoteProgressHandler progress;
 @property (nonatomic, strong) ENNoteStoreClient * noteStore;
 @property (nonatomic, strong) ENNoteRef * noteRef;
+@end
+
+@interface ENSessionFindNotesContext : NSObject
+@property (nonatomic, strong) ENNotebook * scopeNotebook;
+@property (nonatomic, assign) ENSessionSearchScope scope;
+@property (nonatomic, assign) ENSessionSortOrder sortOrder;
+@property (nonatomic, strong) EDAMNoteFilter * noteFilter;
+@property (nonatomic, strong) EDAMNotesMetadataResultSpec * resultSpec;
+@property (nonatomic, assign) BOOL requiresLocalMerge;
+@property (nonatomic, assign) BOOL sortAscending;
+@property (nonatomic, strong) NSArray * allNotebooks;
+@property (nonatomic, strong) NSMutableArray * linkedNotebooksToSearch;
+@property (nonatomic, strong) NSMutableArray * findMetadataResults;
+@property (nonatomic, strong) NSSet * resultGuidsFromBusiness;
+@property (nonatomic, strong) NSArray * results;
+@property (nonatomic, copy) ENSessionFindNotesCompletionHandler completion;
 @end
 
 @interface ENSession () <ENLinkedNoteStoreClientDelegate, ENBusinessNoteStoreClientDelegate, ENOAuthAuthenticatorDelegate>
 @property (nonatomic, assign) BOOL supportsLinkedAppNotebook;
 @property (nonatomic, strong) ENOAuthAuthenticator * authenticator;
-@property (nonatomic, strong) ENSessionAuthenticateCompletionHandler authenticationCompletion;
+@property (nonatomic, copy) ENSessionAuthenticateCompletionHandler authenticationCompletion;
 
 @property (nonatomic, copy) NSString * sessionHost;
 @property (nonatomic, assign) BOOL isAuthenticated;
@@ -345,6 +366,14 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         return self.user.accounting.businessName;
     }
     return nil;
+}
+
+- (NSString *)sourceApplication
+{
+    if (!_sourceApplication) {
+        return [[NSBundle mainBundle] bundleIdentifier];
+    }
+    return _sourceApplication;
 }
 
 - (EDAMUserID)userID
@@ -893,6 +922,317 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     }];
 }
 
+#pragma mark - findNotes
+
+- (void)findNotesWithSearch:(ENNoteSearch *)noteSearch
+                 inNotebook:(ENNotebook *)notebook
+                    orScope:(ENSessionSearchScope)scope
+                  sortOrder:(ENSessionSortOrder)sortOrder
+                 completion:(ENSessionFindNotesCompletionHandler)completion;
+{
+    if (!completion) {
+        [NSException raise:NSInvalidArgumentException format:@"handler required"];
+        return;
+    }
+    
+    if (!noteSearch) {
+        ENSDKLogError(@"noteSearch parameter is required to get search results");
+        completion(@[], nil);
+        return;
+    }
+    
+    if (!self.isAuthenticated) {
+        completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeAuthExpired userInfo:nil]);
+        return;
+    }
+    
+    // Validate the scope and sort arguments.
+    if (notebook && scope != ENSessionSearchScopeNone) {
+        ENSDKLogError(@"No search scope necessary if notebook provided.");
+        scope = ENSessionSearchScopeNone;
+    } else if (!notebook && scope == ENSessionSearchScopeNone) {
+        ENSDKLogError(@"Search scope or notebook must be specified. Defaulting to personal scope.");
+        scope = ENSessionSearchScopeDefault;
+    }
+    
+    BOOL requiresLocalMerge = NO;
+    if (scope != ENSessionSearchScopeNone) {
+        // Check for multiple scopes. Because linked scope can subsume multiple linked notebooks, that *always* triggers
+        // the multiple scopes. If not, then both personal and business must be set together.
+        if ((EN_FLAG_ISSET(scope, ENSessionSearchScopePersonal) && EN_FLAG_ISSET(scope, ENSessionSearchScopeBusiness)) ||
+            EN_FLAG_ISSET(scope, ENSessionSearchScopePersonalLinked)) {
+            // If we're asked for multiple scopes, relevance is not longer supportable (since we
+            // don't know how to combine relevance on the client), so default to updated date,
+            // which is probably the closest proxy to relevance.
+            if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRelevance)) {
+                ENSDKLogError(@"Cannot sort by relevance across multiple search scopes. Using update date.");
+                EN_FLAG_CLEAR(sortOrder, ENSessionSortOrderRelevance);
+                EN_FLAG_SET(sortOrder, ENSessionSortOrderRecentlyUpdated);
+            }
+            requiresLocalMerge = YES;
+        }
+    }
+    
+    EDAMNotesMetadataResultSpec * resultSpec = [[EDAMNotesMetadataResultSpec alloc] init];
+    resultSpec.includeNotebookGuid = @YES;
+    resultSpec.includeTitle = @YES;
+    if (requiresLocalMerge) {
+        if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRecentlyCreated)) {
+            resultSpec.includeCreated = @YES;
+        } else if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRecentlyUpdated)) {
+            resultSpec.includeUpdated = @YES;
+        }
+    }
+    
+    EDAMNoteFilter * noteFilter = [[EDAMNoteFilter alloc] init];
+    noteFilter.words = noteSearch.searchString;
+    
+    if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderTitle)) {
+        noteFilter.order = @(NoteSortOrder_TITLE);
+    } else if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRecentlyCreated)) {
+        noteFilter.order = @(NoteSortOrder_CREATED);
+    } else if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRecentlyUpdated)) {
+        noteFilter.order = @(NoteSortOrder_UPDATED);
+    } else if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRelevance)) {
+        noteFilter.order = @(NoteSortOrder_RELEVANCE);
+    }
+    
+    // "Normal" sort is ascending for titles, and descending for dates and relevance.
+    BOOL sortAscending = EN_FLAG_ISSET(sortOrder, ENSessionSortOrderTitle) ? YES : NO;
+    if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderReverse)) {
+        sortAscending = !sortAscending;
+    }
+    noteFilter.ascending = @(sortAscending);
+
+    if (notebook) {
+        noteFilter.notebookGuid = notebook.guid;
+    }
+    
+    // Set up context.
+    ENSessionFindNotesContext * context= [[ENSessionFindNotesContext alloc] init];
+    context.completion = completion;
+    context.scopeNotebook = notebook;
+    context.scope = scope;
+    context.sortOrder = sortOrder;
+    context.noteFilter = noteFilter;
+    context.resultSpec = resultSpec;
+    context.findMetadataResults = [[NSMutableArray alloc] init];
+    context.requiresLocalMerge = requiresLocalMerge;
+    context.sortAscending = sortAscending;
+    
+    // If we have a scope notebook, we already know what notebook the results will appear in.
+    // If we don't have a scope notebook, then we need to query for all the notebooks to determine
+    // where to search.
+    if (!context.scopeNotebook) {
+        [self findNotes_listNotebooksWithContext:context];
+        return;
+    }
+    
+    // Go directly to the next step.
+    [self findNotes_findInPersonalScopeWithContext:context];
+}
+
+- (void)findNotes_listNotebooksWithContext:(ENSessionFindNotesContext *)context
+{
+    // XXX: We do the full listNotebooks operation here, which is overkill in all situations,
+    // and could wind us up doing a bunch of extra work. Optimization is to only look at -listNotebooks
+    // if we're personal scope, and -listLinkedNotebooks for linked and business, without ever
+    // authenticating to other note stores. But it's also true that a findNotes may well be followed
+    // quickly by a fetchNote(s), which is going to require the full notebook list anyway, and by then
+    // it'll be cached.
+    
+    [self listNotebooksWithHandler:^(NSArray *notebooks, NSError *listNotebooksError) {
+        if (notebooks) {
+            context.allNotebooks = notebooks;
+            [self findNotes_findInPersonalScopeWithContext:context];
+        } else {
+            ENSDKLogError(@"findNotes: Failed to list notebooks. %@", listNotebooksError);
+            [self findNotes_completeWithContext:context error:listNotebooksError];
+        }
+    }];
+}
+
+- (void)findNotes_findInPersonalScopeWithContext:(ENSessionFindNotesContext *)context
+{
+    // Skip the personal scope if the scope notebook isn't personal, or if the scope
+    // flag doesn't include personal.
+    if (context.scopeNotebook) {
+        if (context.scopeNotebook.isLinked) {
+            [self findNotes_findInBusinessScopeWithContext:context];
+            return;
+        }
+    } else if (!EN_FLAG_ISSET(context.scope, ENSessionSearchScopePersonal)) {
+        [self findNotes_findInBusinessScopeWithContext:context];
+        return;
+    }
+
+    [self.primaryNoteStore findNotesMetadataWithFilter:context.noteFilter
+                                            resultSpec:context.resultSpec
+                                               success:^(NSArray *notesMetadataList) {
+                                                   [context.findMetadataResults addObjectsFromArray:notesMetadataList];
+                                                   [self findNotes_findInBusinessScopeWithContext:context];
+                                               } failure:^(NSError *error) {
+                                                   ENSDKLogError(@"findNotes: Failed to find notes (personal). %@", error);
+                                                   [self findNotes_completeWithContext:context error:error];
+                                               }];
+}
+
+- (void)findNotes_findInBusinessScopeWithContext:(ENSessionFindNotesContext *)context
+{
+    // Skip the business scope if the user is not a business user, or the scope notebook
+    // is not a business notebook, or the business scope is not included.
+    if (![self isBusinessUser] ||
+        (context.scopeNotebook && !context.scopeNotebook.isBusinessNotebook) ||
+        (!context.scopeNotebook && !EN_FLAG_ISSET(context.scope, ENSessionSearchScopeBusiness))) {
+        [self findNotes_findInLinkedScopeWithContext:context];
+        return;
+    }
+
+    [self.businessNoteStore findNotesMetadataWithFilter:context.noteFilter
+                                             resultSpec:context.resultSpec
+                                                success:^(NSArray *notesMetadataList) {
+                                                    [context.findMetadataResults addObjectsFromArray:notesMetadataList];
+
+                                                    // Remember which note guids came from the business. We'll use this later to
+                                                    // determine if we're worried about an inability to map back to notebooks.
+                                                    context.resultGuidsFromBusiness = [NSSet setWithArray:[notesMetadataList valueForKeyPath:@"guid"]];
+                                                    
+                                                    [self findNotes_findInLinkedScopeWithContext:context];
+                                                } failure:^(NSError *error) {
+                                                    ENSDKLogError(@"findNotes: Failed to find notes (business). %@", error);
+                                                    [self findNotes_completeWithContext:context error:error];
+                                                }];
+}
+
+- (void)findNotes_findInLinkedScopeWithContext:(ENSessionFindNotesContext *)context
+{
+    // Skip linked scope if scope notebook is not a personal linked notebook, or if the
+    // linked scope is not included.
+    if (context.scopeNotebook) {
+        if (!context.scopeNotebook.isLinked || !context.scopeNotebook.isBusinessNotebook) {
+            [self findNotes_processResultsWithContext:context];
+            return;
+        }
+    } else if (!EN_FLAG_ISSET(context.scope, ENSessionSearchScopePersonalLinked)) {
+        [self findNotes_processResultsWithContext:context];
+        return;
+    }
+    
+    // Build a list of all the linked notebooks that we need to run the search against.
+    context.linkedNotebooksToSearch = [[NSMutableArray alloc] init];
+    if (context.scopeNotebook) {
+        [context.linkedNotebooksToSearch addObject:context.scopeNotebook];
+    } else {
+        for (ENNotebook * notebook in context.allNotebooks) {
+            if (notebook.isLinked && !notebook.isBusinessNotebook) {
+                [context.linkedNotebooksToSearch addObject:notebook];
+            }
+        }
+    }
+    
+    [self findNotes_nextFindInLinkedScopeWithContext:context];
+}
+
+- (void)findNotes_nextFindInLinkedScopeWithContext:(ENSessionFindNotesContext *)context
+{
+    if (context.linkedNotebooksToSearch.count == 0) {
+        [self findNotes_processResultsWithContext:context];
+        return;
+    }
+    
+    // Pull the first notebook off the list of pending linked notebooks.
+    ENNotebook * notebook = context.linkedNotebooksToSearch[0];
+    [context.linkedNotebooksToSearch removeObjectAtIndex:0];
+    
+    ENNoteStoreClient * noteStore = [self noteStoreForLinkedNotebook:notebook.linkedNotebook];
+    [noteStore findNotesMetadataWithFilter:context.noteFilter
+                                resultSpec:context.resultSpec
+                                   success:^(NSArray *notesMetadataList) {
+                                       // Do it again with the next linked notebook in the list.
+                                       [context.findMetadataResults addObjectsFromArray:notesMetadataList];
+                                       [self findNotes_nextFindInLinkedScopeWithContext:context];
+                                   } failure:^(NSError *error) {
+                                       ENSDKLogError(@"findNotes: Failed to find notes (linked). notebook = %@; %@", notebook, error);
+                                       [self findNotes_completeWithContext:context error:error];
+                                   }];
+}
+
+- (void)findNotes_processResultsWithContext:(ENSessionFindNotesContext *)context
+{
+    // OK, now we have a complete list of note refs objects. If we need to do a local sort, then do so.
+    if (context.requiresLocalMerge) {
+        [context.findMetadataResults sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            EDAMNoteMetadata * m1, * m2;
+            if (context.sortAscending) {
+                m1 = (EDAMNoteMetadata *)obj1;
+                m2 = (EDAMNoteMetadata *)obj2;
+            } else {
+                m1 = (EDAMNoteMetadata *)obj2;
+                m2 = (EDAMNoteMetadata *)obj1;
+            }
+            if (EN_FLAG_ISSET(context.sortOrder, ENSessionSortOrderRecentlyCreated)) {
+                return [m1.created compare:m2.created];
+            } else if (EN_FLAG_ISSET(context.sortOrder, ENSessionSortOrderRecentlyUpdated)) {
+                return [m1.updated compare:m2.updated];
+            } else {
+                return [m1.title compare:m2.title options:NSCaseInsensitiveSearch];
+            }
+        }];
+    }
+    
+    // Prepare a dictionary of all notebooks by GUID so lookup below is fast.
+    NSMutableDictionary * notebooksByGuid = nil;
+    if (!context.scopeNotebook) {
+        notebooksByGuid = [[NSMutableDictionary alloc] init];
+        for (ENNotebook * notebook in context.allNotebooks) {
+            notebooksByGuid[notebook.guid] = notebook;
+        }
+    }
+    
+    // Turn the metadata list into a list of note refs.
+    NSMutableArray * noteRefs = [[NSMutableArray alloc] init];
+    
+    for (EDAMNoteMetadata * metadata in context.findMetadataResults) {
+        ENNoteRef * ref = [[ENNoteRef alloc] init];
+        ref.guid = metadata.guid;
+        
+        // Figure out which notebook this note belongs to. (If there's a scope notebook, it always belongs to that one.)
+        ENNotebook * notebook = context.scopeNotebook ?: notebooksByGuid[metadata.notebookGuid];
+        if (!notebook) {
+            // This is probably a business notebook that we haven't explicitly joined, so we don't have it in our list.
+            if (![context.resultGuidsFromBusiness containsObject:metadata.guid]) {
+                // Oh, it's not from the business. We really can't find it. This is an error.
+                ENSDKLogError(@"Found note metadata but can't determine owning notebook by guid. Metadata = %@", metadata);
+            }
+            continue;
+        }
+
+        if (notebook.isBusinessNotebook) {
+            ref.type = ENNoteRefTypeBusiness;
+            ref.linkedNotebook = [ENLinkedNotebookRef linkedNotebookRefFromLinkedNotebook:notebook.linkedNotebook];
+        } else if (notebook.isLinked) {
+            ref.type = ENNoteRefTypeShared;
+            ref.linkedNotebook = [ENLinkedNotebookRef linkedNotebookRefFromLinkedNotebook:notebook.linkedNotebook];
+        } else {
+            ref.type = ENNoteRefTypePersonal;
+        }
+        
+        [noteRefs addObject:ref];
+    }
+    
+    context.results = noteRefs;
+    [self findNotes_completeWithContext:context error:nil];
+}
+
+- (void)findNotes_completeWithContext:(ENSessionFindNotesContext *)context error:(NSError *)error
+{
+    if (error) {
+        context.completion(nil, error);
+    } else {
+        context.completion(context.results, nil);
+    }
+}
+
 #pragma mark - Private routines
 
 #pragma mark - API helpers
@@ -1172,4 +1512,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 @end
 
 @implementation ENSessionUploadNoteContext
+@end
+
+@implementation ENSessionFindNotesContext
 @end

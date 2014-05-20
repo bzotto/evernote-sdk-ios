@@ -848,4 +848,53 @@ withResourcesAlternateData:(BOOL)withResourcesAlternateData
     } success:success failure:failure];
 }
 
+#pragma mark - Protected routines
+
+- (void)findNotesMetadataWithFilter:(EDAMNoteFilter *)filter
+                         resultSpec:(EDAMNotesMetadataResultSpec *)resultSpec
+                            success:(void(^)(NSArray *notesMetadataList))success
+                            failure:(void(^)(NSError *error))failure
+{
+    [self findNotesMetadataInternalWithFilter:filter
+                                       offset:0
+                                   resultSpec:resultSpec
+                                      results:[[NSMutableArray alloc] init]
+                                      success:success
+                                      failure:failure];
+}
+
+- (void)findNotesMetadataInternalWithFilter:(EDAMNoteFilter *)filter
+                                     offset:(int32_t)offset
+                                 resultSpec:(EDAMNotesMetadataResultSpec *)resultSpec
+                                    results:(NSMutableArray *)results
+                                    success:(void(^)(NSArray *notesMetadataList))success
+                                    failure:(void(^)(NSError *error))failure
+{
+    [self findNotesMetadataWithFilter:filter
+                               offset:offset
+                             maxNotes:100           // This is a reasonable recommendation for a single call and won't break in future.
+                           resultSpec:resultSpec
+                              success:^(EDAMNotesMetadataList *metadata) {
+                                  // Add these results.
+                                  [results addObjectsFromArray:metadata.notes];
+                                  // Did we reach the total? (Use this formulation instead of checking against the results array length
+                                  // because in theory the note count total could change between calls.
+                                  int32_t nextIndex = [metadata.startIndex intValue] + (int32_t)metadata.notes.count;
+                                  int32_t remainingCount = [metadata.totalNotes intValue] - nextIndex;
+                                  if (remainingCount > 0) {
+                                      [self findNotesMetadataInternalWithFilter:filter
+                                                                         offset:nextIndex
+                                                                     resultSpec:resultSpec
+                                                                        results:results
+                                                                        success:success
+                                                                        failure:failure];
+                                  } else {
+                                      // Done.
+                                      success(results);
+                                  }
+                              } failure:^(NSError *error) {
+                                  failure(error);
+                              }];
+}
+
 @end

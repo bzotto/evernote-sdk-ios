@@ -30,6 +30,7 @@
 #import "ENNoteRef.h"
 #import "ENNoteContent.h"
 #import "ENNote.h"
+#import "ENNoteSearch.h"
 #import "ENResource.h"
 #import "ENError.h"
 #import "ENSession.h"

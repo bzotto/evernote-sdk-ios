@@ -42,12 +42,33 @@ typedef void (^ENSessionUploadNoteProgressHandler)(CGFloat progress);
 typedef void (^ENSessionUploadNoteCompletionHandler)(ENNoteRef * noteRef, NSError * uploadNoteError);
 typedef void (^ENSessionShareNoteCompletionHandler)(NSString * url, NSError * shareNoteError);
 typedef void (^ENSessionDeleteNoteCompletionHandler)(NSError * deleteNoteError);
+typedef void (^ENSessionFindNotesCompletionHandler)(NSArray * noteRefs, NSError * findNotesError);
 
 typedef NS_ENUM(NSInteger, ENSessionUploadPolicy) {
     ENSessionUploadPolicyCreate,
     ENSessionUploadPolicyReplace,
     ENSessionUploadPolicyReplaceOrCreate
 };
+
+typedef NS_OPTIONS(NSUInteger, ENSessionSearchScope) {
+    ENSessionSearchScopeNone                = 0,      // only useful if specifying a notebook instead.
+    ENSessionSearchScopePersonal            = 1 << 0,
+    ENSessionSearchScopePersonalLinked      = 1 << 1,
+    ENSessionSearchScopeBusiness            = 1 << 2
+};
+extern NSUInteger ENSessionSearchScopeDefault; // => ENSessionSearchScopePersonal
+extern NSUInteger ENSessionSearchScopeAll;     // ! Performance warning. !
+
+typedef NS_OPTIONS(NSUInteger, ENSessionSortOrder) {
+    ENSessionSortOrderTitle                 = 1 << 0,
+    ENSessionSortOrderRecentlyCreated       = 1 << 1,
+    ENSessionSortOrderRecentlyUpdated       = 1 << 2,
+    ENSessionSortOrderRelevance             = 1 << 3,  // only valid when using a single search scope
+    
+    ENSessionSortOrderNormal                = 0 << 16, // default
+    ENSessionSortOrderReverse               = 1 << 16
+};
+extern NSUInteger ENSessionSortOrderDefault; // => ENSessionSortOrderTitle
 
 @interface ENSession : NSObject
 @property (nonatomic, strong) id<ENSDKLogging> logger;
@@ -107,4 +128,11 @@ typedef NS_ENUM(NSInteger, ENSessionUploadPolicy) {
 
 - (void)deleteNoteRef:(ENNoteRef *)noteRef
            completion:(ENSessionDeleteNoteCompletionHandler)completion;
+
+- (void)findNotesWithSearch:(ENNoteSearch *)noteSearch
+                 inNotebook:(ENNotebook *)notebook
+                    orScope:(ENSessionSearchScope)scope
+                  sortOrder:(ENSessionSortOrder)sortOrder
+                 completion:(ENSessionFindNotesCompletionHandler)completion;
+
 @end

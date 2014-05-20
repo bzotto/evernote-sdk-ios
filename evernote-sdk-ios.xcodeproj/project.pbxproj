@@ -228,6 +228,10 @@
 		BE48C7121912FC1300025618 /* ENLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C70E1912FC1300025618 /* ENLoadingViewController.m */; };
 		BE48C71819131AC200025618 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE48C71519131AC200025618 /* LICENSE.txt */; };
 		BE48C71919131AC200025618 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C71719131AC200025618 /* SVProgressHUD.m */; };
+		BE4BF75F1925736300564DA3 /* ENNoteSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF75D1925736300564DA3 /* ENNoteSearch.h */; };
+		BE4BF7601925736300564DA3 /* ENNoteSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF75D1925736300564DA3 /* ENNoteSearch.h */; };
+		BE4BF7611925736300564DA3 /* ENNoteSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF75E1925736300564DA3 /* ENNoteSearch.m */; };
+		BE4BF7621925736300564DA3 /* ENNoteSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF75E1925736300564DA3 /* ENNoteSearch.m */; };
 		BE7E5F3D1921808B00A4DA30 /* FATField.h in Headers */ = {isa = PBXBuildFile; fileRef = BE7E5F2E1921808B00A4DA30 /* FATField.h */; };
 		BE7E5F3E1921808B00A4DA30 /* FATField.h in Headers */ = {isa = PBXBuildFile; fileRef = BE7E5F2E1921808B00A4DA30 /* FATField.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BE7E5F3F1921808B00A4DA30 /* FATField.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7E5F2F1921808B00A4DA30 /* FATField.m */; };
@@ -474,6 +478,8 @@
 		BE48C71519131AC200025618 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		BE48C71619131AC200025618 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		BE48C71719131AC200025618 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		BE4BF75D1925736300564DA3 /* ENNoteSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNoteSearch.h; sourceTree = "<group>"; };
+		BE4BF75E1925736300564DA3 /* ENNoteSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENNoteSearch.m; sourceTree = "<group>"; };
 		BE7E5F2E1921808B00A4DA30 /* FATField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FATField.h; sourceTree = "<group>"; };
 		BE7E5F2F1921808B00A4DA30 /* FATField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FATField.m; sourceTree = "<group>"; };
 		BE7E5F301921808B00A4DA30 /* FATObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FATObject.h; sourceTree = "<group>"; };
@@ -668,6 +674,8 @@
 				BE2E23F818EBA5D500BD7E6E /* Private */,
 				BE2E245918EBA5D500BD7E6E /* SendToEvernoteActivity */,
 				86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */,
+				BE4BF75D1925736300564DA3 /* ENNoteSearch.h */,
+				BE4BF75E1925736300564DA3 /* ENNoteSearch.m */,
 			);
 			path = ENSDK;
 			sourceTree = "<group>";
@@ -1018,6 +1026,7 @@
 				BE2E249218EBA5D500BD7E6E /* ENSDK.h in Headers */,
 				BE2E247518EBA5D500BD7E6E /* ENMIMEUtils.h in Headers */,
 				BE2E24D118EBA5D500BD7E6E /* ENNoteRefInternal.h in Headers */,
+				BE4BF75F1925736300564DA3 /* ENNoteSearch.h in Headers */,
 				BECDD2F418F77BC3003736EE /* ENNoteContent.h in Headers */,
 				BE2E24D618EBA5D500BD7E6E /* ENSDKPrivate.h in Headers */,
 				BE2E246F18EBA5D500BD7E6E /* ENUserStoreClient.h in Headers */,
@@ -1096,6 +1105,7 @@
 				BECDD35F1908DE2A003736EE /* ENXMLUtils.h in Headers */,
 				BECDD3601908DE2A003736EE /* ENXMLWriter.h in Headers */,
 				BEA899921917F59C001619FE /* ENStoreClient.h in Headers */,
+				BE4BF7601925736300564DA3 /* ENNoteSearch.h in Headers */,
 				BEA899931917F7E8001619FE /* ENLinkedNotebookRef.h in Headers */,
 				BECDD3611908DE2A003736EE /* NSRegularExpression+ENAGRegex.h in Headers */,
 				BECDD3631908DE2A003736EE /* NSData+EvernoteSDK.h in Headers */,
@@ -1293,6 +1303,7 @@
 				BE2E24DD18EBA5D500BD7E6E /* NSString+ENScrubbing.m in Sources */,
 				BE2E24D318EBA5D500BD7E6E /* ENOAuthAuthenticator.m in Sources */,
 				BE48C7111912FC1300025618 /* ENLoadingViewController.m in Sources */,
+				BE4BF7611925736300564DA3 /* ENNoteSearch.m in Sources */,
 				BE2E249518EBA5D500BD7E6E /* ENSession.m in Sources */,
 				86D49E4A191DA4A8001C3581 /* RMSTokenView.m in Sources */,
 				BE2E25DD18F4DCE600BD7E6E /* ENSDKPrivate.m in Sources */,
@@ -1375,6 +1386,7 @@
 				860DF44318FCD022002B4793 /* ENUserStoreClient.m in Sources */,
 				BE48C7121912FC1300025618 /* ENLoadingViewController.m in Sources */,
 				860DF44618FCD022002B4793 /* EDAMErrors.m in Sources */,
+				BE4BF7621925736300564DA3 /* ENNoteSearch.m in Sources */,
 				86D49E4B191DA4A8001C3581 /* RMSTokenView.m in Sources */,
 				860DF44818FCD022002B4793 /* EDAMLimits.m in Sources */,
 				860DF44A18FCD022002B4793 /* EDAMNoteStore.m in Sources */,
