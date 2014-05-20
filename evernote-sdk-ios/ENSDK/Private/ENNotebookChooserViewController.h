@@ -37,5 +37,6 @@
 @interface ENNotebookChooserViewController : UITableViewController
 @property (nonatomic, weak) id<ENNotebookChooserViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray * notebookList;
+@property (nonatomic, strong) NSArray * recentNotebookList;
 @property (nonatomic, strong) ENNotebook * currentNotebook;
 @end

@@ -29,6 +29,10 @@
 #import "ENNotebookChooserViewController.h"
 #import "ENNotebookCell.h"
 #import "ENTheme.h"
+#import "ENSDKAdvanced.h"
+
+#define kENRecentNotebooksKey       @"ENRecentNotebooksKey"
+#define kENRecentNotebooksCount     3
 
 @interface ENNotebookChooserViewController () {
     struct {
@@ -55,6 +59,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [self reloadRecentNotebooks];
     [self rebuildSections];
 }
 
@@ -69,9 +74,11 @@
 {
     if (section == _sections.currentNotebookSection) {
         return 1;
+    } else if (section == _sections.recentNotebooksSection) {
+        return [self.recentNotebookList count];
+    } else {
+        return [self.notebookList count];
     }
-    
-    return [self.notebookList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -90,6 +97,8 @@
         notebook = self.currentNotebook;
     } else if (indexPath.section == _sections.notebooksSection) {
         notebook = self.notebookList[indexPath.row];
+    } else if (indexPath.section == _sections.recentNotebooksSection) {
+        notebook = self.recentNotebookList[indexPath.row];
     }
     [cell setNotebook:notebook];
     [cell setIsCurrentNotebook:[notebook isEqual:self.currentNotebook]];
@@ -99,7 +108,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ENNotebook * notebook = self.notebookList[indexPath.row];
+    ENNotebook * notebook;
+    if (indexPath.section == _sections.currentNotebookSection) {
+        notebook = self.currentNotebook;
+    } else if (indexPath.section == _sections.recentNotebooksSection) {
+        notebook = self.recentNotebookList[indexPath.row];
+    } else {
+        notebook = self.notebookList[indexPath.row];
+    }
+    [self saveRecentNotebook:notebook];
     [self.delegate notebookChooser:self didChooseNotebook:notebook];
 }
 
@@ -200,17 +217,27 @@
     _sections.lastSection = sections;
 }
 
+- (void)reloadRecentNotebooks {
+    self.recentNotebookList = [[[ENSession sharedSession] preferences] decodedObjectForKey:kENRecentNotebooksKey];
+}
+
+- (void)saveRecentNotebook: (ENNotebook *)notebook {
+    NSMutableArray *newRecentList = [NSMutableArray arrayWithObject:notebook];
+    for (NSUInteger index = 0; index < self.recentNotebookList.count; index++) {
+        ENNotebook *notebookToAdd = [self.recentNotebookList objectAtIndex:index];
+        if ([notebookToAdd isEqual:notebook] == NO) [newRecentList addObject:notebookToAdd];
+        if ([newRecentList count] == kENRecentNotebooksCount) break;
+    }
+    self.recentNotebookList = newRecentList;
+    [[[ENSession sharedSession] preferences] encodeObject:self.recentNotebookList forKey:kENRecentNotebooksKey];
+}
+
 - (BOOL)showCurrentNotebook {
     return [self currentNotebook] != nil;
 }
 
-/**
- *  Need access to dateLastViewed property of ENNotebook to turn on
- *
- *  @return NO for now
- */
 - (BOOL)showRecentNotebook {
-    return NO;
+    return [self.recentNotebookList count];
 }
 
 @end
