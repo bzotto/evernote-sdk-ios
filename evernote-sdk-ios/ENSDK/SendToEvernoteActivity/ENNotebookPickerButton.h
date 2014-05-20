@@ -31,6 +31,6 @@
 @interface ENNotebookPickerButton : UIButton
 
 @property (nonatomic, assign) BOOL isBusinessNotebook;
-@property (nonatomic, strong) UIImageView *discloureIndicator;
+@property (nonatomic, assign) BOOL shouldHideDisclosureIndicator;
 
 @end

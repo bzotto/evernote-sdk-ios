@@ -33,6 +33,12 @@
 #define kRightPadding           30.0
 #define kDisclosureRightMargin  15.0
 
+@interface ENNotebookPickerButton ()
+
+@property (nonatomic, strong) UIImageView *discloureIndicator;
+
+@end
+
 @implementation ENNotebookPickerButton
 
 - (id)initWithFrame:(CGRect)frame
@@ -41,8 +47,6 @@
     if (self) {
         // Initialization code
         self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 2 * kDisclosureRightMargin)];
-        [self setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 2 * kDisclosureRightMargin)];
         
         UIImage *dislosureImage = [[UIImage imageNamed:@"ENSDKResources.bundle/ENNextIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.discloureIndicator = [[UIImageView alloc] initWithImage:dislosureImage];
@@ -64,6 +68,23 @@
         [self setImage:[[UIImage imageNamed:@"ENSDKResources.bundle/ENBusinessIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     } else {
         [self setImage:nil forState:UIControlStateNormal];
+    }
+}
+
+- (void)setShouldHideDisclosureIndicator:(BOOL)shouldHideDisclosureIndicator {
+    _shouldHideDisclosureIndicator = shouldHideDisclosureIndicator;
+    [self setNeedsLayout];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.discloureIndicator setHidden:_shouldHideDisclosureIndicator];
+    if (_shouldHideDisclosureIndicator) {
+        [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, kDisclosureRightMargin)];
+        [self setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, kDisclosureRightMargin)];
+    } else {
+        [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 2 * kDisclosureRightMargin)];
+        [self setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 2 * kDisclosureRightMargin)];
     }
 }
 

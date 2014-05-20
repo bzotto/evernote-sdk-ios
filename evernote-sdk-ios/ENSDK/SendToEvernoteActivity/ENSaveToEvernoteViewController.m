@@ -48,6 +48,7 @@ CGFloat kTextLeftPadding = 20;
 @property (nonatomic, strong) UIBarButtonItem * saveButtonItem;
 @property (nonatomic, strong) UITextField * titleField;
 @property (nonatomic, strong) UITextField * notebookField;
+@property (nonatomic, strong) ENNotebookPickerView *notebookPickerView;
 @property (nonatomic, strong) ENNotebookPickerButton * notebookPickerButton;
 @property (nonatomic, strong) RMSTokenView * tagsView;
 
@@ -85,9 +86,10 @@ CGFloat kTextLeftPadding = 20;
     
     ENNotebookPickerView *notebookView = [[ENNotebookPickerView alloc] initWithFrame:CGRectZero];
     notebookView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:notebookView];
-    self.notebookPickerButton = notebookView.notebookPickerButton;
     [notebookView addTarget:self action:@selector(showNotebookChooser) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:notebookView];
+    self.notebookPickerView = notebookView;
+    self.notebookPickerButton = notebookView.notebookPickerButton;
     [self.notebookPickerButton addTarget:self action:@selector(showNotebookChooser) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *divider3 = [[UIView alloc] initWithFrame:CGRectZero];
@@ -149,6 +151,15 @@ CGFloat kTextLeftPadding = 20;
     NSString * displayName = self.currentNotebook.name;
     [self.notebookPickerButton setIsBusinessNotebook:(self.currentNotebook.isBusinessNotebook)];
     [self.notebookPickerButton setTitle:displayName forState:UIControlStateNormal];
+    if ([self.notebookList count] == 1) {
+        self.notebookPickerButton.shouldHideDisclosureIndicator = YES;
+        [self.notebookPickerButton setEnabled:NO];
+        [self.notebookPickerView setEnabled:NO];
+    } else {
+        self.notebookPickerButton.shouldHideDisclosureIndicator = NO;
+        [self.notebookPickerButton setEnabled:YES];
+        [self.notebookPickerView setEnabled:YES];
+    }
 }
 
 - (void)showNotebookChooser
