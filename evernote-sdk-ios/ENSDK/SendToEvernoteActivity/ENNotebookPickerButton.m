@@ -29,8 +29,9 @@
 #import "ENNotebookPickerButton.h"
 #import "ENTheme.h"
 
-#define kTextImageSpace     10.0
-#define kRightPadding       30.0
+#define kTextImageSpace         10.0
+#define kRightPadding           30.0
+#define kDisclosureRightMargin  15.0
 
 @implementation ENNotebookPickerButton
 
@@ -39,29 +40,21 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 2 * kDisclosureRightMargin)];
+        [self setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 2 * kDisclosureRightMargin)];
         
         UIImage *dislosureImage = [[UIImage imageNamed:@"ENSDKResources.bundle/ENNextIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.discloureIndicator = [[UIImageView alloc] initWithImage:dislosureImage];
         [self.discloureIndicator setTintColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1]];
         
-        self.discloureIndicator.center = CGPointMake(CGRectGetMaxX(self.bounds) - 20.0, CGRectGetMidY(self.bounds) - 1.0);
+        self.discloureIndicator.center = CGPointMake(CGRectGetMaxX(self.bounds) - kDisclosureRightMargin, CGRectGetMidY(self.bounds));
         [self.discloureIndicator setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin];
         [self addSubview:self.discloureIndicator];
         
         [self.imageView setTintColor:[ENTheme defaultTintColor]];
     }
     return self;
-}
-
-- (CGSize)sizeThatFits:(CGSize)size {
-    UIButton *button = [[UIButton alloc] init];
-    [button setTitle:self.titleLabel.text forState:UIControlStateNormal];
-    [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:15.0]];
-    [button setImage:self.imageView.image forState:UIControlStateNormal];
-    CGSize s = [button sizeThatFits:CGSizeMake(0, 0)];
-    CGSize t = CGSizeMake(s.width + kRightPadding, s.height);
-    return t;
 }
 
 - (void)setIsBusinessNotebook:(BOOL)isBusinessNotebook {
