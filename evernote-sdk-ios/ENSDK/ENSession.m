@@ -886,8 +886,8 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 #pragma mark - shareNote
 
-- (void)shareNoteRef:(ENNoteRef *)noteRef
-          completion:(ENSessionShareNoteCompletionHandler)completion
+- (void)shareNote:(ENNoteRef *)noteRef
+       completion:(ENSessionShareNoteCompletionHandler)completion
 {
     ENNoteStoreClient * noteStore = [self noteStoreForNoteRef:noteRef];
     [noteStore shareNoteWithGuid:noteRef.guid success:^(NSString * noteKey) {
@@ -906,8 +906,8 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 #pragma mark - deleteNote
 
-- (void)deleteNoteRef:(ENNoteRef *)noteRef
-           completion:(ENSessionDeleteNoteCompletionHandler)completion
+- (void)deleteNote:(ENNoteRef *)noteRef
+        completion:(ENSessionDeleteNoteCompletionHandler)completion
 {
     ENNoteStoreClient * noteStore = [self noteStoreForNoteRef:noteRef];
     [noteStore deleteNoteWithGuid:noteRef.guid success:^(int32_t usn) {

@@ -123,11 +123,11 @@ extern NSUInteger ENSessionSortOrderDefault; // => ENSessionSortOrderTitle
           progress:(ENSessionUploadNoteProgressHandler)progress
         completion:(ENSessionUploadNoteCompletionHandler)completion;
 
-- (void)shareNoteRef:(ENNoteRef *)noteRef
-          completion:(ENSessionShareNoteCompletionHandler)completion;
+- (void)shareNote:(ENNoteRef *)noteRef
+       completion:(ENSessionShareNoteCompletionHandler)completion;
 
-- (void)deleteNoteRef:(ENNoteRef *)noteRef
-           completion:(ENSessionDeleteNoteCompletionHandler)completion;
+- (void)deleteNote:(ENNoteRef *)noteRef
+        completion:(ENSessionDeleteNoteCompletionHandler)completion;
 
 - (void)findNotesWithSearch:(ENNoteSearch *)noteSearch
                  inNotebook:(ENNotebook *)notebook
