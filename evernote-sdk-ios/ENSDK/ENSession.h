@@ -141,6 +141,7 @@ extern NSUInteger ENSessionSortOrderDefault; // => ENSessionSortOrderTitle
           completion:(ENSessionDownloadNoteCompletionHandler)completion;
 
 - (void)downloadThumbnailForNote:(ENNoteRef *)noteRef
+                    maxDimension:(NSUInteger)maxDimension
                       completion:(ENSessionDownloadNoteThumbnailCompletionHandler)completion;
 
 @end

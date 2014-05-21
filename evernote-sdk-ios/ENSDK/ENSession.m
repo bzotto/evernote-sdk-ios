@@ -1339,6 +1339,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 #pragma mark - downloadThumbnailForNote
 
 - (void)downloadThumbnailForNote:(ENNoteRef *)noteRef
+                    maxDimension:(NSUInteger)maxDimension
                       completion:(ENSessionDownloadNoteThumbnailCompletionHandler)completion
 {
     if (!completion) {
@@ -1357,13 +1358,25 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         return;
     }
     
+    // Clamp the maxDimension. Let 0 through as a sentinel for unspecified, and if the value is
+    // already greater than the max we provide, then remove the parameter.
+    if (maxDimension >= 300) {
+        maxDimension = 0;
+    }
+    
     // Go to a background queue.
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         // Get the info we need for this note ref, then construct a standard request for the thumbnail.
         NSString * authToken = [self authenticationTokenForNoteRef:noteRef];
         NSString * shardId = [self shardIdForNoteRef:noteRef];
         
-        NSString * urlString = [NSString stringWithFormat:@"https://%@/shard/%@/thm/note/%@", self.sessionHost, shardId, noteRef.guid];
+        // Only append the size param if we are explicitly providing one.
+        NSString * sizeParam = nil;
+        if (maxDimension > 0) {
+            sizeParam = [NSString stringWithFormat:@"?size=%lu", (unsigned long)maxDimension];
+        }
+        
+        NSString * urlString = [NSString stringWithFormat:@"https://%@/shard/%@/thm/note/%@%@", self.sessionHost, shardId, noteRef.guid, sizeParam];
         NSString * postBody = [NSString stringWithFormat:@"auth=%@", [authToken en_stringByUrlEncoding]];
         
         NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
