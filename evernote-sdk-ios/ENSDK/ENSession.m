@@ -36,6 +36,7 @@
 #import "ENCredentialStore.h"
 #import "ENOAuthAuthenticator.h"
 #import "ENPreferencesStore.h"
+#import "NSDate+EDAMAdditions.h"
 
 // Strings visible publicly.
 NSString * const ENSessionHostSandbox = @"sandbox.evernote.com";
@@ -101,6 +102,12 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 @property (nonatomic, strong) NSSet * resultGuidsFromBusiness;
 @property (nonatomic, strong) NSArray * results;
 @property (nonatomic, copy) ENSessionFindNotesCompletionHandler completion;
+@end
+
+@interface ENSessionDownloadNoteContext : NSObject
+@property (nonatomic, strong) ENNote * resultNote;
+@property (nonatomic, strong) NSString * notebookGuid;
+@property (nonatomic, copy) ENSessionDownloadNoteCompletionHandler completion;
 @end
 
 @interface ENSession () <ENLinkedNoteStoreClientDelegate, ENBusinessNoteStoreClientDelegate, ENOAuthAuthenticatorDelegate>
@@ -752,6 +759,9 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (void)uploadNote_updateWithContext:(ENSessionUploadNoteContext *)context
 {
+    // If we're replacing a note, fixup the update date.
+    context.note.updated = @([[NSDate date] enedamTimestamp]);
+    
     context.note.guid = context.refToReplace.guid;
     context.note.active = @YES;
     if (context.note.notebookGuid != nil) {
@@ -862,6 +872,11 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 
 - (void)uploadNote_createWithContext:(ENSessionUploadNoteContext *)context
 {
+    // Fixup the create and update dates
+    NSNumber * now = @([[NSDate date] enedamTimestamp]);
+    context.note.created = now;
+    context.note.updated = now;
+    
     if (context.progress) {
         context.noteStore.uploadProgressHandler = context.progress;
     }
@@ -889,6 +904,13 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 - (void)shareNote:(ENNoteRef *)noteRef
        completion:(ENSessionShareNoteCompletionHandler)completion
 {
+    if (!self.isAuthenticated) {
+        if (completion) {
+            completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeAuthExpired userInfo:nil]);
+        }
+        return;
+    }
+
     ENNoteStoreClient * noteStore = [self noteStoreForNoteRef:noteRef];
     [noteStore shareNoteWithGuid:noteRef.guid success:^(NSString * noteKey) {
         NSString * shardId = [self shardIdForNoteRef:noteRef];
@@ -909,6 +931,13 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 - (void)deleteNote:(ENNoteRef *)noteRef
         completion:(ENSessionDeleteNoteCompletionHandler)completion
 {
+    if (!self.isAuthenticated) {
+        if (completion) {
+            completion([NSError errorWithDomain:ENErrorDomain code:ENErrorCodeAuthExpired userInfo:nil]);
+        }
+        return;
+    }
+
     ENNoteStoreClient * noteStore = [self noteStoreForNoteRef:noteRef];
     [noteStore deleteNoteWithGuid:noteRef.guid success:^(int32_t usn) {
         if (completion) {
@@ -1233,6 +1262,79 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     }
 }
 
+#pragma mark - downloadNote
+
+- (void)downloadNote:(ENNoteRef *)noteRef
+          completion:(ENSessionDownloadNoteCompletionHandler)completion
+{
+    if (!completion) {
+        [NSException raise:NSInvalidArgumentException format:@"handler required"];
+        return;
+    }
+    
+    if (!noteRef) {
+        ENSDKLogError(@"noteRef parameter is required to get download note");
+        completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeInvalidData userInfo:nil]);
+        return;
+    }
+    
+    if (!self.isAuthenticated) {
+        completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeAuthExpired userInfo:nil]);
+        return;
+    }
+
+    // Create context for this operation.
+    ENSessionDownloadNoteContext * context = [[ENSessionDownloadNoteContext alloc] init];
+    context.completion = completion;
+    
+    // Find the note store client that works with this note.
+    ENNoteStoreClient * noteStore = [self noteStoreForNoteRef:noteRef];
+    
+    // Fetch by guid. Always get the content and resources.
+    [noteStore getNoteWithGuid:noteRef.guid withContent:YES withResourcesData:YES withResourcesRecognition:NO withResourcesAlternateData:NO success:^(EDAMNote * note) {
+
+        // Create an ENNote from the EDAMNote.
+        context.resultNote = [[ENNote alloc] initWithServiceNote:note];
+        context.notebookGuid = note.notebookGuid;
+        
+        // Get all the notebooks so we can populate the notebook field accurately.
+        [self downloadNote_listNotebooksAndPrepareResultWithContext:context];
+    } failure:^(NSError * error) {
+        [self downloadNote_completeWithContext:context error:error];
+    }];
+}
+
+- (void)downloadNote_listNotebooksAndPrepareResultWithContext:(ENSessionDownloadNoteContext *)context
+{
+    // Call ourself (!) directly to get the list of notebooks, which will let us populate the notebook property on the resulting note.
+    [self listNotebooksWithHandler:^(NSArray * notebooks, NSError * listNotebooksError) {
+        if (notebooks) {
+            // Find the notebook associated with this note.
+            for (ENNotebook * notebook in notebooks) {
+                if ([notebook.guid isEqualToString:context.notebookGuid]) {
+                    context.resultNote.notebook = notebook;
+                    break;
+                }
+            }
+            if (!context.resultNote.notebook) {
+                ENSDKLogInfo(@"Failed to find notebook with guid %@ to associate with note", context.notebookGuid);
+            }
+            [self downloadNote_completeWithContext:context error:nil];
+        } else {
+            [self downloadNote_completeWithContext:context error:listNotebooksError];
+        }
+    }];
+}
+
+- (void)downloadNote_completeWithContext:(ENSessionDownloadNoteContext *)context error:(NSError *)error
+{
+    if (error) {
+        context.completion(nil, error);
+    } else {
+        context.completion(context.resultNote, nil);
+    }
+}
+
 #pragma mark - Private routines
 
 #pragma mark - API helpers
@@ -1515,4 +1617,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 @end
 
 @implementation ENSessionFindNotesContext
+@end
+
+@implementation ENSessionDownloadNoteContext
 @end

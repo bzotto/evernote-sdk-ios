@@ -55,10 +55,12 @@ FOUNDATION_EXPORT NSString * const ENBootstrapProfileNameChina;
 @end
 
 @interface ENResource (Private)
++ (instancetype)resourceWithServiceResource:(EDAMResource *)serviceResource;
 - (EDAMResource *)EDAMResource;
 @end
 
 @interface ENNote (Private)
+- (id)initWithServiceNote:(EDAMNote *)note;
 - (NSString *)content;
 - (void)setGuid:(NSString *)guid;
 - (void)setEnmlContent:(NSString *)enmlContent;

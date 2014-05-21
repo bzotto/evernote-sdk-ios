@@ -38,6 +38,7 @@
 }
 @property (nonatomic, copy) NSString * sourceUrl;
 @property (nonatomic, copy) NSString * cachedENMLContent;
+@property (nonatomic, strong) EDAMNote * serviceNote;
 @end
 
 @implementation ENNote
@@ -46,6 +47,37 @@
     self = [super init];
     if (self) {
         _resources = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (id)initWithServiceNote:(EDAMNote *)note
+{
+    self = [super init];
+    if (self) {
+        // Copy the fields that can be edited at this level.
+        _title = note.title;
+        _content = [ENNoteContent noteContentWithENML:note.content];
+        _isReminder = (note.attributes.reminderOrder != nil);
+        _sourceUrl = note.attributes.sourceURL;
+        _tagNames = note.tagNames;  // This is usually nil, unfortunately, on notes that come from the service.
+        
+        // Resources to ENResources
+        _resources = [[NSMutableArray alloc] init];
+        for (EDAMResource * serviceResource in note.resources) {
+            ENResource * resource = [ENResource resourceWithServiceResource:serviceResource];
+            if (resource) {
+                [_resources addObject:resource];
+            }
+        }
+
+        // Keep a copy of the service note around with all of its extra properties
+        // in case we have to convert back to an EDAMNote later.
+        self.serviceNote = [note copy];
+        
+        // Get rid of these references here; they take up memory and we can let them be potentially cleaned up.
+        self.serviceNote.content = nil;
+        self.serviceNote.resources = nil;
     }
     return self;
 }
@@ -94,6 +126,12 @@
     }
 }
 
+- (void)removeAllResources
+{
+    [_resources removeAllObjects];
+    [self invalidateCachedENML];
+}
+
 + (void)populateNoteFromWebView:(UIWebView *)webView completion:(ENNotePopulateFromWebViewCompletionHandler)completion
 {
     if (!completion) {
@@ -133,14 +171,25 @@
 
 - (EDAMNote *)EDAMNote
 {
-    // Turn the ENNote into an EDAMNote.
-    EDAMNote * note = [[EDAMNote alloc] init];
+    // Turn the ENNote into an EDAMNote. Use the cached EDAMNote as a starting point if we have one.
+    EDAMNote * note = nil;
+    if (self.serviceNote) {
+        note = [self.serviceNote copy];
+        // Don't preserve these.
+        note.guid = nil;
+        note.updateSequenceNum = nil;
+    } else {
+        note = [[EDAMNote alloc] init];
+    }
     
     note.content = [self enmlContent];
     if (!note.content) {
         ENNoteContent * emptyContent = [ENNoteContent noteContentWithString:@""];
         note.content = [emptyContent enmlWithResources:self.resources];
     }
+    // Invalidate the derivative content fields.
+    note.contentHash = nil;
+    note.contentLength = nil;
     
     note.title = self.title;
     if (!note.title) {
@@ -151,23 +200,29 @@
     note.notebookGuid = self.notebook.guid;
     
     // Setup note attributes. Use app bundle name for source application unless the app wants to override.
+    if (!note.attributes) {
+        note.attributes = [[EDAMNoteAttributes alloc] init];
+    }
     NSString * sourceApplication = [[ENSession sharedSession] sourceApplication];
-    EDAMNoteAttributes * attributes = [[EDAMNoteAttributes alloc] init];
-    attributes.sourceApplication = sourceApplication;
 
+    // Write sourceApplication and source on all notes.
+    note.attributes.sourceApplication = sourceApplication;
     // By convention for all iOS based apps.
-    attributes.source = @"mobile.ios";
+    note.attributes.source = @"mobile.ios";
 
     // If reminder is flagged on, set reminderOrder to the current UNIX timestamp by convention.
-    if (self.isReminder) {
-        attributes.reminderOrder = @([[NSDate date] timeIntervalSince1970] * 1000.0);
+    // (Preserve existing reminderOrder if present)
+    if (!self.isReminder) {
+        note.attributes.reminderOrder = nil;
+    } else {
+        if (!note.attributes.reminderOrder) {
+            note.attributes.reminderOrder = @([[NSDate date] timeIntervalSince1970] * 1000.0);
+        }
     }
     
     if (self.sourceUrl) {
-        attributes.sourceURL = self.sourceUrl;
+        note.attributes.sourceURL = self.sourceUrl;
     }
-    
-    note.attributes = attributes;
     
     // Move tags over if present.
     if (self.tagNames) {

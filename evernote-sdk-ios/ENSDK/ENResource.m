@@ -36,6 +36,20 @@
 @end
 
 @implementation ENResource
++ (instancetype)resourceWithServiceResource:(EDAMResource *)serviceResource
+{
+    if (!serviceResource.data.body) {
+        ENSDKLogError(@"Can't create an ENResource from an EDAMResource with no body");
+        return nil;
+    }
+    ENResource * resource = [[ENResource alloc] init];
+    resource.data = serviceResource.data.body;
+    resource.mimeType = serviceResource.mime;
+    resource.filename = serviceResource.attributes.fileName;
+    resource.sourceUrl = serviceResource.attributes.sourceURL;
+    return resource;
+}
+
 - (id)initWithData:(NSData *)data mimeType:(NSString *)mimeType filename:(NSString *)filename
 {
     self = [super init];

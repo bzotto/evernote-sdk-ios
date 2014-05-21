@@ -42,6 +42,7 @@ typedef void (^ENNotePopulateFromWebViewCompletionHandler)(ENNote * note);
 @property (nonatomic, assign) BOOL isReminder;
 - (NSArray *)resources;
 - (void)addResource:(ENResource *)resource;
+- (void)removeAllResources;
 
 + (void)populateNoteFromWebView:(UIWebView *)url completion:(ENNotePopulateFromWebViewCompletionHandler)completion;
 @end
