@@ -1256,6 +1256,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         
         ENSessionFindNotesResult * result = [[ENSessionFindNotesResult alloc] init];
         result.noteRef = ref;
+        result.notebook = notebook;
         result.title = metadata.title;
         result.created = [NSDate endateFromEDAMTimestamp:[metadata.created longLongValue]];
         result.updated = [NSDate endateFromEDAMTimestamp:[metadata.updated longLongValue]];
