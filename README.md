@@ -1,6 +1,10 @@
-Evernote Cloud SDK for iOS version 2.0 (beta)
-======================================
 
+## For historical purposes only. Current SDK lives at:
+[https://github.com/evernote/evernote-cloud-sdk-ios](https://github.com/evernote/evernote-cloud-sdk-ios)
+
+
+Evernote Cloud SDK for iOS version 2.0 (alpha)
+---------------------------------------------
 What this is
 ------------
 A simple, workflow-oriented library built on the Evernote Cloud API. It's designed to drop into your app easily and make the most common tasks very simple to accomplish. It is also the (eventual) successor to the evernote-ios-sdk library, although while this library has beta status, that one is still available and supported.
