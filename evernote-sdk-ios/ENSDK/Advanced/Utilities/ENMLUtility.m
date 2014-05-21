@@ -62,11 +62,11 @@ typedef void (^ENMLHTMLCompletionBlock)(NSString* html, NSError *error);
 }
 
 - (void) convertENMLToHTML:(NSString*)enmlContent completionBlock:(void(^)(NSString* html, NSError *error))block {
-    [self convertENMLToHTML:enmlContent withResources:nil completionBlock:block];
+    [self convertENMLToHTML:enmlContent withInlinedResources:nil completionBlock:block];
 }
 
 
-- (void) convertENMLToHTML:(NSString*)enmlContent withResources:(NSArray*)resources completionBlock:(void(^)(NSString* html, NSError *error))block {
+- (void) convertENMLToHTML:(NSString*)enmlContent withInlinedResources:(NSArray*)resources completionBlock:(void(^)(NSString* html, NSError *error))block {
     self.xmlParser = [[NSXMLParser alloc] initWithData:[enmlContent dataUsingEncoding:NSUTF8StringEncoding]];
     self.outputHTML = [NSMutableString string];
     self.htmlWriter = [[KSHTMLWriter alloc] initWithOutputWriter:self.outputHTML];

@@ -29,6 +29,8 @@
 #import "ENSDKPrivate.h"
 #import "NSString+ENScrubbing.h"
 #import "ENWebClipNoteBuilder.h"
+#import "ENMLUtility.h"
+#import "ENWebArchive.h"
 
 #pragma mark - ENNote
 
@@ -130,6 +132,54 @@
 {
     [_resources removeAllObjects];
     [self invalidateCachedENML];
+}
+
+- (void)generateWebArchiveData:(ENNoteGenerateWebArchiveDataCompletionHandler)completion
+{
+    if (!completion) {
+        ENSDKLogError(@"-generateWebArchiveData: requires a completion handler!");
+        return;
+    }
+    
+    // Turn the content of the note into sanitized HTML.
+    NSString * enml = [self enmlContent];
+    if (!enml) {
+        ENNoteContent * emptyContent = [ENNoteContent noteContentWithString:@""];
+        enml = [emptyContent enmlWithResources:self.resources];
+    }
+    
+    // Convert our ENResources to EDAM resources. This is just a container conversion, it's unfortunate to do here,
+    // but isn't actually expensive.
+    NSMutableArray * edamResources = [NSMutableArray arrayWithCapacity:self.resources.count];
+    for (ENResource * resource in self.resources) {
+        [edamResources addObject:[resource EDAMResource]];
+    }
+    
+    ENMLUtility * utility = [[ENMLUtility alloc] init];
+    [utility convertENMLToHTML:enml withInlinedResources:edamResources completionBlock:^(NSString * html, NSError * error) {
+        if (!html) {
+            ENSDKLogInfo(@"+webArchiveData failed to convert ENML to HTML: %@", error);
+            completion(nil);
+            return;
+        }
+        
+        // Create main resource from the HTML.
+        NSData * htmlData = [html dataUsingEncoding:NSUTF8StringEncoding];
+        NSURL * sourceURL = self.sourceUrl ? [NSURL URLWithString:self.sourceUrl] : nil;
+        ENWebResource * mainResource = [[ENWebResource alloc] initWithData:htmlData
+                                                                       URL:sourceURL
+                                                                  MIMEType:@"text/html"
+                                                          textEncodingName:ENWebResourceTextEncodingNameUTF8
+                                                                 frameName:nil];
+        
+        // Put together the archive.
+        // NB For now, we are really just wrapping the HTML with inlined resources with a web archive.
+        // Eventually this should be updated to construct the web archive with the actual resources as subresources.
+        ENWebArchive * archive = [[ENWebArchive alloc] initWithMainResource:mainResource
+                                                               subresources:nil
+                                                           subframeArchives:nil];
+        completion([archive data]);
+    }];
 }
 
 + (void)populateNoteFromWebView:(UIWebView *)webView completion:(ENNotePopulateFromWebViewCompletionHandler)completion

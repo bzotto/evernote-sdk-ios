@@ -32,7 +32,10 @@
 @class ENNotebook;
 @class UIWebView;
 
+extern NSString * const ENWebArchiveDataMIMEType;
+
 typedef void (^ENNotePopulateFromWebViewCompletionHandler)(ENNote * note);
+typedef void (^ENNoteGenerateWebArchiveDataCompletionHandler)(NSData * data);
 
 @interface ENNote : NSObject
 @property (nonatomic, copy) NSString * title;
@@ -43,5 +46,6 @@ typedef void (^ENNotePopulateFromWebViewCompletionHandler)(ENNote * note);
 - (void)addResource:(ENResource *)resource;
 - (void)removeAllResources;
 
+- (void)generateWebArchiveData:(ENNoteGenerateWebArchiveDataCompletionHandler)completion;
 + (void)populateNoteFromWebView:(UIWebView *)url completion:(ENNotePopulateFromWebViewCompletionHandler)completion;
 @end

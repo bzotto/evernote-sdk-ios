@@ -52,9 +52,9 @@
 /** Utility function to convert ENML to HTML.
  
  @param  enmlContent The enml content of the note
- @param  resources The resources array
+ @param  resources Array of EDAM resources, which will be inlined into the resulting HTML.
  @param  block The completion block that will be called on completion
  */
-- (void) convertENMLToHTML:(NSString*)enmlContent withResources:(NSArray*)resources completionBlock:(void(^)(NSString* html, NSError *error))block;
+- (void) convertENMLToHTML:(NSString*)enmlContent withInlinedResources:(NSArray*)resources completionBlock:(void(^)(NSString* html, NSError *error))block;
 
 @end
