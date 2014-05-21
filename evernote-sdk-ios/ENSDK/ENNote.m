@@ -197,8 +197,6 @@
         note.title = @"Untitled Note";
     }
     
-    note.notebookGuid = self.notebook.guid;
-    
     // Setup note attributes. Use app bundle name for source application unless the app wants to override.
     if (!note.attributes) {
         note.attributes = [[EDAMNoteAttributes alloc] init];

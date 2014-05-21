@@ -183,7 +183,6 @@ CGFloat kTextLeftPadding = 20;
     if (note.title.length == 0) {
         note.title = NSLocalizedString(@"Untitled note", @"Untitled note");
     }
-    note.notebook = self.currentNotebook;
     
     NSArray * tags = [self.tagsView tokens];
     if (tags.count > 0) {
@@ -191,7 +190,7 @@ CGFloat kTextLeftPadding = 20;
     }
     
     // Upload the note.
-    [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
+    [[ENSession sharedSession] uploadNote:note notebook:self.currentNotebook completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
         [self.delegate viewController:self didFinishWithSuccess:(noteRef != nil)];
     }];
 }

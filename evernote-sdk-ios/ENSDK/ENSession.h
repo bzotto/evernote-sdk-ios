@@ -42,7 +42,7 @@ typedef void (^ENSessionUploadNoteProgressHandler)(CGFloat progress);
 typedef void (^ENSessionUploadNoteCompletionHandler)(ENNoteRef * noteRef, NSError * uploadNoteError);
 typedef void (^ENSessionShareNoteCompletionHandler)(NSString * url, NSError * shareNoteError);
 typedef void (^ENSessionDeleteNoteCompletionHandler)(NSError * deleteNoteError);
-typedef void (^ENSessionFindNotesCompletionHandler)(NSArray * noteRefs, NSError * findNotesError);
+typedef void (^ENSessionFindNotesCompletionHandler)(NSArray * findNotesResults, NSError * findNotesError);
 typedef void (^ENSessionDownloadNoteCompletionHandler)(ENNote * note, NSError * downloadNoteError);
 typedef void (^ENSessionDownloadNoteThumbnailCompletionHandler)(UIImage * thumbnail, NSError * downloadNoteThumbnailError);
 
@@ -71,6 +71,14 @@ typedef NS_OPTIONS(NSUInteger, ENSessionSortOrder) {
     ENSessionSortOrderReverse               = 1 << 16
 };
 extern NSUInteger ENSessionSortOrderDefault; // => ENSessionSortOrderTitle
+
+// Result record for findNotes call.
+@interface ENSessionFindNotesResult : NSObject
+@property (nonatomic, strong) ENNoteRef * noteRef;
+@property (nonatomic, strong) NSString * title;
+@property (nonatomic, strong) NSDate * created;
+@property (nonatomic, strong) NSDate * updated;
+@end
 
 @interface ENSession : NSObject
 @property (nonatomic, strong) id<ENSDKLogging> logger;
@@ -116,12 +124,14 @@ extern NSUInteger ENSessionSortOrderDefault; // => ENSessionSortOrderTitle
 
 // Easy convenience method for creating new notes.
 - (void)uploadNote:(ENNote *)note
+          notebook:(ENNotebook *)notebook
         completion:(ENSessionUploadNoteCompletionHandler)completion;
 
 // Use the full method if you want to track progress, overwrite existing notes, etc.
 - (void)uploadNote:(ENNote *)note
             policy:(ENSessionUploadPolicy)policy
-       replaceNote:(ENNoteRef *)noteToReplace
+        toNotebook:(ENNotebook *)notebook
+     orReplaceNote:(ENNoteRef *)noteToReplace
           progress:(ENSessionUploadNoteProgressHandler)progress
         completion:(ENSessionUploadNoteCompletionHandler)completion;
 

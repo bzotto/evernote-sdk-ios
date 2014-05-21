@@ -105,12 +105,6 @@ static NSUInteger ENSessionNotebooksCacheValidity = (5 * 60);   // 5 minutes
 @property (nonatomic, copy) ENSessionFindNotesCompletionHandler completion;
 @end
 
-@interface ENSessionDownloadNoteContext : NSObject
-@property (nonatomic, strong) ENNote * resultNote;
-@property (nonatomic, strong) NSString * notebookGuid;
-@property (nonatomic, copy) ENSessionDownloadNoteCompletionHandler completion;
-@end
-
 @interface ENSession () <ENLinkedNoteStoreClientDelegate, ENBusinessNoteStoreClientDelegate, ENOAuthAuthenticatorDelegate>
 @property (nonatomic, assign) BOOL supportsLinkedAppNotebook;
 @property (nonatomic, strong) ENOAuthAuthenticator * authenticator;
@@ -700,33 +694,48 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 #pragma mark - uploadNote
 
 - (void)uploadNote:(ENNote *)note
+          notebook:(ENNotebook *)notebook
         completion:(ENSessionUploadNoteCompletionHandler)completion
 {
-    [self uploadNote:note policy:ENSessionUploadPolicyCreate replaceNote:nil progress:nil completion:completion];
+    [self uploadNote:note
+              policy:ENSessionUploadPolicyCreate
+          toNotebook:notebook
+       orReplaceNote:nil
+            progress:nil
+          completion:completion];
 }
 
 - (void)uploadNote:(ENNote *)note
             policy:(ENSessionUploadPolicy)policy
-       replaceNote:(ENNoteRef *)noteToReplace
+        toNotebook:(ENNotebook *)notebook
+     orReplaceNote:(ENNoteRef *)noteToReplace
           progress:(ENSessionUploadNoteProgressHandler)progress
         completion:(ENSessionUploadNoteCompletionHandler)completion
 {
+    if (!completion) {
+        [NSException raise:NSInvalidArgumentException format:@"handler required"];
+        return;
+    }
+    
     if (!note) {
-        [NSException raise:NSInvalidArgumentException format:@"note required"];
+        ENSDKLogError(@"must specify note");
+        completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeInvalidData userInfo:nil]);
+        return;
+    }
+    
+    if ((policy == ENSessionUploadPolicyReplace && !noteToReplace) ||
+        (policy == ENSessionUploadPolicyReplaceOrCreate && !noteToReplace)) {
+        ENSDKLogError(@"must specify existing ID when requesting a replacement policy");
+        completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeInvalidData userInfo:nil]);
         return;
     }
     
     if (policy == ENSessionUploadPolicyCreate && noteToReplace) {
-        [NSException raise:NSInvalidArgumentException format:@"can't use create policy when specifying an existing ID"];
-        return;
-    }
-    if ((policy == ENSessionUploadPolicyReplace && !noteToReplace) ||
-        (policy == ENSessionUploadPolicyReplaceOrCreate && !noteToReplace)) {
-        [NSException raise:NSInvalidArgumentException format:@"must specify existing ID when requesting a replacement policy"];
-        return;
+        ENSDKLogError(@"Can't use create policy when specifying an existing note ref. Ignoring.");
+        noteToReplace = nil;
     }
     
-    if (note.notebook && !note.notebook.allowsWriting) {
+    if (notebook && !notebook.allowsWriting) {
         [NSException raise:NSInvalidArgumentException format:@"a specified notebook must not be readonly"];
         return;
     }
@@ -746,7 +755,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     ENSessionUploadNoteContext * context = [[ENSessionUploadNoteContext alloc] init];
     context.note = [note EDAMNote];
     context.refToReplace = noteToReplace;
-    context.notebook = note.notebook;
+    context.notebook = notebook;
     context.policy = policy;
     context.completion = completion;
     context.progress = progress;
@@ -878,6 +887,9 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     context.note.created = now;
     context.note.updated = now;
     
+    // Write in the notebook guid if we're providing one.
+    context.note.notebookGuid = context.notebook.guid;
+    
     if (context.progress) {
         context.noteStore.uploadProgressHandler = context.progress;
     }
@@ -1006,13 +1018,8 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     EDAMNotesMetadataResultSpec * resultSpec = [[EDAMNotesMetadataResultSpec alloc] init];
     resultSpec.includeNotebookGuid = @YES;
     resultSpec.includeTitle = @YES;
-    if (requiresLocalMerge) {
-        if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRecentlyCreated)) {
-            resultSpec.includeCreated = @YES;
-        } else if (EN_FLAG_ISSET(sortOrder, ENSessionSortOrderRecentlyUpdated)) {
-            resultSpec.includeUpdated = @YES;
-        }
-    }
+    resultSpec.includeCreated = @YES;
+    resultSpec.includeUpdated = @YES;
     
     EDAMNoteFilter * noteFilter = [[EDAMNoteFilter alloc] init];
     noteFilter.words = noteSearch.searchString;
@@ -1220,7 +1227,7 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     }
     
     // Turn the metadata list into a list of note refs.
-    NSMutableArray * noteRefs = [[NSMutableArray alloc] init];
+    NSMutableArray * findNotesResults = [[NSMutableArray alloc] init];
     
     for (EDAMNoteMetadata * metadata in context.findMetadataResults) {
         ENNoteRef * ref = [[ENNoteRef alloc] init];
@@ -1247,10 +1254,16 @@ static NSString * DeveloperToken, * NoteStoreUrl;
             ref.type = ENNoteRefTypePersonal;
         }
         
-        [noteRefs addObject:ref];
+        ENSessionFindNotesResult * result = [[ENSessionFindNotesResult alloc] init];
+        result.noteRef = ref;
+        result.title = metadata.title;
+        result.created = [NSDate endateFromEDAMTimestamp:[metadata.created longLongValue]];
+        result.updated = [NSDate endateFromEDAMTimestamp:[metadata.updated longLongValue]];
+        
+        [findNotesResults addObject:result];
     }
     
-    context.results = noteRefs;
+    context.results = findNotesResults;
     [self findNotes_completeWithContext:context error:nil];
 }
 
@@ -1284,10 +1297,6 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         return;
     }
 
-    // Create context for this operation.
-    ENSessionDownloadNoteContext * context = [[ENSessionDownloadNoteContext alloc] init];
-    context.completion = completion;
-    
     // Find the note store client that works with this note.
     ENNoteStoreClient * noteStore = [self noteStoreForNoteRef:noteRef];
     
@@ -1295,45 +1304,12 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     [noteStore getNoteWithGuid:noteRef.guid withContent:YES withResourcesData:YES withResourcesRecognition:NO withResourcesAlternateData:NO success:^(EDAMNote * note) {
 
         // Create an ENNote from the EDAMNote.
-        context.resultNote = [[ENNote alloc] initWithServiceNote:note];
-        context.notebookGuid = note.notebookGuid;
+        ENNote * resultNote = [[ENNote alloc] initWithServiceNote:note];
         
-        // Get all the notebooks so we can populate the notebook field accurately.
-        [self downloadNote_listNotebooksAndPrepareResultWithContext:context];
+        completion(resultNote, nil);
     } failure:^(NSError * error) {
-        [self downloadNote_completeWithContext:context error:error];
+        completion(nil, error);
     }];
-}
-
-- (void)downloadNote_listNotebooksAndPrepareResultWithContext:(ENSessionDownloadNoteContext *)context
-{
-    // Call ourself (!) directly to get the list of notebooks, which will let us populate the notebook property on the resulting note.
-    [self listNotebooksWithHandler:^(NSArray * notebooks, NSError * listNotebooksError) {
-        if (notebooks) {
-            // Find the notebook associated with this note.
-            for (ENNotebook * notebook in notebooks) {
-                if ([notebook.guid isEqualToString:context.notebookGuid]) {
-                    context.resultNote.notebook = notebook;
-                    break;
-                }
-            }
-            if (!context.resultNote.notebook) {
-                ENSDKLogInfo(@"Failed to find notebook with guid %@ to associate with note", context.notebookGuid);
-            }
-            [self downloadNote_completeWithContext:context error:nil];
-        } else {
-            [self downloadNote_completeWithContext:context error:listNotebooksError];
-        }
-    }];
-}
-
-- (void)downloadNote_completeWithContext:(ENSessionDownloadNoteContext *)context error:(NSError *)error
-{
-    if (error) {
-        context.completion(nil, error);
-    } else {
-        context.completion(context.resultNote, nil);
-    }
 }
 
 #pragma mark - downloadThumbnailForNote
@@ -1698,6 +1674,11 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 }
 @end
 
+#pragma mark - Local class definitions
+
+@implementation ENSessionFindNotesResult
+@end
+
 #pragma mark - Private context definitions
                                                 
 @implementation ENSessionListNotebooksContext
@@ -1707,7 +1688,4 @@ static NSString * DeveloperToken, * NoteStoreUrl;
 @end
 
 @implementation ENSessionFindNotesContext
-@end
-
-@implementation ENSessionDownloadNoteContext
 @end

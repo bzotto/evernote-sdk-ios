@@ -37,7 +37,6 @@ typedef void (^ENNotePopulateFromWebViewCompletionHandler)(ENNote * note);
 @interface ENNote : NSObject
 @property (nonatomic, copy) NSString * title;
 @property (nonatomic, strong) ENNoteContent * content;
-@property (nonatomic, strong) ENNotebook * notebook;
 @property (nonatomic, copy) NSArray * tagNames;
 @property (nonatomic, assign) BOOL isReminder;
 - (NSArray *)resources;

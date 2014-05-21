@@ -142,7 +142,7 @@ To create a new note with no user interface, you can just do this:
     ENNote * note = [[ENNote alloc] init];
 	note.content = [ENNoteContent noteContentWithString:@"Hello, World!"];
 	note.title = @"My First Note";
-    [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef * noteRef, NSError * uploadNoteError) {
+    [[ENSession sharedSession] uploadNote:note notebook:nil completion:^(ENNoteRef * noteRef, NSError * uploadNoteError) {
 		if (noteRef) {
 			// It worked! You can use this note ref to share the note or otherwise find it again.
 			...
@@ -162,7 +162,7 @@ Let's say you'd like to create a note with an image that you have. That's easy t
 	note.title = @"My Image Note";
 	ENResource * resource = [[ENResource alloc] initWithImage:myImage]; // myImage is a UIImage object.
 	[note addResource:resource]
-	[[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef * noteRef, NSError * uploadNoteError) {
+	[[ENSession sharedSession] uploadNote:note notebook:nil completion:^(ENNoteRef * noteRef, NSError * uploadNoteError) {
 		// same as above...
 	}];
 
@@ -187,7 +187,7 @@ The SDK contains a facility for capturing web content as a note. This content ca
 
     [ENNote populateNoteFromWebView:webView completion:^(ENNote * note) {
 	    if (note) {
-		    [[ENSession sharedSession] uploadNote:note completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
+		    [[ENSession sharedSession] uploadNote:note notebook:nil completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
 	            // etc...
             }];
         }
