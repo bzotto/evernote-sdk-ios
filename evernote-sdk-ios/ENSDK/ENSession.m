@@ -37,6 +37,7 @@
 #import "ENOAuthAuthenticator.h"
 #import "ENPreferencesStore.h"
 #import "NSDate+EDAMAdditions.h"
+#import "NSString+URLEncoding.h"
 
 // Strings visible publicly.
 NSString * const ENSessionHostSandbox = @"sandbox.evernote.com";
@@ -1335,6 +1336,66 @@ static NSString * DeveloperToken, * NoteStoreUrl;
     }
 }
 
+#pragma mark - downloadThumbnailForNote
+
+- (void)downloadThumbnailForNote:(ENNoteRef *)noteRef
+                      completion:(ENSessionDownloadNoteThumbnailCompletionHandler)completion
+{
+    if (!completion) {
+        [NSException raise:NSInvalidArgumentException format:@"handler required"];
+        return;
+    }
+    
+    if (!noteRef) {
+        ENSDKLogError(@"noteRef parameter is required to get download thumbnail");
+        completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeInvalidData userInfo:nil]);
+        return;
+    }
+    
+    if (!self.isAuthenticated) {
+        completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeAuthExpired userInfo:nil]);
+        return;
+    }
+    
+    // Go to a background queue.
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // Get the info we need for this note ref, then construct a standard request for the thumbnail.
+        NSString * authToken = [self authenticationTokenForNoteRef:noteRef];
+        NSString * shardId = [self shardIdForNoteRef:noteRef];
+        
+        NSString * urlString = [NSString stringWithFormat:@"https://%@/shard/%@/thm/note/%@", self.sessionHost, shardId, noteRef.guid];
+        NSString * postBody = [NSString stringWithFormat:@"auth=%@", [authToken en_stringByUrlEncoding]];
+        
+        NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+        request.HTTPMethod = @"POST";
+        request.HTTPBody = [postBody dataUsingEncoding:NSUTF8StringEncoding];
+        [request addValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+        [request addValue:[NSString stringWithFormat:@"%lu", (unsigned long)request.HTTPBody.length] forHTTPHeaderField:@"Content-Length"];
+        [request addValue:self.sessionHost forHTTPHeaderField:@"Host"];
+        
+        NSURLResponse * response = nil;
+        NSError * error = nil;
+        NSData * thumbnailData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        UIImage * thumbnail = nil;
+        if (!thumbnailData) {
+            ENSDKLogError(@"Failed to get thumb data at url %@", urlString);
+        } else {
+            thumbnail = [UIImage imageWithData:thumbnailData];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (thumbnail) {
+                completion(thumbnail, nil);
+            } else {
+                if (!error) {
+                    completion(nil, [NSError errorWithDomain:ENErrorDomain code:ENErrorCodeUnknown userInfo:nil]);
+                } else {
+                    completion(nil, error);                    
+                }
+            }
+        });
+    });
+}
+
 #pragma mark - Private routines
 
 #pragma mark - API helpers
@@ -1486,6 +1547,22 @@ static NSString * DeveloperToken, * NoteStoreUrl;
         return self.businessShardId;
     } else if (noteRef.type == ENNoteRefTypeShared) {
         return noteRef.linkedNotebook.shardId;
+    }
+    return nil;
+}
+
+- (NSString *)authenticationTokenForNoteRef:(ENNoteRef *)noteRef
+{
+    // Must be on background thread, because we may need to go over the wire to get a
+    // noncached token.
+    NSAssert(![NSThread isMainThread], @"Cannot get auth token on main thread");
+    
+    if (noteRef.type == ENNoteRefTypePersonal) {
+        return self.primaryAuthenticationToken;
+    } else if (noteRef.type == ENNoteRefTypeBusiness) {
+        return [self validBusinessAuthenticationResult].authenticationToken;
+    } else if (noteRef.type == ENNoteRefTypeShared) {
+        return [self authenticationTokenForLinkedNotebookRef:noteRef.linkedNotebook];
     }
     return nil;
 }

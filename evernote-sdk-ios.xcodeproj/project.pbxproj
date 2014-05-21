@@ -232,6 +232,10 @@
 		BE4BF7601925736300564DA3 /* ENNoteSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF75D1925736300564DA3 /* ENNoteSearch.h */; };
 		BE4BF7611925736300564DA3 /* ENNoteSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF75E1925736300564DA3 /* ENNoteSearch.m */; };
 		BE4BF7621925736300564DA3 /* ENNoteSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF75E1925736300564DA3 /* ENNoteSearch.m */; };
+		BE4BF765192C4B5200564DA3 /* NSString+URLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF763192C4B5200564DA3 /* NSString+URLEncoding.h */; };
+		BE4BF766192C4B5200564DA3 /* NSString+URLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF763192C4B5200564DA3 /* NSString+URLEncoding.h */; };
+		BE4BF767192C4B5200564DA3 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF764192C4B5200564DA3 /* NSString+URLEncoding.m */; };
+		BE4BF768192C4B5200564DA3 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF764192C4B5200564DA3 /* NSString+URLEncoding.m */; };
 		BE7E5F3D1921808B00A4DA30 /* FATField.h in Headers */ = {isa = PBXBuildFile; fileRef = BE7E5F2E1921808B00A4DA30 /* FATField.h */; };
 		BE7E5F3E1921808B00A4DA30 /* FATField.h in Headers */ = {isa = PBXBuildFile; fileRef = BE7E5F2E1921808B00A4DA30 /* FATField.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BE7E5F3F1921808B00A4DA30 /* FATField.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7E5F2F1921808B00A4DA30 /* FATField.m */; };
@@ -480,6 +484,8 @@
 		BE48C71719131AC200025618 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		BE4BF75D1925736300564DA3 /* ENNoteSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENNoteSearch.h; sourceTree = "<group>"; };
 		BE4BF75E1925736300564DA3 /* ENNoteSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENNoteSearch.m; sourceTree = "<group>"; };
+		BE4BF763192C4B5200564DA3 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		BE4BF764192C4B5200564DA3 /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
 		BE7E5F2E1921808B00A4DA30 /* FATField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FATField.h; sourceTree = "<group>"; };
 		BE7E5F2F1921808B00A4DA30 /* FATField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FATField.m; sourceTree = "<group>"; };
 		BE7E5F301921808B00A4DA30 /* FATObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FATObject.h; sourceTree = "<group>"; };
@@ -810,6 +816,8 @@
 				BE48C7081911713300025618 /* ENWebArchive.m */,
 				BE48C70D1912FC1300025618 /* ENLoadingViewController.h */,
 				BE48C70E1912FC1300025618 /* ENLoadingViewController.m */,
+				BE4BF763192C4B5200564DA3 /* NSString+URLEncoding.h */,
+				BE4BF764192C4B5200564DA3 /* NSString+URLEncoding.m */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -1002,6 +1010,7 @@
 				BE2E246618EBA5D500BD7E6E /* EDAMTypes.h in Headers */,
 				BE2E248A18EBA5D500BD7E6E /* ENNote.h in Headers */,
 				BE48C7091911713300025618 /* ENWebArchive.h in Headers */,
+				BE4BF765192C4B5200564DA3 /* NSString+URLEncoding.h in Headers */,
 				BE2E24A618EBA5D500BD7E6E /* NSString+XMLAdditions.h in Headers */,
 				BE2E248818EBA5D500BD7E6E /* ENError.h in Headers */,
 				BE2E247318EBA5D500BD7E6E /* ENEncryptedContentInfo.h in Headers */,
@@ -1098,6 +1107,7 @@
 				BECDD3591908DE29003736EE /* ENMLConstants.h in Headers */,
 				BECDD35A1908DE2A003736EE /* ENMLUtility.h in Headers */,
 				BECDD35B1908DE2A003736EE /* ENEncryptedContentInfo.h in Headers */,
+				BE4BF766192C4B5200564DA3 /* NSString+URLEncoding.h in Headers */,
 				BECDD35C1908DE2A003736EE /* ENMIMEUtils.h in Headers */,
 				BECDD35D1908DE2A003736EE /* ENMLWriter.h in Headers */,
 				BECDD35E1908DE2A003736EE /* ENXMLDTD.h in Headers */,
@@ -1280,6 +1290,7 @@
 				86C54DDF191D8F0900670865 /* ENNotebookTypeView.m in Sources */,
 				BE2E249718EBA5D500BD7E6E /* ENAFURLConnectionOperation.m in Sources */,
 				866F1C741905F01F0072F4C8 /* ENNotebookCell.m in Sources */,
+				BE4BF767192C4B5200564DA3 /* NSString+URLEncoding.m in Sources */,
 				BE2E24DA18EBA5D500BD7E6E /* ENXMLSaxParser.m in Sources */,
 				86B198591901DB0A008F606A /* ENNotebookPickerButton.m in Sources */,
 				BE2E24C418EBA5D500BD7E6E /* ENAuthCache.m in Sources */,
@@ -1363,6 +1374,7 @@
 				860DF48A18FDDE33002B4793 /* ENSSKeychain.m in Sources */,
 				86F2D802190A348F00C0AA7F /* ENSDKResourceLoader.m in Sources */,
 				86CB761E18FF4554002F267E /* ENTheme.m in Sources */,
+				BE4BF768192C4B5200564DA3 /* NSString+URLEncoding.m in Sources */,
 				86C54DE0191D8F0900670865 /* ENNotebookTypeView.m in Sources */,
 				860DF48518FDDDC4002B4793 /* KSForwardingWriter.m in Sources */,
 				866F1C751905F01F0072F4C8 /* ENNotebookCell.m in Sources */,

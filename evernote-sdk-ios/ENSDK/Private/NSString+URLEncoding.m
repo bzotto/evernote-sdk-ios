@@ -26,31 +26,23 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "ENNoteSearch.h"
-#import "ENSession.h"
+#import "NSString+URLEncoding.h"
 
-@interface ENNoteSearch ()
-@property (nonatomic, strong) NSString * searchString;
-@end
-
-@implementation ENNoteSearch
-+ (ENNoteSearch *)noteSearchWithSearchString:(NSString *)searchString
+@implementation NSString (URLEncoding)
+- (NSString *)en_stringByUrlEncoding
 {
-    return [[ENNoteSearch alloc] initWithSearchString:searchString];
+    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                                 (CFStringRef)self,
+                                                                                 NULL,
+                                                                                 (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
+                                                                                 kCFStringEncodingUTF8));
 }
 
-+ (ENNoteSearch *)noteSearchCreatedByThisApplication
+- (NSString *)en_stringByUrlDecoding
 {
-    NSString * search = [NSString stringWithFormat:@"sourceApplication:%@", [[ENSession sharedSession] sourceApplication]];
-    return [[ENNoteSearch alloc] initWithSearchString:search];
-}
-
-- (id)initWithSearchString:(NSString *)searchString
-{
-    self = [super init];
-    if (self) {
-        self.searchString = [searchString copy];
-    }
-    return self;
+	return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
+                                                                                                 (CFStringRef)self,
+                                                                                                 CFSTR(""),
+                                                                                                 kCFStringEncodingUTF8));
 }
 @end

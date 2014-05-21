@@ -44,6 +44,7 @@ typedef void (^ENSessionShareNoteCompletionHandler)(NSString * url, NSError * sh
 typedef void (^ENSessionDeleteNoteCompletionHandler)(NSError * deleteNoteError);
 typedef void (^ENSessionFindNotesCompletionHandler)(NSArray * noteRefs, NSError * findNotesError);
 typedef void (^ENSessionDownloadNoteCompletionHandler)(ENNote * note, NSError * downloadNoteError);
+typedef void (^ENSessionDownloadNoteThumbnailCompletionHandler)(UIImage * thumbnail, NSError * downloadNoteThumbnailError);
 
 typedef NS_ENUM(NSInteger, ENSessionUploadPolicy) {
     ENSessionUploadPolicyCreate,
@@ -138,5 +139,8 @@ extern NSUInteger ENSessionSortOrderDefault; // => ENSessionSortOrderTitle
 
 - (void)downloadNote:(ENNoteRef *)noteRef
           completion:(ENSessionDownloadNoteCompletionHandler)completion;
+
+- (void)downloadThumbnailForNote:(ENNoteRef *)noteRef
+                      completion:(ENSessionDownloadNoteThumbnailCompletionHandler)completion;
 
 @end

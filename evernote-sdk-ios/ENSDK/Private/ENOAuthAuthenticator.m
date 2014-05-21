@@ -34,6 +34,7 @@
 #import "ENCredentialStore.h"
 #import "ENSDKPrivate.h"
 #import "ENGCOAuth.h"
+#import "NSString+URLEncoding.h"
 
 #import "NSRegularExpression+ENAGRegex.h"
 
@@ -51,11 +52,6 @@ typedef NS_ENUM(NSInteger, ENOAuthAuthenticatorState) {
 };
 
 NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked";
-
-@interface NSString (ENURLEncoding)
-- (NSString *)en_stringByUrlEncoding;
-- (NSString *)en_stringByUrlDecoding;
-@end
 
 @interface ENOAuthAuthenticator () <ENOAuthViewControllerDelegate, ENLoadingViewControllerDelegate>
 @property (nonatomic, assign) BOOL inProgress;
@@ -749,23 +745,3 @@ NSString * ENOAuthAuthenticatorAuthInfoAppNotebookIsLinked = @"ENOAuthAuthentica
     }];
 }
 @end
-
-@implementation NSString (ENURLEncoding)
-- (NSString *)en_stringByUrlEncoding
-{
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                 (CFStringRef)self,
-                                                                                 NULL,
-                                                                                 (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
-                                                                                 kCFStringEncodingUTF8));
-}
-
-- (NSString *)en_stringByUrlDecoding
-{
-	return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
-                                                                                                             (CFStringRef)self,
-                                                                                                             CFSTR(""),
-                                                                                                             kCFStringEncodingUTF8));
-}
-@end
-

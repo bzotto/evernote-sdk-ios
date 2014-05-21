@@ -26,31 +26,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "ENNoteSearch.h"
-#import "ENSession.h"
+#import <Foundation/Foundation.h>
 
-@interface ENNoteSearch ()
-@property (nonatomic, strong) NSString * searchString;
-@end
-
-@implementation ENNoteSearch
-+ (ENNoteSearch *)noteSearchWithSearchString:(NSString *)searchString
-{
-    return [[ENNoteSearch alloc] initWithSearchString:searchString];
-}
-
-+ (ENNoteSearch *)noteSearchCreatedByThisApplication
-{
-    NSString * search = [NSString stringWithFormat:@"sourceApplication:%@", [[ENSession sharedSession] sourceApplication]];
-    return [[ENNoteSearch alloc] initWithSearchString:search];
-}
-
-- (id)initWithSearchString:(NSString *)searchString
-{
-    self = [super init];
-    if (self) {
-        self.searchString = [searchString copy];
-    }
-    return self;
-}
+@interface NSString (URLEncoding)
+- (NSString *)en_stringByUrlEncoding;
+- (NSString *)en_stringByUrlDecoding;
 @end
