@@ -229,7 +229,7 @@
 		BE48C71819131AC200025618 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE48C71519131AC200025618 /* LICENSE.txt */; };
 		BE48C71919131AC200025618 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BE48C71719131AC200025618 /* SVProgressHUD.m */; };
 		BE4BF75F1925736300564DA3 /* ENNoteSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF75D1925736300564DA3 /* ENNoteSearch.h */; };
-		BE4BF7601925736300564DA3 /* ENNoteSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF75D1925736300564DA3 /* ENNoteSearch.h */; };
+		BE4BF7601925736300564DA3 /* ENNoteSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF75D1925736300564DA3 /* ENNoteSearch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE4BF7611925736300564DA3 /* ENNoteSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF75E1925736300564DA3 /* ENNoteSearch.m */; };
 		BE4BF7621925736300564DA3 /* ENNoteSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4BF75E1925736300564DA3 /* ENNoteSearch.m */; };
 		BE4BF765192C4B5200564DA3 /* NSString+URLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = BE4BF763192C4B5200564DA3 /* NSString+URLEncoding.h */; };
@@ -676,12 +676,12 @@
 				BE2E23EA18EBA5D500BD7E6E /* ENError.h */,
 				BE2E23EB18EBA5D500BD7E6E /* ENError.m */,
 				BE2E23F518EBA5D500BD7E6E /* ENSDKLogging.h */,
+				BE4BF75D1925736300564DA3 /* ENNoteSearch.h */,
+				BE4BF75E1925736300564DA3 /* ENNoteSearch.m */,
 				BE2E23BD18EBA5D400BD7E6E /* Advanced */,
 				BE2E23F818EBA5D500BD7E6E /* Private */,
 				BE2E245918EBA5D500BD7E6E /* SendToEvernoteActivity */,
 				86F2D7FC1909EDAA00C0AA7F /* ENSDKResources.bundle */,
-				BE4BF75D1925736300564DA3 /* ENNoteSearch.h */,
-				BE4BF75E1925736300564DA3 /* ENNoteSearch.m */,
 			);
 			path = ENSDK;
 			sourceTree = "<group>";
@@ -1084,6 +1084,7 @@
 				860DF41718FCCE51002B4793 /* ENError.h in Headers */,
 				BE7E5F4B1921808B00A4DA30 /* TException.h in Headers */,
 				BE7E5F4F1921808B00A4DA30 /* THTTPClient.h in Headers */,
+				BE4BF7601925736300564DA3 /* ENNoteSearch.h in Headers */,
 				BE7E5F3E1921808B00A4DA30 /* FATField.h in Headers */,
 				BE7E5F571921808B00A4DA30 /* TTransport.h in Headers */,
 				BE7E5F471921808B00A4DA30 /* TBinaryProtocol.h in Headers */,
@@ -1115,7 +1116,6 @@
 				BECDD35F1908DE2A003736EE /* ENXMLUtils.h in Headers */,
 				BECDD3601908DE2A003736EE /* ENXMLWriter.h in Headers */,
 				BEA899921917F59C001619FE /* ENStoreClient.h in Headers */,
-				BE4BF7601925736300564DA3 /* ENNoteSearch.h in Headers */,
 				BEA899931917F7E8001619FE /* ENLinkedNotebookRef.h in Headers */,
 				BECDD3611908DE2A003736EE /* NSRegularExpression+ENAGRegex.h in Headers */,
 				BECDD3631908DE2A003736EE /* NSData+EvernoteSDK.h in Headers */,
